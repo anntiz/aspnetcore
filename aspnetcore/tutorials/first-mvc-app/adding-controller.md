@@ -20,7 +20,7 @@ By [Rick Anderson](https://twitter.com/RickAndMSFT)
 
 [!INCLUDE[adding-controller2](../../includes/mvc-intro/adding-controller2.md)]
 
-In Visual Studio, in non-debug mode (Ctrl+F5), you don't need to build the app after changing  code. Just save the file, refresh your browser and you can see the changes.
+In Visual Studio, in non-debug mode (Ctrl+F5), you don't need to build the app after changing  code. Just save the file, refresh your browser and you can see the changes.  
 在 Visual Studio, 使用 **非调试模式** (Ctrl+F5), 你不用在修改代码后生成应用程序，只需要保存文件，刷新浏览器后就可以看到修改的内容了。
 >[!div class="step-by-step"]
 [Previous](start-mvc.md)
