@@ -3,7 +3,8 @@
 
 By [Rick Anderson](https://twitter.com/RickAndMSFT)
 
-This tutorial will teach you the basics of building an ASP.NET Core MVC web app using [Visual Studio 2017](https://www.visualstudio.com/).
+This tutorial will teach you the basics of building an ASP.NET Core MVC web app using [Visual Studio 2017](https://www.visualstudio.com/).  
+
 这个教程将向你如何介绍使用 Visual Studio 2017 创建一个ASP.NET Core MVC web 应用的基础知识。
 
 There are 3 versions of this tutorial:
@@ -12,15 +13,19 @@ There are 3 versions of this tutorial:
 * Windows: [Create an ASP.NET Core MVC app with Visual Studio](xref:tutorials/first-mvc-app/start-mvc)
 * macOS, Linux, and Windows: [Create an ASP.NET Core MVC app with Visual Studio Code](xref:tutorials/first-mvc-app-xplat/start-mvc)
 
-For the Visual Studio 2015 version of this tutorial, see the [VS 2015 version of ASP.NET Core documentation in PDF format](https://github.com/aspnet/Docs/blob/master/aspnetcore/common/_static/aspnet-core-project-json.pdf).
-本教程对应于 Visual Studio 2015 的版本，请查看 VS 2015 version of ASP.NET Core documentation in PDF format 
-## Install Visual Studio and .NET Core  安装 Visual Studio 和 .NET Core
+For the Visual Studio 2015 version of this tutorial, see the [VS 2015 version of ASP.NET Core documentation in PDF format](https://github.com/aspnet/Docs/blob/master/aspnetcore/common/_static/aspnet-core-project-json.pdf).  
 
-Install Visual Studio Community 2017. Select the Community download. Skip this step if you have Visual Studio 2017 installed.
+本教程对应于 Visual Studio 2015 的版本，请查看 VS 2015 version of ASP.NET Core documentation in PDF format 
+## Install Visual Studio and .NET Core   
+安装 Visual Studio 和 .NET Core
+
+Install Visual Studio Community 2017. Select the Community download. Skip this step if you have Visual Studio 2017 installed.  
+
 安装 Visual Studio 社区版 2017。选择下载社区版。如果你已经安装了 Visual Studio 2017则跳过这一步。
   * [Visual Studio 2017 Home page installer](https://www.visualstudio.com/visual-studio-homepage-vs.aspx)
 
-Run the installer and select the following workloads:
+Run the installer and select the following workloads:  
+
 运行安装程序然后选择下面的工作负载：
  - **ASP.NET and web development** (under **Web & Cloud**)
  - **.NET Core cross-platform development** (under **Other Toolsets**)
@@ -40,10 +45,10 @@ Complete the **New Project** dialog:
 完成 **新建项目** 对话框
 
 * In the left pane, tap **.NET Core**  
-在左边面板，选中 **.NET Core**
+在左边窗格，选中 **.NET Core**
 
 * In the center pane, tap **ASP.NET Core Web Application (.NET Core)**  
-在中间面板，选中 **ASP.NET Core Web Application (.NET Core)**
+在中间窗格，选中 **ASP.NET Core Web Application (.NET Core)**
 * Name the project "MvcMovie" (It's important to name the project "MvcMovie" so when you copy code, the namespace will match.)  
 项目命名为 "MvcMovie"（把项目命名为 "MvcMovie" 很重要, 当你复制代码的时候，命名空间才会匹配）
 * Tap **OK**  
@@ -65,7 +70,8 @@ Complete the **New ASP.NET Core Web Application (.NET Core) - MvcMovie** dialog:
 
 ![New ASP.NET Core web app](start-mvc/_static/p3.png)
 
-Visual Studio used a default template for the MVC project you just created. You have a working app right now by entering a project name and selecting a few options. This is a simple starter project, and it's a good place to start,
+Visual Studio used a default template for the MVC project you just created. You have a working app right now by entering a project name and selecting a few options. This is a simple starter project, and it's a good place to start,  
+
 Visual Studio 给刚才创建的项目提供了默认的模板，通过输入项目名称并选择几个选项你现在已经有了一个可以工作的应用程序，这是一个简单的启动项目，一个好开始的好地方。
 
 
