@@ -71,7 +71,6 @@ Complete the **New ASP.NET Core Web Application (.NET Core) - MvcMovie** dialog:
 ![New ASP.NET Core web app](start-mvc/_static/p3.png)
 
 Visual Studio used a default template for the MVC project you just created. You have a working app right now by entering a project name and selecting a few options. This is a simple starter project, and it's a good place to start,  
-
 Visual Studio 给刚才创建的项目提供了默认的模板，通过输入项目名称并选择几个选项你现在已经有了一个可以工作的应用程序，这是一个简单的启动项目，一个好开始的好地方。
 
 
