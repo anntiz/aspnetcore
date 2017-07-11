@@ -98,9 +98,10 @@ The default template gives you working **Home, About** and **Contact** links. Th
 
 ![navigation icon in upper right](start-mvc/_static/2.png)
 
-If you were running in debug mode, tap **Shift-F5** to stop debugging.
-如果你的应用程序运行在调试模式，可以按 **Shift-F5** 来停止调试。
-In the next part of this tutorial, we'll learn about MVC and start writing some code.
+If you were running in debug mode, tap **Shift-F5** to stop debugging.  
+如果你的应用程序运行在调试模式，可以按 **Shift-F5** 来停止调试。  
+  
+In the next part of this tutorial, we'll learn about MVC and start writing some code.  
 在这个教程的下一个部分，我们将开始学习MVC，并且开始写一些代码。
 
 >[!div class="step-by-step"]
