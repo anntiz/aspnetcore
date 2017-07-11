@@ -89,7 +89,7 @@ Visual Studio 启动 IIS Express 并运行你的应用程序。请注意，地�
 
 ![Debug menu](start-mvc/_static/debug_menu.png)
 
-* You can debug the app by tapping the **IIS Express** button
+* You can debug the app by tapping the **IIS Express** button  
 你可以通过点击工具栏中的 **IIS Express** 按钮来调试应用程序
 ![IIS Express](start-mvc/_static/iis_express.png)
 
