@@ -27,5 +27,5 @@
 [!INCLUDE[adding-view22](../../includes/mvc-intro/adding_view2.md)]
 
 >[!div class="step-by-step"]
-[Previous](adding-controller.md)
-[Next](adding-model.md)
+[上一页](adding-controller.md)
+[下一页](adding-model.md)
