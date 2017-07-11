@@ -1,5 +1,6 @@
 
-# Create a web app with ASP.NET Core MVC using Visual Studio on Windows 在Windows中通过Visual Studio创建一个ASP.NET Core MVC Web应用程序
+# Create a web app with ASP.NET Core MVC using Visual Studio on Windows  
+# 在Windows中通过Visual Studio创建一个ASP.NET Core MVC Web应用程序
 
 This series of tutorials teaches you the basics of building an ASP.NET Core MVC web app using Visual Studio.  
 本系列教程将向您介绍使用Visual Studio构建ASP.NET Core MVC Web应用程序的基础知识。
