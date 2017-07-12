@@ -114,7 +114,7 @@ namespace MvcMovie.Models
 包含 Create(增加), Delete(删除), Details(详细), Edit(编辑) and Index(索引) 等页面 (*Views/Movies/\*.cshtml*) 的Razor 视图文件
 
 The automatic creation of the database context and [CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) (create, read, update, and delete) action methods and views is known as *scaffolding*. You'll soon have a fully functional web application that lets you manage a movie database.  
-我们把这个自动创建数据库上下文和CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) (create, read, update, and delete)操作方法及视图的称为 *scaffolding(基架)*。你可以很快就得到一个功能完整的Web应用程序用于管理你的电影数据库。
+我们把这个自动创建数据库上下文和[CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) (create, read, update, and delete)操作方法及视图的称为 *scaffolding(基架)*。你可以很快就得到一个功能完整的Web应用程序用于管理你的电影数据库。
 
 If you run the app and click on the **Mvc Movie** link, you'll get an error similar to the following:  
 如果运行这个应用程序并点击上面的 **Mvc Movie** 链接，将会得到类似下面的错误信息：
@@ -131,17 +131,24 @@ You need to create the database, and you'll use the EF Core [Migrations](xref:da
 ## Add EF tooling and perform initial migration  
 添加 EF 工具并执行初始迁移
 
-In this section you'll use the Package Manager Console (PMC) to:
+In this section you'll use the Package Manager Console (PMC) to:  
+这本节中，你将使用 **Package Manager Console(包管理控制台)** (PMC) 执行以下操作：
 
-* Add the Entity Framework Core Tools package. This package is required to add migrations and update the database.
-* Add an initial migration.
-* Update the database with the initial migration.
+* Add the Entity Framework Core Tools package. This package is required to add migrations and update the database.  
+添加 Entity Framework Core 工具包，这个包是添加迁移和更新数据库所必需的。
 
-From the **Tools** menu, select **NuGet Package Manager > Package Manager Console**.
+* Add an initial migration.  
+添加初始迁移
 
+* Update the database with the initial migration.  
+使用初始迁移更新数据库
+
+From the **Tools** menu, select **NuGet Package Manager > Package Manager Console**.  
+从 **Tools(工具)** 菜单, 选择 **NuGet Package Manager(NuGet包管理器) > Package Manager Console(程序包管理控制台)**
   ![PMC menu](adding-model/_static/pmc.png)
 
-In the PMC, enter the following commands:
+In the PMC, enter the following commands:  
+在 PMC 中输入下面的命令：
 
 ``` PMC
 Install-Package Microsoft.EntityFrameworkCore.Tools
