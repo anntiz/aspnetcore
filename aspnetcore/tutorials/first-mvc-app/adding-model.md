@@ -1,60 +1,84 @@
----
-title: Adding a model to an ASP.NET Core MVC app
-author: rick-anderson
-description: Add a model to a simple ASP.NET Core app.
-keywords: ASP.NET Core,
-ms.author: riande
-manager: wpickett
-ms.date: 03/30/2017
-ms.topic: get-started-article
-ms.assetid: 8dc28498-00ee-4d66-b903-b593059e9f39
-ms.technology: aspnet
-ms.prod: asp.net-core
-uid: tutorials/first-mvc-app/adding-model
----
+
+# Adding a model to an ASP.NET Core MVC app  
+添加模型到 ASP.NET Core MVC 应用程序
+
 
 [!INCLUDE[adding-model](../../includes/mvc-intro/adding-model1.md)]
 
-In Solution Explorer, right click the **MvcMovie** project > **Add** > **New Folder**. Name the folder *Models*.
+In Solution Explorer, right click the **MvcMovie** project > **Add** > **New Folder**. Name the folder *Models*.  
+在 **Solution Explorer(项目资源管理器)** 中，鼠标右键单击 **MvcMovie** 项目，选择 **Add(添加)** > **New Folder(新建文件夹)**。将文件夹命名为 *Models*。
 
-Right click the *Models* folder > **Add** > **Class**. Name the class **Movie** and add the following properties:
+Right click the *Models* folder > **Add** > **Class**. Name the class **Movie** and add the following properties:  
+鼠标右键单击 *Models* 文件夹，然后选择 **Add(添加)** > **Class(类)**。将该类命名为 **Movie** 并添加以下属性：
+```C#
+//#define MovieNoEF
+#if MovieNoEF
+#region snippet_1
+using System;
+
+namespace MvcMovie.Models
+{
+    public class Movie
+    {
+        public int ID { get; set; }
+        public string Title { get; set; }
+        public DateTime ReleaseDate { get; set; }
+        public string Genre { get; set; }
+        public decimal Price { get; set; }
+    }
+}
+#endregion
+#endif
+```
 
 [!code-csharp[Main](../../tutorials/first-mvc-app/start-mvc/sample/MvcMovie/Models/MovieNoEF.cs?name=snippet_1)]
 
-The `ID` field is required by the database for the primary key. 
+The `ID` field is required by the database for the primary key.  
+其中，`ID` 字段是数据库必需的主键字段
 
-Build the project to verify you don't have any errors. You now have a **M**odel in your **M**VC app.
+Build the project to verify you don't have any errors. You now have a **M**odel in your **M**VC app.  
+构建这个项目来验证你没有出现任何错误。 现在你的 **MVC** 应用程序中已经得到一个 **模型** 了。
 
-## Scaffolding a controller
+## Scaffolding a controller  
+使用基架创建控制器
 
-In **Solution Explorer**, right-click the *Controllers* folder **> Add > Controller**.
+In **Solution Explorer**, right-click the *Controllers* folder **> Add > Controller**.  
+在 **Solution Explorer(项目资源管理器)** 中, 鼠标右键单击 *Controllers* 文件夹，然后选择 **> Add(添加) > Controller(控制器)**
 
 ![view of above step](adding-model/_static/add_controller.png)
 
-In the **Add MVC Dependencies** dialog, select **Minimal Dependencies**, and select **Add**.
+In the **Add MVC Dependencies** dialog, select **Minimal Dependencies**, and select **Add**.  
+在 **Add MVC Dependencies(添加MVC依赖关系)** 对话框中, 选择 **Minimal Dependencies(最小依赖关系)**, 然后选择 **Add(添加)**
 
 ![view of above step](adding-model/_static/add_depend.png)
 
-Visual Studio adds the dependencies needed to scaffold a controller, but the controller itself is not created. The next invoke of **> Add > Controller** creates the controller. 
+Visual Studio adds the dependencies needed to scaffold a controller, but the controller itself is not created. The next invoke of **> Add > Controller** creates the controller.  
+Visual Studio 添加一些必需的依赖关系到基架控制器中，但是这个控制器还没有被创建。下一次再执行 **> Add(添加) > Controller(控制器)**的时候才会创建这些控制器。
 
-In **Solution Explorer**, right-click the *Controllers* folder **> Add > Controller**.
+In **Solution Explorer**, right-click the *Controllers* folder **> Add > Controller**.  
+在 **Solution Explorer(项目资源管理器)** 中, 鼠标右键单击 *Controllers* 文件夹，然后选择 **> Add(添加) > Controller(控制器)**
 
 ![view of above step](adding-model/_static/add_controller.png)
 
-In the **Add Scaffold** dialog, tap **MVC Controller with views, using Entity Framework > Add**.
-
+In the **Add Scaffold** dialog, tap **MVC Controller with views, using Entity Framework > Add**.  
+在 **Add Scaffold（新建基架）** 对话框中, 单击 **MVC Controller with views, using Entity Framework > Add（添加）**
 ![Add Scaffold dialog](adding-model/_static/add_scaffold2.png)
 
-Complete the **Add Controller** dialog:
+Complete the **Add Controller** dialog:  
+完成这个 **Add Controller(添加控制器)** 对话框
 
 * **Model class:** *Movie (MvcMovie.Models)*
-* **Data context class:** Select the **+** icon and add the default **MvcMovie.Models.MvcMovieContext**
+* **Data context class:** Select the **+** icon and add the default **MvcMovie.Models.MvcMovieContext**  
+**Data context class:** 选择 **+** 按钮并添加默认的 **MvcMovie.Models.MvcMovieContext**  
 
 ![Add Data context](adding-model/_static/dc.png)
 
-* **Views:** Keep the default of each option checked
-* **Controller name:** Keep the default *MoviesController*
-* Tap **Add**
+* **Views:** Keep the default of each option checked  
+**Views:** 保留所有选项的默认值  
+* **Controller name:** Keep the default *MoviesController*  
+**Controller name:** 保留默认的名字 *MoviesController*  
+* Tap **Add**  
+单击 **Add(添加)**
 
 ![Add Controller dialog](adding-model/_static/add_controller2.png)
 
