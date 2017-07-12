@@ -1,40 +1,62 @@
----
-title: Working with SQL Server LocalDB
-author: rick-anderson
-description: Using SQL Server LocalDB with a simple MVC app
-keywords: ASP.NET Core,SQL Server LocalDB, SQL Server, LocalDB 
-ms.author: riande
-manager: wpickett
-ms.date: 03/07/2017
-ms.topic: get-started-article
-ms.assetid: ff8fd9b8-7c98-424d-8641-7524e23bf541
-ms.technology: aspnet
-ms.prod: asp.net-core
-uid: tutorials/first-mvc-app/working-with-sql
----
-# Working with SQL Server LocalDB
+
+# Working with SQL Server LocalDB  
+操作 SQL Server LocalDB
 
 By [Rick Anderson](https://twitter.com/RickAndMSFT)
 
-The `MvcMovieContext` object handles the task of connecting to the database and mapping `Movie` objects to database records. The database context is registered with the [Dependency Injection](xref:fundamentals/dependency-injection) container in the `ConfigureServices` method in the *Startup.cs* file:
+The `MvcMovieContext` object handles the task of connecting to the database and mapping `Movie` objects to database records. The database context is registered with the [Dependency Injection](xref:fundamentals/dependency-injection) container in the The  `ConfigureServices` method in the *Startup.cs* file:  :  
+`MvcMovieContext` 对象处理连接到数据库并将 `Movie` 对象映射到数据库的任务。 数据库上下文使用 [Dependency Injection(依赖注入)]容器在 *Startup.cs* 文件中的 `ConfigureServices` 方法进行注册:  
+
+```C#
+        // This method gets called by the runtime. Use this method to add services to the container.
+        #region ConfigureServices
+        public void ConfigureServices(IServiceCollection services)
+        {
+            // Add framework services.
+            services.AddMvc();
+
+            services.AddDbContext<MvcMovieContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("MvcMovieContext")));
+        }
+#endregion
+```
 
 [!code-csharp[Main](../../tutorials/first-mvc-app/start-mvc/sample/MvcMovie/Startup.cs?name=ConfigureServices&highlight=6-7)]
 
-The ASP.NET Core [Configuration](xref:fundamentals/configuration) system reads the `ConnectionString`. For local development, it gets the connection string from the *appsettings.json* file:
+The ASP.NET Core [Configuration](xref:fundamentals/configuration) system reads the `ConnectionString`. For local development, it gets the connection string from the *appsettings.json* file:  
+ASP.NET Core [Configuration(配置)](xref:fundamentals/configuration)系统读取 `ConnectionString`。对于本地开发，它从 *appsettings.json* 文件获取连接字符串。
+
+```JSON
+{
+  "Logging": {
+    "IncludeScopes": false,
+    "LogLevel": {
+      "Default": "Warning"
+    }
+  },
+  "ConnectionStrings": {
+    "MvcMovieContext": "Server=(localdb)\\mssqllocaldb;Database=MvcMovieContext-20613a4b-deb5-4145-b6cc-a5fd19afda13;Trusted_Connection=True;MultipleActiveResultSets=true"
+  }
+}
+```
 
 [!code-javascript[Main](start-mvc/sample/MvcMovie/appsettings.json?highlight=2&range=8-10)]
 
-When you deploy the app to a test or production server, you can use an environment variable or another approach to set the connection string to a real SQL Server. See [Configuration](xref:fundamentals/configuration) for more information.
+When you deploy the app to a test or production server, you can use an environment variable or another approach to set the connection string to a real SQL Server. See [Configuration](xref:fundamentals/configuration) for more information.  
+当把这个应用程序部署到一个测试或生产服务器的时候，你可以使用环境变量或是其他的方法设置连接字符串到一个真实的 SQL Server。查看 [Configuration](xref:fundamentals/configuration) 获取更多的相关信息。
 
 ## SQL Server Express LocalDB
 
-LocalDB is a lightweight version of the SQL Server Express Database Engine that is targeted for program development. LocalDB starts on demand and runs in user mode, so there is no complex configuration. By default, LocalDB database creates "\*.mdf" files in the *C:/Users/\<user\>* directory.
+LocalDB is a lightweight version of the SQL Server Express Database Engine that is targeted for program development. LocalDB starts on demand and runs in user mode, so there is no complex configuration. By default, LocalDB database creates "\*.mdf" files in the *C:/Users/\<user\>* directory.  
+LocalDB 是一个轻量级版本的用于程序开的 SQL Server Express 数据库引擎。LocalDB 按需要启动并以用户模式运行， 所以不需要复杂的配置。默认情况下，LocalDB数据库在 *C:/Users/\<user\>* 文件夹中创建 "\*.mdf" 文件。
 
-* From the **View** menu, open **SQL Server Object Explorer** (SSOX).
+* From the **View** menu, open **SQL Server Object Explorer** (SSOX).  
+从 **View(视图)** 菜单, 打开 **SQL Server Object Explorer(SQL Server 对象资源管理器)**
 
   ![View menu](working-with-sql/_static/ssox.png)
 
-* Right click on the `Movie` table **> View Designer**
+* Right click on the `Movie` table **> View Designer**  
+鼠标右键单击 `Movie` 表 **> View Designer(视图设计器)** 
 
   ![Contextual menu open on Movie table](working-with-sql/_static/design.png)
 
