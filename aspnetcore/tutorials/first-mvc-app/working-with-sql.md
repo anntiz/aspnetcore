@@ -62,21 +62,91 @@ LocalDB 是一个轻量级版本的用于程序开的 SQL Server Express 数据�
 
   ![Movie table open in Designer](working-with-sql/_static/dv.png)
 
-Note the key icon next to `ID`. By default, EF will make a property named `ID` the primary key.
+Note the key icon next to `ID`. By default, EF will make a property named `ID` the primary key.  
+注册在 `ID` 旁边的钥匙图标。默认情况下，EF将会把被命名为 `ID` 的属性作为主键。
 
-* Right click on the `Movie` table **> View Data**
+* Right click on the `Movie` table **> View Data**  
+鼠标右键单击 `Movie` 表， 选择 **> View Data(查看数据)**
 
   ![Contextual menu open on Movie table](working-with-sql/_static/ssox2.png)
 
   ![Movie table open showing table data](working-with-sql/_static/vd22.png)
 
-## Seed the database
+## Seed the database  
+种子数据库
 
-Create a new class named `SeedData` in the *Models* folder. Replace the generated code with the following:
+Create a new class named `SeedData` in the *Models* folder. Replace the generated code with the following:  
+在 *Models* 文件夹中创建一个新类并命名为 `SeedData`，将生成的代码替换为以下内容：
 
 [!code-csharp[Main](start-mvc/sample/MvcMovie/Models/SeedData.cs?name=snippet_1)]
+```C#
+//#define First
+#if First
+// Seed without Rating
+#region snippet_1 
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Linq;
 
-If there are any movies in the DB, the seed initializer returns and no movies are added.
+namespace MvcMovie.Models
+{
+    public static class SeedData
+    {
+        public static void Initialize(IServiceProvider serviceProvider)
+        {
+            using (var context = new MvcMovieContext(
+                serviceProvider.GetRequiredService<DbContextOptions<MvcMovieContext>>()))
+            {
+                // Look for any movies.
+                if (context.Movie.Any())
+                {
+                    return;   // DB has been seeded
+                }
+
+                context.Movie.AddRange(
+                     new Movie
+                     {
+                         Title = "When Harry Met Sally",
+                         ReleaseDate = DateTime.Parse("1989-1-11"),
+                         Genre = "Romantic Comedy",
+                         Price = 7.99M
+                     },
+
+                     new Movie
+                     {
+                         Title = "Ghostbusters ",
+                         ReleaseDate = DateTime.Parse("1984-3-13"),
+                         Genre = "Comedy",
+                         Price = 8.99M
+                     },
+
+                     new Movie
+                     {
+                         Title = "Ghostbusters 2",
+                         ReleaseDate = DateTime.Parse("1986-2-23"),
+                         Genre = "Comedy",
+                         Price = 9.99M
+                     },
+
+                   new Movie
+                   {
+                       Title = "Rio Bravo",
+                       ReleaseDate = DateTime.Parse("1959-4-15"),
+                       Genre = "Western",
+                       Price = 3.99M
+                   }
+                );
+                context.SaveChanges();
+            }
+        }
+    }
+}
+#endregion
+#endif
+```
+If there are any movies in the DB, the seed initializer returns and no movies are added.  
+如果已经有任何电影在数据库中，种子的初始化程序将返回而不会电影被添加到数据库中。
 
 ```csharp
 if (context.Movie.Any())
@@ -85,28 +155,40 @@ if (context.Movie.Any())
 }
 ```
 
-Add the seed initializer to the end of the `Configure` method in the *Startup.cs* file:
-
+Add the seed initializer to the end of the `Configure` method in the *Startup.cs* file:  
+将种子初始值设定项添加到 Startup.cs * 文件中 `Configure` 方法的末尾：
+```C#
+ SeedData.Initialize(app.ApplicationServices);
+```
 [!code-csharp[Main](start-mvc/sample/MvcMovie/Startup.cs?highlight=9&name=snippet_seed)]
 
-Test the app
+Test the app  
+测试应用程序
 
-* Delete all the records in the DB. You can do this with the delete links in the browser or from SSOX.
-* Force the app to initialize (call the methods in the `Startup` class) so the seed method runs. To force initialization, IIS Express must be stopped and restarted. You can do this with any of the following approaches:
+* Delete all the records in the DB. You can do this with the delete links in the browser or from SSOX.  
+要删除数据库中的所有记录。你可以从浏览器中的删除链接或是从SSOX中完成。 
 
-  * Right click the IIS Express system tray icon in the notification area and tap **Exit** or **Stop Site**
+* Force the app to initialize (call the methods in the `Startup` class) so the seed method runs. To force initialization, IIS Express must be stopped and restarted. You can do this with any of the following approaches:  
+强制应用程序进行初始化（在 `Startup` 类中调用方法 ）以便让种子方法运行。 强制初始化，IIS Express 必须停止后重启，你可以使用下面的任意一种方法执行操作：
+
+  * Right click the IIS Express system tray icon in the notification area and tap **Exit** or **Stop Site**  
+  鼠标右键单击通知区域中的 IIS Express 系统图标并单击 **Exit(退出)** 或 **Stop Site(停止站点)** 
+  
 
     ![IIS Express system tray icon](working-with-sql/_static/iisExIcon.png)
 
     ![Contextual menu](working-with-sql/_static/stopIIS.png)
 
-   * If you were running VS in non-debug mode, press F5 to run in debug mode
-   * If you were running VS in debug mode, stop the debugger and press F5
+   * If you were running VS in non-debug mode, press F5 to run in debug mode  
+   如果 VS 正运行在非调试模式中，按 F5 在调试模式下运行
    
-The app shows the seeded data.
-
+   * If you were running VS in debug mode, stop the debugger and press F5  
+   如果 VS 正运行在调试模式下，按 F5 停止调试
+   
+The app shows the seeded data.  
+应用程序显示的种子数据
 ![MVC Movie application open in Microsoft Edge showing movie data](working-with-sql/_static/m55.png)
 
 >[!div class="step-by-step"]
-[Previous](adding-model.md)
-[Next](controller-methods-views.md)  
+[前一页](adding-model.md)
+[后一页](controller-methods-views.md)  
