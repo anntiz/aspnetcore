@@ -166,7 +166,7 @@ Test the app
 测试应用程序
 
 * Delete all the records in the DB. You can do this with the delete links in the browser or from SSOX.  
-要删除数据库中的所有记录。你可以从浏览器中的删除链接或是从SSOX中完成。 
+要删除数据库中的所有记录。你可以从浏览器中的删除链接或是从SSOX(SQL Server 对象资源管理器)中完成。 
 
 * Force the app to initialize (call the methods in the `Startup` class) so the seed method runs. To force initialization, IIS Express must be stopped and restarted. You can do this with any of the following approaches:  
 强制应用程序进行初始化（在 `Startup` 类中调用方法 ）以便让种子方法运行。 强制初始化，IIS Express 必须停止后重启，你可以使用下面的任意一种方法执行操作：
