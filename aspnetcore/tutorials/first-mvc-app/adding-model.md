@@ -82,16 +82,42 @@ Complete the **Add Controller** dialog:
 
 ![Add Controller dialog](adding-model/_static/add_controller2.png)
 
-Visual Studio creates:
+Visual Studio creates:  
+Visual Studio 创建下面的内容：
 
-* An Entity Framework Core [database context class](xref:data/ef-mvc/intro#create-the-database-context) (*Data/MvcMovieContext.cs*)
-* A movies controller (*Controllers/MoviesController.cs*)
-* Razor view files for Create, Delete, Details, Edit and Index pages (*Views/Movies/\*.cshtml*)
+* An Entity Framework Core [database context class](xref:data/ef-mvc/intro#create-the-database-context) (*Data/MvcMovieContext.cs*)  
+一个Entity Framework Core 数据库上下文类
+```C#
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
-The automatic creation of the database context and [CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) (create, read, update, and delete) action methods and views is known as *scaffolding*. You'll soon have a fully functional web application that lets you manage a movie database.
+namespace MvcMovie.Models
+{
+    public class MvcMovieContext : DbContext
+    {
+        public MvcMovieContext (DbContextOptions<MvcMovieContext> options)
+            : base(options)
+        {
+        }
 
-If you run the app and click on the **Mvc Movie** link, you'll get an error similar to the following:
+        public DbSet<MvcMovie.Models.Movie> Movie { get; set; }
+    }
+}
+```
 
+* A movies controller (*Controllers/MoviesController.cs*)  
+一个 movies 控制器
+* Razor view files for Create, Delete, Details, Edit and Index pages (*Views/Movies/\*.cshtml*)  
+包含 Create(增加), Delete(删除), Details(详细), Edit(编辑) and Index(索引) 等页面 (*Views/Movies/\*.cshtml*) 的Razor 视图文件
+
+The automatic creation of the database context and [CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) (create, read, update, and delete) action methods and views is known as *scaffolding*. You'll soon have a fully functional web application that lets you manage a movie database.  
+我们把这个自动创建数据库上下文和CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) (create, read, update, and delete)操作方法及视图的称为 *scaffolding(基架)*。你可以很快就得到一个功能完整的Web应用程序用于管理你的电影数据库。
+
+If you run the app and click on the **Mvc Movie** link, you'll get an error similar to the following:  
+如果运行这个应用程序并点击上面的 **Mvc Movie** 链接，将会得到类似下面的错误信息：
 ```
 An unhandled exception occurred while processing the request.
 SqlException: Cannot open database "MvcMovieContext-<GUID removed>" 
@@ -99,9 +125,11 @@ requested by the login. The login failed.
 Login failed for user Rick
 ```
 
-You need to create the database, and you'll use the EF Core [Migrations](xref:data/ef-mvc/migrations) feature to do that. Migrations lets you create a database that matches your data model and update the database schema when your data model changes.
+You need to create the database, and you'll use the EF Core [Migrations](xref:data/ef-mvc/migrations) feature to do that. Migrations lets you create a database that matches your data model and update the database schema when your data model changes.  
+这里要先创建数据库，你可以用EF Core [Migrations](xref:data/ef-mvc/migrations)（迁移）功能来完成它。 通过 **Migrations(迁移)** 你可以创建一个和数据模型相匹配的数据库，并且在数据模型发生改变的时候能够更新数据库的架构。
 
-## Add EF tooling and perform initial migration
+## Add EF tooling and perform initial migration  
+添加 EF 工具并执行初始迁移
 
 In this section you'll use the Package Manager Console (PMC) to:
 
