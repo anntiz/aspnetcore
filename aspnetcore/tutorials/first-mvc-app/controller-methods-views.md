@@ -4,7 +4,7 @@
 By [Rick Anderson](https://twitter.com/RickAndMSFT)
 
 We have a good start to the movie app, but the presentation is not ideal. We don't want to see the time (12:00:00 AM in the image below) and **ReleaseDate** should be two words.  
-对于电影应用唷我们已经有了一个好的开始，但这个程序的展示并不理想。 我们不希望看到时间(在下面的图片中的12:00:00 AM) 并且 **ReleaseDate** 应该是两个词(Release Date)。
+对于电影应用程序我们已经有了一个好的开始，但这个程序的展示并不理想。 我们不希望看到时间(在下面的图片中的12:00:00 AM) 并且 **ReleaseDate** 应该是两个词(Release Date)。
 
 ![Index view: Release Date is one word (no space) and every movie release date shows a time of 12 AM](working-with-sql/_static/m55.png)
 
