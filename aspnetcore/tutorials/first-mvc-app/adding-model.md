@@ -156,10 +156,13 @@ Add-Migration Initial
 Update-Database
 ```
 
-The `Add-Migration` command creates code to create the initial database schema. The schema is based on the model specified in the `DbContext`(In the *Data/MvcMovieContext.cs file). The `Initial` argument is used to name the migrations. You can use any name, but by convention you choose a name that describes the migration. See [Introduction to migrations](xref:data/ef-mvc/migrations#introduction-to-migrations) for more information.
+The `Add-Migration` command creates code to create the initial database schema. The schema is based on the model specified in the `DbContext` (In the *Data/MvcMovieContext.cs* file). The `Initial` argument is used to name the migrations. You can use any name, but by convention you choose a name that describes the migration. See [Introduction to migrations](xref:data/ef-mvc/migrations#introduction-to-migrations) for more information.  
+ `Add-Migration` 命令创建初始的数据库架构。这个架构基于上下文类 `DbContext` (文件路径 *Data/MvcMovieContext.cs* )中指定的模型。这里的 `Initial` 参数是用于命名迁移的。你可以使用任何的名字，但依据惯例，最好是可以选择一个能描述迁移的命名。查看 [Introduction to migrations](xref:data/ef-mvc/migrations#introduction-to-migrations) 获取更多的相关信息.  
 
-The `Update-Database` command runs the `Up` method in the *Migrations/\<time-stamp>_InitialCreate.cs* file, which creates the database.
 
+The `Update-Database` command runs the `Up` method in the *Migrations/\<time-stamp>_InitialCreate.cs* file, which creates the database.  
+ `Update-Database` 命令运行在 *Migrations/\<time-stamp>_InitialCreate.cs* 文件中运行 `UP` 方法，通过刚才的迁移来创建数据库。
+ 
 [!INCLUDE[adding-model](../../includes/mvc-intro/adding-model3.md)]
 
 [!code-csharp[Main](../../tutorials/first-mvc-app/start-mvc/sample/MvcMovie/Startup.cs?name=ConfigureServices&highlight=6-7)]
@@ -168,11 +171,11 @@ The `Update-Database` command runs the `Up` method in the *Migrations/\<time-sta
 
 ![Intellisense contextual menu on a Model item listing the available properties for ID, Price, Release Date, and Title](adding-model/_static/ints.png)
 
-## Additional resources
+## Additional resources（其他资源）  
 
 * [Tag Helpers](xref:mvc/views/tag-helpers/intro)
 * [Globalization and localization](xref:fundamentals/localization)
 
 >[!div class="step-by-step"]
-[Previous Adding a View](adding-view.md)
-[Next Working with SQL](working-with-sql.md)  
+[前一页 添加视图](adding-view.md)
+[后一页 使用SQL](working-with-sql.md)  
