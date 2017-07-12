@@ -186,7 +186,8 @@ Test the app
    如果 VS 正运行在调试模式下，按 F5 停止调试
    
 The app shows the seeded data.  
-应用程序显示的种子数据
+应用程序显示的种子数据  
+
 ![MVC Movie application open in Microsoft Edge showing movie data](working-with-sql/_static/m55.png)
 
 >[!div class="step-by-step"]
