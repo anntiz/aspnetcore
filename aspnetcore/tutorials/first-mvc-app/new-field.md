@@ -37,7 +37,7 @@ namespace MvcMovie.Models
 
 }
 #endif
-```C#
+```
 
 [!code-csharp[Main](start-mvc/sample/MvcMovie/Models/MovieDateRating.cs?highlight=11&range=7-18)]
 
