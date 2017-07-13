@@ -1,42 +1,61 @@
----
-title: Adding a New Field
-author: rick-anderson
-description: 
-keywords: ASP.NET Core,
-ms.author: riande
-manager: wpickett
-ms.date: 10/14/2016
-ms.topic: get-started-article
-ms.assetid: 16efbacf-fe7b-4b41-84b0-06a1574b95c2
-ms.technology: aspnet
-ms.prod: asp.net-core
-uid: tutorials/first-mvc-app/new-field
----
-# Adding a New Field
+# Adding a New Field  
+添加新字段
 
 By [Rick Anderson](https://twitter.com/RickAndMSFT)
 
-In this section you'll use [Entity Framework](http://docs.efproject.net/en/latest/platforms/aspnetcore/new-db.html) Code First Migrations to add a new field to the model and migrate that change to the database.
+In this section you'll use [Entity Framework](http://docs.efproject.net/en/latest/platforms/aspnetcore/new-db.html) Code First Migrations to add a new field to the model and migrate that change to the database.  
+在本节中，你将使用 [Entity Framework](http://docs.efproject.net/en/latest/platforms/aspnetcore/new-db.html) 的代码优先迁移功能添加一个新字段到模型中，并将迁移更改到数据库中。
 
-When you use EF Code First to automatically create a database, Code First adds a table to the database to help track whether the schema of the database is in sync with the model classes it was generated from. If they aren't in sync, EF throws an exception. This makes it easier to find inconsistent database/code issues.
+When you use EF Code First to automatically create a database, Code First adds a table to the database to help track whether the schema of the database is in sync with the model classes it was generated from. If they aren't in sync, EF throws an exception. This makes it easier to find inconsistent database/code issues.  
+在使用 EF Code First(代码优先)自动创建数据库时，Code First(代码优先)将表添加到数据库中，以帮助跟踪数据库的架构是否与它生成的模型类同步。如果它们不同步，EF将会抛出一个异常，这个使得在查找数据库/代码不一致的问题时变得更加容易。
 
-## Adding a Rating Property to the Movie Model
+## Adding a Rating Property to the Movie Model  
+添加一个 Rating 属性到 Movie 模型中
 
 Open the *Models/Movie.cs* file and add a `Rating` property:
+打开 *Models/Movie.cs* 文件并添加一个 `Rating` 属性：
+```C#
+
+//#define MovieDateRating
+#if MovieDateRating
+using System;
+using System.ComponentModel.DataAnnotations;
+namespace MvcMovie.Models
+{
+    public class Movie
+    {
+        public int ID { get; set; }
+        public string Title { get; set; }
+
+        [Display(Name = "Release Date")]
+        [DataType(DataType.Date)]
+        public DateTime ReleaseDate { get; set; }
+        public string Genre { get; set; }
+        public decimal Price { get; set; }
+        public string Rating { get; set; }
+    }
+
+}
+#endif
+```C#
 
 [!code-csharp[Main](start-mvc/sample/MvcMovie/Models/MovieDateRating.cs?highlight=11&range=7-18)]
 
-Build the app (Ctrl+Shift+B).
+Build the app (Ctrl+Shift+B).  
+生成解决方案(Ctrl+Shift+B)
 
-Because you've added a new field to the `Movie` class, you also need to update the binding white list so this new property will be included. In *MoviesController.cs*, update the `[Bind]` attribute for both the `Create` and `Edit` action methods to include the `Rating` property:
+Because you've added a new field to the `Movie` class, you also need to update the binding white list so this new property will be included. In *MoviesController.cs*, update the `[Bind]` attribute for both the `Create` and `Edit` action methods to include the `Rating` property:  
+因为你添加了一个新字段到 `Movie` 类中，还需要更新绑定的白名单把这个属性包含进去。 在 *MoviesController.cs* 中，同时更新 `Create` 和 `Edit` 这两个方法的 `[Bind]` 特性(attribute)，把 `Rating` 属性包含进去:
 
 ```csharp
 [Bind("ID,Title,ReleaseDate,Genre,Price,Rating")]
    ```
 
-You also need to update the view templates in order to display, create and edit the new `Rating` property in the browser view.
+You also need to update the view templates in order to display, create and edit the new `Rating` property in the browser view.  
+还需要更新视图模板以便显示，在浏览器视图中创建和编辑新的 `Rating` 属性。
 
-Edit the */Views/Movies/Index.cshtml* file and add a `Rating` field:
+Edit the */Views/Movies/Index.cshtml* file and add a `Rating` field:  
+编辑 */Views/Movies/Index.cshtml* 文件并添加一个 `Rating` 字段：
 
 [!code-HTML[Main](start-mvc/sample/MvcMovie/Views/Movies/IndexGenreRating.cshtml?highlight=17,39&range=24-64)]
 
