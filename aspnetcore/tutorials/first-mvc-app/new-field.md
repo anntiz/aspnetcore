@@ -76,13 +76,13 @@ There are a few approaches to resolving the error:
 有几种办法可以解决这个错误：
 
 1. Have the Entity Framework automatically drop and re-create the database based on the new model class schema. This approach is very convenient early in the development cycle when you are doing active development on a test database; it allows you to quickly evolve the model and database schema together. The downside, though, is that you lose existing data in the database — so you don't want to use this approach on a production database! Using an initializer to automatically seed a database with test data is often a productive way to develop an application.  
-1. 让 Entity Framework 自动删除并重新基于新的模型类创建数据库。这个方法在开发周期的早期当你还是在测试数据库上进行开发的时候是非常方便的。可以让你快速地将模型和数据库架构一起演化。但这个方法的缺点是会丢失数据库中的现在数据，所以你不会希望在生产数据库上使用这个方法！在开发应用程序的时候对测试用的数据库使用初始值进行种子化是很常用的有效方法。
+ 让 Entity Framework 自动删除并重新基于新的模型类创建数据库。这个方法在开发周期的早期当你还是在测试数据库上进行开发的时候是非常方便的。可以让你快速地将模型和数据库架构一起演化。但这个方法的缺点是会丢失数据库中的现在数据，所以你不会希望在生产数据库上使用这个方法！在开发应用程序的时候对测试用的数据库使用初始值进行种子化是很常用的有效方法。
 
 2. Explicitly modify the schema of the existing database so that it matches the model classes. The advantage of this approach is that you keep your data. You can make this change either manually or by creating a database change script.  
-2. 显式修改现在数据库使其跟模型类匹配。这种方法的好处是可以保数据库的数据，你可以通过手动方式或是通过数据库脚本来完成这个修改。
+ 显式修改现在数据库使其跟模型类匹配。这种方法的好处是可以保数据库的数据，你可以通过手动方式或是通过数据库脚本来完成这个修改。
 
 3. Use Code First Migrations to update the database schema.  
-3. 使用 Code First 迁移来更新数据库架构。
+ 使用 Code First 迁移来更新数据库架构。
 
 For this tutorial, we'll use Code First Migrations.  
 在这个教程中，我们使用 Code First 迁移这个方法。
