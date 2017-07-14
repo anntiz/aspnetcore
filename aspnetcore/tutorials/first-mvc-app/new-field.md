@@ -67,8 +67,7 @@ Update the */Views/Movies/Create.cshtml* with a `Rating` field. You can copy/pas
 The app won't work until we update the DB to include the new field. If you run it now, you'll get the following `SqlException`:  
 这个应用程序在我们把新字段更新到数据库之前是不会工作的，如果现在运行这个程序，将会得到以下的异常 (`SqlException`)：
 
-`SqlException: Invalid column name 'Rating'.`  
-`SqlException: 无效的列名 'Rating'.`  
+`SqlException: Invalid column name 'Rating'.`  （无效的列名 'Rating'）
 
 You're seeing this error because the updated Movie model class is different than the schema of the Movie table of the existing database. (There's no Rating column in the database table.)  
 你之所以看到这个错误是因为更新之后的 Movie 模型类和已经存在的数据库中的 Movie 表的结构不相同(数据库的表中并没有包含 Rating 列.)  
@@ -76,25 +75,104 @@ You're seeing this error because the updated Movie model class is different than
 There are a few approaches to resolving the error:  
 有几种办法可以解决这个错误：
 
-1. Have the Entity Framework automatically drop and re-create the database based on the new model class schema. This approach is very convenient early in the development cycle when you are doing active development on a test database; it allows you to quickly evolve the model and database schema together. The downside, though, is that you lose existing data in the database — so you don't want to use this approach on a production database! Using an initializer to automatically seed a database with test data is often a productive way to develop an application.
+1. Have the Entity Framework automatically drop and re-create the database based on the new model class schema. This approach is very convenient early in the development cycle when you are doing active development on a test database; it allows you to quickly evolve the model and database schema together. The downside, though, is that you lose existing data in the database — so you don't want to use this approach on a production database! Using an initializer to automatically seed a database with test data is often a productive way to develop an application.  
+1. 让 Entity Framework 自动删除并重新基于新的模型类创建数据库。这个方法在开发周期的早期当你还是在测试数据库上进行开发的时候是非常方便的。可以让你快速地将模型和数据库架构一起演化。但这个方法的缺点是会丢失数据库中的现在数据，所以你不会希望在生产数据库上使用这个方法！在开发应用程序的时候对测试用的数据库使用初始值进行种子化是很常用的有效方法。
 
-2. Explicitly modify the schema of the existing database so that it matches the model classes. The advantage of this approach is that you keep your data. You can make this change either manually or by creating a database change script.
+2. Explicitly modify the schema of the existing database so that it matches the model classes. The advantage of this approach is that you keep your data. You can make this change either manually or by creating a database change script.  
+2. 显式修改现在数据库使其跟模型类匹配。这种方法的好处是可以保数据库的数据，你可以通过手动方式或是通过数据库脚本来完成这个修改。
 
-3. Use Code First Migrations to update the database schema.
+3. Use Code First Migrations to update the database schema.  
+3. 使用 Code First 迁移来更新数据库架构。
 
-For this tutorial, we'll use Code First Migrations.
+For this tutorial, we'll use Code First Migrations.  
+在这个教程中，我们使用 Code First 迁移这个方法。
 
-Update the `SeedData` class so that it provides a value for the new column. A sample change is shown below, but you'll want to make this change for each `new Movie`.
+Update the `SeedData` class so that it provides a value for the new column. A sample change is shown below, but you'll want to make this change for each `new Movie`.  
+更新 `SeedData` 类 为它的新列提供一个值。 下面显示的是一个修改的示例， 你要为每一个 `new Movie` 做这个修改。
+```csharp
+#define SeedRating 
+#if SeedRating
 
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Linq;
+
+namespace MvcMovie.Models
+{
+    public static class SeedData
+    {
+        public static void Initialize(IServiceProvider serviceProvider)
+        {
+            using (var context = new MvcMovieContext(
+                serviceProvider.GetRequiredService<DbContextOptions<MvcMovieContext>>()))
+            {
+                if (context.Movie.Any())
+                {
+                    return;   // DB has been seeded
+                }
+
+                context.Movie.AddRange(
+                #region snippet1
+                     new Movie
+                     {
+                         Title = "When Harry Met Sally",
+                         ReleaseDate = DateTime.Parse("1989-1-11"),
+                         Genre = "Romantic Comedy",
+                         Rating = "R",
+                         Price = 7.99M
+                     },
+                #endregion
+                     new Movie
+                     {
+                         Title = "Ghostbusters ",
+                         ReleaseDate = DateTime.Parse("1984-3-13"),
+                         Genre = "Comedy",
+                         Rating = "G",
+                         Price = 8.99M
+                     },
+
+                     new Movie
+                     {
+                         Title = "Ghostbusters 2",
+                         ReleaseDate = DateTime.Parse("1986-2-23"),
+                         Genre = "Comedy",
+                         Rating = "PG",
+                         Price = 9.99M
+                     },
+
+                   new Movie
+                   {
+                       Title = "Rio Bravo",
+                       ReleaseDate = DateTime.Parse("1959-4-15"),
+                       Genre = "Western",
+                       Rating = "NA",
+                       Price = 3.99M
+                   }
+                );
+                context.SaveChanges();
+            }
+        }
+    }
+}
+
+
+
+#endif
+```
 [!code-csharp[Main](start-mvc/sample/MvcMovie/Models/SeedDataRating.cs?name=snippet1&highlight=6)]
 
 Build the solution.
+生成（或重新生成）项目
 
-From the **Tools** menu, select **NuGet Package Manager > Package Manager Console**.
+
+From the **Tools** menu, select **NuGet Package Manager > Package Manager Console**.  
+打开 **Tools(工具)** 菜单，选择  **NuGet Package Manager(NuGet包管理器) > Package Manager Console(程序包管理器控制台)**
 
   ![PMC menu](adding-model/_static/pmc.png)
 
-In the PMC, enter the following commands:
+In the PMC, enter the following commands:  
+在 **程序包管理器控制台** 中，输入以下命令：  
 
 ```PMC
 Add-Migration Rating
