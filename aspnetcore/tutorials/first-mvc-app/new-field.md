@@ -59,17 +59,22 @@ Edit the */Views/Movies/Index.cshtml* file and add a `Rating` field:
 
 [!code-HTML[Main](start-mvc/sample/MvcMovie/Views/Movies/IndexGenreRating.cshtml?highlight=17,39&range=24-64)]
 
-Update the */Views/Movies/Create.cshtml* with a `Rating` field. You can copy/paste the previous "form group" and let intelliSense help you update the fields. IntelliSense works with [Tag Helpers](xref:mvc/views/tag-helpers/intro). Note: In the RTM verison of Visual Studio 2017 you need to install the [Razor Language Services](https://marketplace.visualstudio.com/items?itemName=ms-madsk.RazorLanguageServices) for Razor intelliSense. This will be fixed in the next release.
+Update the */Views/Movies/Create.cshtml* with a `Rating` field. You can copy/paste the previous "form group" and let intelliSense help you update the fields. IntelliSense works with [Tag Helpers](xref:mvc/views/tag-helpers/intro). Note: In the RTM verison of Visual Studio 2017 you need to install the [Razor Language Services](https://marketplace.visualstudio.com/items?itemName=ms-madsk.RazorLanguageServices) for Razor intelliSense. This will be fixed in the next release.  
+给 */Views/Movies/Create.cshtml*  添加一个 `Rating` 字段。可以先复制/粘贴前面的 "form group" （复制 class ="form group" 的整个div标签） 并通过智能提示来帮你完成，智能提示和[Tag Helpers](xref:mvc/views/tag-helpers/intro) 一起工作。注意：使用 RTM 版本的 Visual Studio 2017 必须先为 Razor 智能提示 安装 [Razor Language Services](https://marketplace.visualstudio.com/items?itemName=ms-madsk.RazorLanguageServices) 。这个问题将在下一个 release 版本中得到修复。
 
 ![The developer has typed the letter R for the attribute value of asp-for in the second label element of the view. An Intellisense contextual menu has appeared showing the available fields, including Rating, which is highlighted in the list automatically. When the developer clicks the field or presses Enter on the keyboard, the value will be set to Rating.](new-field/_static/cr.png)
 
-The app won't work until we update the DB to include the new field. If you run it now, you'll get the following `SqlException`:
+The app won't work until we update the DB to include the new field. If you run it now, you'll get the following `SqlException`:  
+这个应用程序在我们把新字段更新到数据库之前是不会工作的，如果现在运行这个程序，将会得到以下的异常 (`SqlException`)：
 
-`SqlException: Invalid column name 'Rating'.`
+`SqlException: Invalid column name 'Rating'.`  
+`SqlException: 无效的列名 'Rating'.`  
 
-You're seeing this error because the updated Movie model class is different than the schema of the Movie table of the existing database. (There's no Rating column in the database table.)
+You're seeing this error because the updated Movie model class is different than the schema of the Movie table of the existing database. (There's no Rating column in the database table.)  
+你之所以看到这个错误是因为更新之后的 Movie 模型类和已经存在的数据库中的 Movie 表的结构不相同(数据库的表中并没有包含 Rating 列.)  
 
-There are a few approaches to resolving the error:
+There are a few approaches to resolving the error:  
+有几种办法可以解决这个错误：
 
 1. Have the Entity Framework automatically drop and re-create the database based on the new model class schema. This approach is very convenient early in the development cycle when you are doing active development on a test database; it allows you to quickly evolve the model and database schema together. The downside, though, is that you lose existing data in the database — so you don't want to use this approach on a production database! Using an initializer to automatically seed a database with test data is often a productive way to develop an application.
 
