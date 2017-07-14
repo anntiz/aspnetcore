@@ -162,7 +162,7 @@ namespace MvcMovie.Models
 ```
 [!code-csharp[Main](start-mvc/sample/MvcMovie/Models/SeedDataRating.cs?name=snippet1&highlight=6)]
 
-Build the solution.
+Build the solution.  
 生成（或重新生成）项目
 
 
@@ -179,12 +179,15 @@ Add-Migration Rating
 Update-Database
 ```
 
-The `Add-Migration` command tells the migration framework to examine the current `Movie` model with the current `Movie` DB schema and create the necessary code to migrate the DB to the new model. The name "Rating" is arbitrary and is used to name the migration file. It's helpful to use a meaningful name for the migration file.
+The `Add-Migration` command tells the migration framework to examine the current `Movie` model with the current `Movie` DB schema and create the necessary code to migrate the DB to the new model. The name "Rating" is arbitrary and is used to name the migration file. It's helpful to use a meaningful name for the migration file.  
+`Add-Migration` 命令告诉迁移框架去检查当前的 `Movie` 模型和 `Movie` 数据库架构并创建必要的代码把数据库迁移到新的模型上， 命令后面的 "Rating" 可以是任意的名字，它用于命名迁移文件。对于迁移文件使用一个有意义的名称会很有帮助。
 
-If you delete all the records in the DB, the initialize will seed the DB and include the `Rating` field. You can do this with the delete links in the browser or from SSOX.
+If you delete all the records in the DB, the initialize will seed the DB and include the `Rating` field. You can do this with the delete links in the browser or from SSOX.  
+如果删除了数据库中的所有记录，初始化程序将种子化数据库并包含 `Rating` 字段，你可以通过浏览器的删除链接或是SSOX（SQL Server 对象资源管理器）来完成进行操作。
 
-Run the app and verify you can create/edit/display movies with a `Rating` field. You should also add the `Rating` field to the `Edit`, `Details`, and `Delete` view templates.
+Run the app and verify you can create/edit/display movies with a `Rating` field. You should also add the `Rating` field to the `Edit`, `Details`, and `Delete` view templates.  
+运行这个应用程序并验证你可以 创建/编辑/显示 具有 `Rating` 字段的电影。接下来还应该把 `Rating` 字段增加到 `Edit`, `Details`, 和 `Delete` 视图模板中。
 
 >[!div class="step-by-step"]
-[Previous](search.md)
-[Next](validation.md)  
+[前一页](search.md)
+[后一页](validation.md)  
