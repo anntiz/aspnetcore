@@ -14,7 +14,7 @@ EF Core 1.1 is the latest version of EF but does not yet have all the features o
 EF Core 1.1 是 EF 的最新版本，但还没有具备 EF 6.x 的所有功能。有关如何在 EF 6.x 和 EF Core 1.0 之间进行选择的更多信息，请查看 [EF Core vs. EF6.x](https://docs.microsoft.com/ef/efcore-and-ef6/)。 如果你选择 EF 6.x ，请查看 [the previous version of this tutorial series](https://docs.microsoft.com/aspnet/mvc/overview/getting-started/getting-started-with-ef-using-mvc/creating-an-entity-framework-data-model-for-an-asp-net-mvc-application). 
 
 > [!NOTE]
-> For the Visual Studio 2015 version of this tutorial, see the [VS 2015 version of ASP.NET Core documentation in PDF format](https://github.com/aspnet/Docs/blob/master/aspnetcore/common/_static/aspnet-core-project-json.pdf).
+> For the Visual Studio 2015 version of this tutorial, see the [VS 2015 version of ASP.NET Core documentation in PDF format](https://github.com/aspnet/Docs/blob/master/aspnetcore/common/_static/aspnet-core-project-json.pdf).  
 > [!注意]
 >  Visual Studio 2015 版本对应的教程, 请查看 [VS 2015 version of ASP.NET Core documentation in PDF format](https://github.com/aspnet/Docs/blob/master/aspnetcore/common/_static/aspnet-core-project-json.pdf).
 
