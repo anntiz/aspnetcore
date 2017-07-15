@@ -2,7 +2,7 @@
 使用 Visual Studio 的 ASP.NET Core 与 Entity Framework Core 入门
 
 This series of tutorials teaches you how to create ASP.NET Core MVC web applications that use Entity Framework Core for data access. The tutorials require Visual Studio 2017.  
-这个系统教程教你如何创建使用 Entity Framework Core 进行数据访问的 ASP.NET Core MVC web 应用程序。该教程需要 Visual Studio 2017
+本系列教程教你如何创建使用 Entity Framework Core 进行数据访问的 ASP.NET Core MVC web 应用程序。该教程需要 Visual Studio 2017
 
 1. [Getting started](intro.md)  
 [入门](intro.md)  
