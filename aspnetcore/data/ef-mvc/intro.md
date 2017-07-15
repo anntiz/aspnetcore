@@ -6,7 +6,7 @@ The Contoso University sample web application demonstrates how to create ASP.NET
 Contoso University 示例 Web 应用程序示范了如何使用 Entity Framework Core 1.1 和 Visual Studio 2017 创建 ASP.NET Core 1.1 MVC Web应用程序。
 
 The sample application is a web site for a fictional Contoso University. It includes functionality such as student admission, course creation, and instructor assignments. This is the first in a series of tutorials that explain how to build the Contoso University sample application from scratch.  
-这个示例应用程序是一个虚构的 Contoso University 网站。它包含了诸如学生录取、课程创建、和教师作业等功能。这是系列教程中的第一个，说明了如何从头开始构建 Contoso University 大学示例应用程序。
+这个示例应用程序是一个虚构的 Contoso University 网站。它包含了诸如学生录取、课程创建、和教师作业等功能。这是系列教程中的第一个，介绍了如何从头开始构建 Contoso University 大学示例应用程序。
 
 [Download or view the completed application.](https://github.com/aspnet/Docs/tree/master/aspnetcore/data/ef-mvc/intro/samples/cu-final)
 
@@ -15,19 +15,29 @@ EF Core 1.1 是 EF 的最新版本，但还没有具备 EF 6.x 的所有功能�
 
 > [!NOTE]
 > For the Visual Studio 2015 version of this tutorial, see the [VS 2015 version of ASP.NET Core documentation in PDF format](https://github.com/aspnet/Docs/blob/master/aspnetcore/common/_static/aspnet-core-project-json.pdf).
+> [!注意]
+>  Visual Studio 2015 版本对应的教程, 请查看 [VS 2015 version of ASP.NET Core documentation in PDF format](https://github.com/aspnet/Docs/blob/master/aspnetcore/common/_static/aspnet-core-project-json.pdf).
 
-## Prerequisites
+## Prerequisites  
+预备知识
 
-[Visual Studio 2017](https://docs.microsoft.com/visualstudio/install/install-visual-studio) with the **ASP.NET and web development** and **.NET Core cross-platform development workloads** installed.
+[Visual Studio 2017](https://docs.microsoft.com/visualstudio/install/install-visual-studio) with the **ASP.NET and web development** and **.NET Core cross-platform development workloads** installed.  
+[Visual Studio 2017](https://docs.microsoft.com/visualstudio/install/install-visual-studio) 模块 **ASP.NET and web development** 和 **.NET Core cross-platform development workloads** 要事先安装完成.
 
-## Troubleshooting
 
-If you run into a problem you can't resolve, you can generally find the solution by comparing your code to the [completed project](https://github.com/aspnet/Docs/tree/master/aspnetcore/data/ef-mvc/intro/samples/cu-final). For a list of common errors and how to solve them, see [the Troubleshooting section of the last tutorial in the series](advanced.md#common-errors). If you don't find what you need there, you can post a question to StackOverflow.com for  [ASP.NET Core](http://stackoverflow.com/questions/tagged/asp.net-core) or [EF Core](http://stackoverflow.com/questions/tagged/entity-framework-core).
+## Troubleshooting  
+疑难解答
+
+If you run into a problem you can't resolve, you can generally find the solution by comparing your code to the [completed project](https://github.com/aspnet/Docs/tree/master/aspnetcore/data/ef-mvc/intro/samples/cu-final). For a list of common errors and how to solve them, see [the Troubleshooting section of the last tutorial in the series](advanced.md#common-errors). If you don't find what you need there, you can post a question to StackOverflow.com for  [ASP.NET Core](http://stackoverflow.com/questions/tagged/asp.net-core) or [EF Core](http://stackoverflow.com/questions/tagged/entity-framework-core).  
+如果遇到你无法解决的问题，通常可以将你自己的代码和 [已完成项目](https://github.com/aspnet/Docs/tree/master/aspnetcore/data/ef-mvc/intro/samples/cu-final) 进行比较来找到解决方案。有关常见错误及其解决方法的列表，请查看 [the Troubleshooting section of the last tutorial in the series](advanced.md#common-errors)。如果无法找到你需要的内容，你可以把遇到的问题发到 StackOverflow.com 的 [ASP.NET Core](http://stackoverflow.com/questions/tagged/asp.net-core) 或者 [EF Core](http://stackoverflow.com/questions/tagged/entity-framework-core) 上面。
 
 > [!TIP] 
-> This is a series of 10 tutorials, each of which builds on what is done in earlier tutorials.  Consider saving a copy of the project after each successful tutorial completion.  Then if you run into problems, you can start over from the previous tutorial instead of going back to the beginning of the whole series.
+> This is a series of 10 tutorials, each of which builds on what is done in earlier tutorials.  Consider saving a copy of the project after each successful tutorial completion.  Then if you run into problems, you can start over from the previous tutorial instead of going back to the beginning of the whole series.  
+> [!提示] 
+> 这是一系列的 10个教程。每一个都是建立在前一个教程的基础之上。在每次成功地完成教程后，请务必为项目保存副本，当遇到问题，你可以从前一个教程重新来过而不是回到整个系列的开头。
 
-## The Contoso University web application
+## The Contoso University web application  
+Contoso University web 应用程序
 
 The application you'll be building in these tutorials is a simple university web site.
 
