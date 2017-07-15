@@ -34,7 +34,7 @@ If you run into a problem you can't resolve, you can generally find the solution
 > [!TIP] 
 > This is a series of 10 tutorials, each of which builds on what is done in earlier tutorials.  Consider saving a copy of the project after each successful tutorial completion.  Then if you run into problems, you can start over from the previous tutorial instead of going back to the beginning of the whole series.  
 > [!提示] 
-> 这是一系列的 10个教程。每一个都是建立在前一个教程的基础之上。在每次成功地完成教程后，请务必为项目保存副本，当遇到问题，你可以从前一个教程重新来过而不是回到整个系列的开头。
+> 这是一系列的 10个教程。每一个都是建立在前一个教程的基础之上。在每次成功地完成教程后，务必为项目保存一个副本，当遇到问题，你可以从前一个教程重新来过而不是回到整个系列的开头。
 
 ## The Contoso University web application  
 Contoso University web 应用程序
