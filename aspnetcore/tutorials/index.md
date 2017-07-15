@@ -12,7 +12,7 @@ The following step-by-step guides for developing ASP.NET Core applications are a
 
 * [在Mac 或 Linux 中使用 Visual Studio Code 创建一个 ASP.NET Core 应用 ](first-mvc-app-xplat/index.md)
 
-* [基于 Visual Studio 的 ASP.NET Core 与 Entity Framework Core 入门](../data/ef-mvc/index.md)
+* [使用 Visual Studio 的 ASP.NET Core 与 Entity Framework Core 入门](../data/ef-mvc/index.md)
 
 * [使用 Yeoman 构建项目](../client-side/yeoman.md)
 
