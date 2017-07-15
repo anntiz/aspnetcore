@@ -1,22 +1,72 @@
-# Adding validation
+# Adding validation  
+添加验证
 
 By [Rick Anderson](https://twitter.com/RickAndMSFT)
 
-In this section you'll add validation logic to the `Movie` model, and you'll ensure that the validation rules are enforced any time a user creates or edits a movie.
+In this section you'll add validation logic to the `Movie` model, and you'll ensure that the validation rules are enforced any time a user creates or edits a movie.  
+在本节中，将要把验证逻辑添加到 `Movie` 模型中，并且确保在用户创建或编辑一个影片资料时被强制执行。
 
-## Keeping things DRY
+## Keeping things DRY  
+坚持不要重复自己
 
-One of the design tenets of MVC is [DRY](http://en.wikipedia.org/wiki/Don%27t_repeat_yourself) ("Don't Repeat Yourself"). ASP.NET MVC encourages you to specify functionality or behavior only once, and then have it be reflected everywhere in an app. This reduces the amount of code you need to write and makes the code you do write less error prone, easier to test, and easier to maintain.
+One of the design tenets of MVC is [DRY](http://en.wikipedia.org/wiki/Don%27t_repeat_yourself) ("Don't Repeat Yourself"). ASP.NET MVC encourages you to specify functionality or behavior only once, and then have it be reflected everywhere in an app. This reduces the amount of code you need to write and makes the code you do write less error prone, easier to test, and easier to maintain.  
+MVC设计的信条之一是[DRY](http://en.wikipedia.org/wiki/Don%27t_repeat_yourself) ("Don't Repeat Yourself")。ASP.NET MVC 鼓励你只指定一次功能或行为，并且能在一个应用程序的任何地方进行使用。
 
-The validation support provided by MVC and Entity Framework Core Code First is a good example of the DRY principle in action. You can declaratively specify validation rules in one place (in the model class) and the rules are enforced everywhere in the app.
+The validation support provided by MVC and Entity Framework Core Code First is a good example of the DRY principle in action. You can declaratively specify validation rules in one place (in the model class) and the rules are enforced everywhere in the app.  
+MVC 和 Entity Framework Core 代码优先提供的验证支持是 DRY 原则在动作（action）中的一个很好的例子。你可以在一个地方显示声明验证规则，并在应用程序中的任何地方强制执行规则。
 
-## Adding validation rules to the movie model
+## Adding validation rules to the movie model  
+添加验证规则到 movie 模型中
 
-Open the *Movie.cs* file. DataAnnotations provides a built-in set of validation attributes that you apply declaratively to any class or property. (It also contains formatting attributes like `DataType` that help with formatting and don't provide any validation.)
+Open the *Movie.cs* file. DataAnnotations provides a built-in set of validation attributes that you apply declaratively to any class or property. (It also contains formatting attributes like `DataType` that help with formatting and don't provide any validation.)  
+打开 *Movie.cs* 文件。DataAnnotations 提供了一个组内置的验证属性让你可以用声明的方式将其应用于任何类或属性。（它也包含例如 `DataType` 这样的格式属性来帮助设置格式而不提供任何验证）
 
-Update the `Movie` class to take advantage of the built-in `Required`, `StringLength`, `RegularExpression`, and `Range` validation attributes.
+Update the `Movie` class to take advantage of the built-in `Required`, `StringLength`, `RegularExpression`, and `Range` validation attributes.  
+使用内置的`Required`, `StringLength`, `RegularExpression`, 和 `Range` 等验证属性来更新 `Movie` 类。
 
 [!code-csharp[Main](../../tutorials/first-mvc-app/start-mvc//sample/MvcMovie/Models/MovieDateRatingDA.cs?name=snippet1)]
+
+```C#
+#define MovieDateRatingDA
+#if MovieDateRatingDA
+using System;
+using System.ComponentModel.DataAnnotations;
+
+namespace MvcMovie.Models
+{
+#region snippet1
+    public class Movie
+    {
+        public int ID { get; set; }
+
+        [StringLength(60, MinimumLength = 3)]
+        [Required]
+        public string Title { get; set; }
+
+        #region snippet2
+        [Display(Name = "Release Date")]
+        [DataType(DataType.Date)]
+        public DateTime ReleaseDate { get; set; }
+
+        [Range(1, 100)]
+        [DataType(DataType.Currency)]
+        public decimal Price { get; set; }
+        #endregion
+
+        [RegularExpression(@"^[A-Z]+[a-zA-Z''-'\s]*$")]
+        [Required]
+        [StringLength(30)]
+        public string Genre { get; set; }
+
+        [RegularExpression(@"^[A-Z]+[a-zA-Z''-'\s]*$")]
+        [StringLength(5)]
+        [Required]
+        public string Rating { get; set; }
+    }
+#endregion
+}
+#endif
+```
 
 The validation attributes specify behavior that you want to enforce on the model properties they are applied to. The `Required` and `MinimumLength` attributes indicates that a property must have a value; but nothing prevents a user from entering white space to satisfy this validation. The `RegularExpression` attribute is used to limit what characters can be input. In the code above, `Genre` and `Rating` must use only letters (white space, numbers and special characters are not allowed). The `Range` attribute constrains a value to within a specified range. The `StringLength` attribute lets you set the maximum length of a string property, and optionally its minimum length. Value types (such as `decimal`, `int`, `float`, `DateTime`) are inherently required and don't need the `[Required]` attribute.
 
