@@ -1,28 +1,17 @@
----
-title: ASP.NET Core MVC with Entity Framework Core - Tutorial 1 of 10
-author: tdykstra
-description: 
-keywords: ASP.NET Core, Entity Framework Core, tutorial
-ms.author: tdykstra
-manager: wpickett
-ms.date: 03/15/2017
-ms.topic: get-started-article
-ms.assetid: b67c3d4a-f2bf-4132-a48b-4b0d599d7981
-ms.technology: aspnet
-ms.prod: asp.net-core
-uid: data/ef-mvc/intro
----
 # Getting started with ASP.NET Core MVC and Entity Framework Core using Visual Studio (1 of 10)
 
 By [Tom Dykstra](https://github.com/tdykstra) and [Rick Anderson](https://twitter.com/RickAndMSFT)
 
-The Contoso University sample web application demonstrates how to create ASP.NET Core 1.1 MVC web applications using Entity Framework Core 1.1 and Visual Studio 2017.
+The Contoso University sample web application demonstrates how to create ASP.NET Core 1.1 MVC web applications using Entity Framework Core 1.1 and Visual Studio 2017.  
+Contoso University 示例 Web 应用程序示范了如何使用 Entity Framework Core 1.1 和 Visual Studio 2017 创建 ASP.NET Core 1.1 MVC Web应用程序。
 
-The sample application is a web site for a fictional Contoso University. It includes functionality such as student admission, course creation, and instructor assignments. This is the first in a series of tutorials that explain how to build the Contoso University sample application from scratch.
+The sample application is a web site for a fictional Contoso University. It includes functionality such as student admission, course creation, and instructor assignments. This is the first in a series of tutorials that explain how to build the Contoso University sample application from scratch.  
+这个示例应用程序是一个虚构的 Contoso University 网站。它包含了诸如学生录取、课程创建、和教师作业等功能。这是系列教程中的第一个，说明了如何从头开始构建 Contoso University 大学示例应用程序。
 
 [Download or view the completed application.](https://github.com/aspnet/Docs/tree/master/aspnetcore/data/ef-mvc/intro/samples/cu-final)
 
-EF Core 1.1 is the latest version of EF but does not yet have all the features of EF 6.x. For information about how to choose between EF 6.x and EF Core 1.0, see [EF Core vs. EF6.x](https://docs.microsoft.com/ef/efcore-and-ef6/). If you choose EF 6.x, see [the previous version of this tutorial series](https://docs.microsoft.com/aspnet/mvc/overview/getting-started/getting-started-with-ef-using-mvc/creating-an-entity-framework-data-model-for-an-asp-net-mvc-application).
+EF Core 1.1 is the latest version of EF but does not yet have all the features of EF 6.x. For information about how to choose between EF 6.x and EF Core 1.0, see [EF Core vs. EF6.x](https://docs.microsoft.com/ef/efcore-and-ef6/). If you choose EF 6.x, see [the previous version of this tutorial series](https://docs.microsoft.com/aspnet/mvc/overview/getting-started/getting-started-with-ef-using-mvc/creating-an-entity-framework-data-model-for-an-asp-net-mvc-application).  
+EF Core 1.1 是 EF 的最新版本，但还没有具备 EF 6.x 的所有功能。有关如何在 EF 6.x 和 EF Core 1.0 之间进行选择的更多信息，请查看 [EF Core vs. EF6.x](https://docs.microsoft.com/ef/efcore-and-ef6/)。 如果你选择 EF 6.x ，请查看 [the previous version of this tutorial series](https://docs.microsoft.com/aspnet/mvc/overview/getting-started/getting-started-with-ef-using-mvc/creating-an-entity-framework-data-model-for-an-asp-net-mvc-application). 
 
 > [!NOTE]
 > For the Visual Studio 2015 version of this tutorial, see the [VS 2015 version of ASP.NET Core documentation in PDF format](https://github.com/aspnet/Docs/blob/master/aspnetcore/common/_static/aspnet-core-project-json.pdf).
