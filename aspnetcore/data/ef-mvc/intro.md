@@ -325,15 +325,17 @@ namespace ContosoUniversity.Models
 }
 ```
 
+The `Enrollments` property is a navigation property. A `Course` entity can be related to any number of `Enrollment` entities.  
+`Enrollments` 属性是一个导航属性。一个 `Course` 实体能关联任意数量的 `Enrollment` 实体。
 
+We'll say more about the `DatabaseGenerated` attribute in a [later tutorial](complex-data-model.md) in this series. Basically, this attribute lets you enter the primary key for the course rather than having the database generate it.  
+我们将在本系列教程的 [later tutorial](complex-data-model.md) 中详细介绍  `DatabaseGenerated` 特性。基本上，这个特性允许你输入主键而不是由数据库来生成它。
 
-The `Enrollments` property is a navigation property. A `Course` entity can be related to any number of `Enrollment` entities.
+## Create the Database Context  
+创建数据库上下文  
 
-We'll say more about the `DatabaseGenerated` attribute in a [later tutorial](complex-data-model.md) in this series. Basically, this attribute lets you enter the primary key for the course rather than having the database generate it.
-
-## Create the Database Context
-
-The main class that coordinates Entity Framework functionality for a given data model is the database context class. You create this class by deriving from the `Microsoft.EntityFrameworkCore.DbContext` class. In your code you specify which entities are included in the data model. You can also customize certain Entity Framework behavior. In this project, the class is named `SchoolContext`.
+The main class that coordinates Entity Framework functionality for a given data model is the database context class. You create this class by deriving from the `Microsoft.EntityFrameworkCore.DbContext` class. In your code you specify which entities are included in the data model. You can also customize certain Entity Framework behavior. In this project, the class is named `SchoolContext`.  
+为给定的数据模型协调 Entity Framework 功能的主类是数据库上下文。通过 `Microsoft.EntityFrameworkCore.DbContext` 类派生来创建这个类。在代码中说明哪些实体被包含在数据模型中。你还可以自定义某些 Entity Framework 的行为。在本项目中，这个类被命名为 `SchoolContext`。
 
 In the project folder, create a folder named *Data*.
 
