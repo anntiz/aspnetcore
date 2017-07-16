@@ -106,22 +106,53 @@ Open *Views/Shared/_Layout.cshtml* and make the following changes:
 添加菜单项 **Students(学生)**, **Courses(课程)**, **Instructors(教师)**, 和 **Departments(部门)**， 并删除 **Contact(联系人)** 菜单项
 
 The changes are highlighted.  
-```html
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
-                    <li><a asp-area="" asp-controller="Students" asp-action="Index">Students</a></li>
-                    <li><a asp-area="" asp-controller="Courses" asp-action="Index">Courses</a></li>
-                    <li><a asp-area="" asp-controller="Instructors" asp-action="Index">Instructors</a></li>
-                    <li><a asp-area="" asp-controller="Departments" asp-action="Index">Departments</a></li>
-                </ul>
-</div>
+
+```xml
+    <div class="navbar-collapse collapse">
+        <ul class="nav navbar-nav">
+            <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
+            <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
+            <li><a asp-area="" asp-controller="Students" asp-action="Index">Students</a></li>
+            <li><a asp-area="" asp-controller="Courses" asp-action="Index">Courses</a></li>
+            <li><a asp-area="" asp-controller="Instructors" asp-action="Index">Instructors</a></li>
+            <li><a asp-area="" asp-controller="Departments" asp-action="Index">Departments</a></li>
+       </ul>
+    </div>
 ```
 
 [!code-html[](intro/samples/cu/Views/Shared/_Layout.cshtml?highlight=7,31,37-40,49)]
 
-In *Views/Home/Index.cshtml*, replace the contents of the file with the following code to replace the text about ASP.NET and MVC with text about this application:
+In *Views/Home/Index.cshtml*, replace the contents of the file with the following code to replace the text about ASP.NET and MVC with text about this application:  
+在 *Views/Home/Index.cshtml* 文件中，用下面的代码替换这个文件的内容，将有关 ASP.NET 和 MVC 的文本替换为关于这个应用程序的文本。  
+```xml
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="jumbotron">
+    <h1>Contoso University</h1>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <h2>Welcome to Contoso University</h2>
+        <p>
+            Contoso University is a sample application that
+            demonstrates how to use Entity Framework Core in an
+            ASP.NET Core MVC web application.
+        </p>
+    </div>
+    <div class="col-md-4">
+        <h2>Build it from scratch</h2>
+        <p>You can build the application by following the steps in a series of tutorials.</p>
+        <p><a class="btn btn-default" href="https://docs.asp.net/en/latest/data/ef-mvc/intro.html">See the tutorial &raquo;</a></p>
+    </div>
+    <div class="col-md-4">
+        <h2>Download it</h2>
+        <p>You can download the completed project from GitHub.</p>
+        <p><a class="btn btn-default" href="https://github.com/aspnet/Docs/tree/master/aspnet/data/ef-mvc/intro/samples/cu-final">See project source code &raquo;</a></p>
+    </div>
+</div>
+```
 
 [!code-html[](intro/samples/cu/Views/Home/Index.cshtml)]
 
