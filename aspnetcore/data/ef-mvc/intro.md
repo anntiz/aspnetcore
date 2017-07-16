@@ -242,27 +242,90 @@ Enrollment实体
 
 ![Enrollment entity diagram](intro/_static/enrollment-entity.png)
 
-In the *Models* folder, create *Enrollment.cs* and replace the existing code with the following code:
+In the *Models* folder, create *Enrollment.cs* and replace the existing code with the following code:  
+在 *Models* 文件夹，创建 *Enrollment.cs* 然后将里面的代码替换为以下的代码：  
 
 [!code-csharp[Main](intro/samples/cu/Models/Enrollment.cs?name=snippet_Intro)]
+```c#
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-The `EnrollmentID` property will be the primary key; this entity uses the `classnameID` pattern instead of `ID` by itself as you saw in the `Student` entity. Ordinarily you would choose one pattern and use it throughout your data model. Here, the variation illustrates that you can use either pattern. In a [later tutorial](inheritance.md), you'll see how using ID without classname makes it easier to implement inheritance in the data model.
+namespace ContosoUniversity.Models
+{
+    public enum Grade
+    {
+        A, B, C, D, F
+    }
 
-The `Grade` property is an `enum`. The question mark after the `Grade` type declaration indicates that the `Grade` property is nullable. A grade that's null is different from a zero grade -- null means a grade isn't known or hasn't been assigned yet.
+    public class Enrollment
+    {
+        public int EnrollmentID { get; set; }
+        public int CourseID { get; set; }
+        public int StudentID { get; set; }
+        [DisplayFormat(NullDisplayText = "No grade")]
+        public Grade? Grade { get; set; }
 
-The `StudentID` property is a foreign key, and the corresponding navigation property is `Student`. An `Enrollment` entity is associated with one `Student` entity, so the property can only hold a single `Student` entity (unlike the `Student.Enrollments` navigation property you saw earlier, which can hold multiple `Enrollment` entities).
+        public Course Course { get; set; }
+        public Student Student { get; set; }
+    }
+}
+```
 
-The `CourseID` property is a foreign key, and the corresponding navigation property is `Course`. An `Enrollment` entity is associated with one `Course` entity.
 
-Entity Framework interprets a property as a foreign key property if it's named `<navigation property name><primary key property name>` (for example, `StudentID` for the `Student` navigation property since the `Student` entity's primary key is `ID`). Foreign key properties can also be named simply `<primary key property name>` (for example, `CourseID` since the `Course` entity's primary key is `CourseID`).
+The `EnrollmentID` property will be the primary key; this entity uses the `classnameID` pattern instead of `ID` by itself as you saw in the `Student` entity. Ordinarily you would choose one pattern and use it throughout your data model. Here, the variation illustrates that you can use either pattern. In a [later tutorial](inheritance.md), you'll see how using ID without classname makes it easier to implement inheritance in the data model.  
+`EnrollmentID` 属性将被作为主键；这里使用  `classnameID` 的模式而不是 `ID` 是因为要在 `Student` 实体类中也看到这个属性。通常你会选择一种模式并在整个数据模型中使用它。在这里， 这个变化表明你可以使用两个之中的任意一种模式。在 [later tutorial(最后的教程)](inheritance.md)中，你将看到在没有类的情况下使用 ID 使得在数据模型中实现继承变得更加容易。
 
-### The Course entity
+The `Grade` property is an `enum`. The question mark after the `Grade` type declaration indicates that the `Grade` property is nullable. A grade that's null is different from a zero grade -- null means a grade isn't known or hasn't been assigned yet.  
+ `Grade` 属性是一个 `enum(枚举)`。`Grade` 类型声明后面的问号表示 `Grade` 属性可以为空值。一个 grade 为 null 不等同于 0 -- null 表示 grade 的值为未知或是还没有被分配。
+
+The `StudentID` property is a foreign key, and the corresponding navigation property is `Student`. An `Enrollment` entity is associated with one `Student` entity, so the property can only hold a single `Student` entity (unlike the `Student.Enrollments` navigation property you saw earlier, which can hold multiple `Enrollment` entities).  
+ `StudentID` 属性是一个外键，与之相对应的导航属性是 `Student`。 一个 `Enrollment` 实体与一个 `Student` 实体关联，所在这个属性能容纳单个 `Student` 实体(不象前面的 `Student.Enrollments` 导航属性，它可以容纳多个 `Enrollment` 实体)。
+
+The `CourseID` property is a foreign key, and the corresponding navigation property is `Course`. An `Enrollment` entity is associated with one `Course` entity.  
+ `CourseID` 属性是一个外键，与之相对应的导航属性是 `Course`。 一个 `Enrollment` 实体对应于一个  `Course` 实体。
+ 
+Entity Framework interprets a property as a foreign key property if it's named `<navigation property name><primary key property name>` (for example, `StudentID` for the `Student` navigation property since the `Student` entity's primary key is `ID`). Foreign key properties can also be named simply `<primary key property name>` (for example, `CourseID` since the `Course` entity's primary key is `CourseID`).  
+Entity Framework 将命名为 `<navigation property name><primary key property name>（导航属性名+主键属性名）` (例如, 因为 `Student` 实体的主键是 `ID`，所以对应的导航属性就是 `StudentID`)的属性解释为外键。外键属性也可以被简单地命名 为`<primary key property name>`(例如, `CourseID` 是因为 `Course` 实体的主键是 `CourseID`)。
+
+
+### The Course entity  
+Course 实体  
 
 ![Course entity diagram](intro/_static/course-entity.png)
 
-In the *Models* folder, create *Course.cs* and replace the existing code with the following code:
+In the *Models* folder, create *Course.cs* and replace the existing code with the following code:  
+在 *Models* 文件夹， 创建  *Course.cs* 类并用以下代码替换原来的代码：
 
 [!code-csharp[Main](intro/samples/cu/Models/Course.cs?name=snippet_Intro)]
+```c#
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace ContosoUniversity.Models
+{
+    public class Course
+    {
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [Display(Name = "Number")]
+        public int CourseID { get; set; }
+
+        [StringLength(50, MinimumLength = 3)]
+        public string Title { get; set; }
+
+        [Range(0, 5)]
+        public int Credits { get; set; }
+
+        public int DepartmentID { get; set; }
+
+        public Department Department { get; set; }
+        public ICollection<Enrollment> Enrollments { get; set; }
+        public ICollection<CourseAssignment> CourseAssignments { get; set; }
+    }
+}
+```
+
+
 
 The `Enrollments` property is a navigation property. A `Course` entity can be related to any number of `Enrollment` entities.
 
