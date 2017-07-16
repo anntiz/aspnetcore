@@ -90,17 +90,34 @@ Open Visual Studio and create a new ASP.NET Core C# web project named "ContosoUn
 
   ![New ASP.NET Project dialog](intro/_static/new-aspnet.png)
 
-## Set up the site style
+## Set up the site style  
+设置网站样式
 
-A few simple changes will set up the site menu, layout, and home page.
+A few simple changes will set up the site menu, layout, and home page.  
+对网站的菜单、布局和主页进行一点简单的更改。
 
-Open *Views/Shared/_Layout.cshtml* and make the following changes:
+Open *Views/Shared/_Layout.cshtml* and make the following changes:  
+打开 *Views/Shared/_Layout.cshtml* 然后进行以下的更改：
 
-* Change each occurrence of "ContosoUniversity" to "Contoso University". There are three occurrences.
+* Change each occurrence of "ContosoUniversity" to "Contoso University". There are three occurrences.  
+把每一处的 "ContosoUniversity" 都改为 "Contoso University"，一共有三处。
 
-* Add menu entries for **Students**, **Courses**, **Instructors**, and **Departments**, and delete the **Contact** menu entry.
+* Add menu entries for **Students**, **Courses**, **Instructors**, and **Departments**, and delete the **Contact** menu entry.  
+添加菜单项 **Students(学生)**, **Courses(课程)**, **Instructors(教师)**, 和 **Departments(部门)**， 并删除 **Contact(联系人)** 菜单项
 
-The changes are highlighted.
+The changes are highlighted.  
+```html
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
+                    <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
+                    <li><a asp-area="" asp-controller="Students" asp-action="Index">Students</a></li>
+                    <li><a asp-area="" asp-controller="Courses" asp-action="Index">Courses</a></li>
+                    <li><a asp-area="" asp-controller="Instructors" asp-action="Index">Instructors</a></li>
+                    <li><a asp-area="" asp-controller="Departments" asp-action="Index">Departments</a></li>
+                </ul>
+</div>
+```
 
 [!code-html[](intro/samples/cu/Views/Shared/_Layout.cshtml?highlight=7,31,37-40,49)]
 
