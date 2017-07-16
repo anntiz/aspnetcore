@@ -156,25 +156,32 @@ In *Views/Home/Index.cshtml*, replace the contents of the file with the followin
 
 [!code-html[Index.cshtml](intro/samples/cu/Views/Home/Index.cshtml)]
 
-Press CTRL+F5 to run the project or choose **Debug > Start Without Debugging** from the menu. You see the home page with tabs for the pages you'll create in these tutorials.
+Press CTRL+F5 to run the project or choose **Debug > Start Without Debugging** from the menu. You see the home page with tabs for the pages you'll create in these tutorials.  
+按 CTRL+F5 运行项目或是从菜单中选择 **Debug(调试) > Start Without Debugging(开始执行(不调试))**，你就可以在主页标签中看到根据这些教程创建的页面。
 
 ![Contoso University home page](intro/_static/home-page.png)
 
-## Entity Framework Core NuGet packages
+## Entity Framework Core NuGet packages  
+Entity Framework Core NuGet 包
 
-To add EF Core support to a project, install the database provider that you want to target. For this tutorial, install the SQL Server provider:  [Microsoft.EntityFrameworkCore.SqlServer](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.SqlServer/). 
+To add EF Core support to a project, install the database provider that you want to target. For this tutorial, install the SQL Server provider:  [Microsoft.EntityFrameworkCore.SqlServer](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.SqlServer/).   
+要添加 EF Core 的支持到当前项目中， 需要安装目标数据库的支持程序。在本教程中，需要安装 SQL Server 支持程序[Microsoft.EntityFrameworkCore.SqlServer](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.SqlServer/)。
 
-To install the package, enter the following command in **Package Manager Console (PMC)**. (From the **Tools** menu, select **NuGet Package Manager > Package Manager Console**.)
+To install the package, enter the following command in **Package Manager Console (PMC)**. (From the **Tools** menu, select **NuGet Package Manager > Package Manager Console**.)  
+要安装这个软件包，需要在 **程序包管理器控制台 (PMC)** 中输入以下的命令.(从  **Tools(工具)** 菜单，选择 **NuGet Package Manager(NuGet包管理器) > Package Manager Console(程序包管理器控制台)**)。
 
 ```
 Install-Package Microsoft.EntityFrameworkCore.SqlServer
 ```
   
-This package and its dependencies (`Microsoft.EntityFrameworkCore` and `Microsoft.EntityFrameworkCore.Relational`) provide run-time support for EF. You'll add a tooling package later, in the [Migrations](migrations.md) tutorial. 
+This package and its dependencies (`Microsoft.EntityFrameworkCore` and `Microsoft.EntityFrameworkCore.Relational`) provide run-time support for EF. You'll add a tooling package later, in the [Migrations](migrations.md) tutorial.  
+这个包及其依赖项为 EF 提供了 run-time(运行时) 支持。稍后将添加一个工具包，在[Migrations(迁移)](migrations.md) 教程中。
 
-For information about other database providers that are available for Entity Framework Core, see [Database providers](https://docs.microsoft.com/ef/core/providers/).
+For information about other database providers that are available for Entity Framework Core, see [Database providers](https://docs.microsoft.com/ef/core/providers/).  
+有关可用于 Entity Framework Core 的其他数据库支持程序的信息，请查看 [Database providers](https://docs.microsoft.com/ef/core/providers/).  
 
-## Create the data model
+## Create the data model  
+创建数据模型
 
 Next you'll create entity classes for the Contoso University application. You'll start with the following three entities.
 
