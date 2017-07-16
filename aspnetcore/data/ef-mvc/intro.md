@@ -120,7 +120,7 @@ The changes are highlighted.
     </div>
 ```
 
-[!code-html[](intro/samples/cu/Views/Shared/_Layout.cshtml?highlight=7,31,37-40,49)]
+[!code-html[layout](intro/samples/cu/Views/Shared/_Layout.cshtml?highlight=7,31,37-40,49)]
 
 In *Views/Home/Index.cshtml*, replace the contents of the file with the following code to replace the text about ASP.NET and MVC with text about this application:  
 在 *Views/Home/Index.cshtml* 文件中，用下面的代码替换这个文件的内容，将有关 ASP.NET 和 MVC 的文本替换为关于这个应用程序的文本。  
@@ -154,7 +154,7 @@ In *Views/Home/Index.cshtml*, replace the contents of the file with the followin
 </div>
 ```
 
-[!code-html[](intro/samples/cu/Views/Home/Index.cshtml)]
+[!code-html[Index.cshtml](intro/samples/cu/Views/Home/Index.cshtml)]
 
 Press CTRL+F5 to run the project or choose **Debug > Start Without Debugging** from the menu. You see the home page with tabs for the pages you'll create in these tutorials.
 
