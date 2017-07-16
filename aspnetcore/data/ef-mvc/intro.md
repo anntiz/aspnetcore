@@ -183,31 +183,62 @@ For information about other database providers that are available for Entity Fra
 ## Create the data model  
 创建数据模型
 
-Next you'll create entity classes for the Contoso University application. You'll start with the following three entities.
+Next you'll create entity classes for the Contoso University application. You'll start with the following three entities.  
+下一步是要为 Contoso University 应用程序创建模型在。 你可以从下面三个实体类开始。
 
 ![Course-Enrollment-Student data model diagram](intro/_static/data-model-diagram.png)
 
-There's a one-to-many relationship between `Student` and `Enrollment` entities, and there's a one-to-many relationship between `Course` and `Enrollment` entities. In other words, a student can be enrolled in any number of courses, and a course can have any number of students enrolled in it.
+There's a one-to-many relationship between `Student` and `Enrollment` entities, and there's a one-to-many relationship between `Course` and `Enrollment` entities. In other words, a student can be enrolled in any number of courses, and a course can have any number of students enrolled in it.  
+`Student` 和 `Enrollment` 两个实体之间是 一对多 的关系。`Course` 和 `Enrollment` 是两个实体之间也是一对多的关系。换句话说， 一个学生可以加入到任意数量的课程中，一门课程能允许很多学生加入进去。
 
-In the following sections you'll create a class for each one of these entities.
+In the following sections you'll create a class for each one of these entities.  
+在下面的部分，你将为这些实体中的每一个创建一个类。
 
-### The Student entity
-
+### The Student entity  
+学生实体
 ![Student entity diagram](intro/_static/student-entity.png)
 
-In the project folder, create a folder named *Models*.
+In the project folder, create a folder named *Models*.  
+在项目文件夹中，创建一个名为 *Models* 的文件夹。
 
-In the *Models* folder, create a class file named *Student.cs* and replace the template code with the following code.
+In the *Models* folder, create a class file named *Student.cs* and replace the template code with the following code.  
+在 *Models* 文件夹中，创建一个名为 *Student.cs* 的类，并且用以下的代码来替换掉由模板生成的代码。
 
-[!code-csharp[Main](intro/samples/cu/Models/Student.cs?name=snippet_Intro)]
+[!code-csharp[Main](intro/samples/cu/Models/Student.cs?name=snippet_Intro)]  
+```C#
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
-The `ID` property will become the primary key column of the database table that corresponds to this class. By default, the Entity Framework interprets a property that's named `ID` or `classnameID` as the primary key.
+namespace ContosoUniversity.Models
+{
+    public class Student
+    {
+        public int ID { get; set; }
+        [StringLength(50)]
+        public string LastName { get; set; }
+        [StringLength(50, ErrorMessage = "First name cannot be longer than 50 characters.")]
+        public string FirstMidName { get; set; }
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        public DateTime EnrollmentDate { get; set; }
 
-The `Enrollments` property is a navigation property. Navigation properties hold other entities that are related to this entity. In this case, the `Enrollments` property of a `Student entity` will hold all of the `Enrollment` entities that are related to that `Student` entity. In other words, if a given Student row in the database has two related Enrollment rows (rows that contain that student's primary key value in their StudentID foreign key column), that `Student` entity's `Enrollments` navigation property will contain those two `Enrollment` entities.
+        public ICollection<Enrollment> Enrollments { get; set; }
+    }
+}
+```
 
-If a navigation property can hold multiple entities (as in many-to-many or one-to-many relationships), its type must be a list in which entries can be added, deleted, and updated, such as `ICollection<T>`.  You can specify `ICollection<T>` or a type such as `List<T>` or `HashSet<T>`. If you specify `ICollection<T>`, EF creates a `HashSet<T>` collection by default.
+The `ID` property will become the primary key column of the database table that corresponds to this class. By default, the Entity Framework interprets a property that's named `ID` or `classnameID` as the primary key.  
+ `ID` 属性将成为与这个类相对应的数据库表的主键列。在默认情况下， Entity Framework 会把名为 `ID` 或 `classnameID` 的属性解释为主键。
 
-### The Enrollment entity
+The `Enrollments` property is a navigation property. Navigation properties hold other entities that are related to this entity. In this case, the `Enrollments` property of a `Student entity` will hold all of the `Enrollment` entities that are related to that `Student` entity. In other words, if a given Student row in the database has two related Enrollment rows (rows that contain that student's primary key value in their StudentID foreign key column), that `Student` entity's `Enrollments` navigation property will contain those two `Enrollment` entities.  
+`Enrollments` 属性是一个导航属性。导航属性保存与这个实体相关的其他实体。在这种情况下，`Student entity` 中的 `Enrollments` 属性将保存与 `Student` 实体相关的所有 `Enrollments`  实体。换句话说， 如果数据库中给定的 Student 行有两个相关的 Enrollment 行（这它们的 StudentID 外键列中包含了 student 的主键值的行）， `Student` 实体的 `Enrollments` 导航属性将包含这两个 `Enrollment` 实体。
+
+If a navigation property can hold multiple entities (as in many-to-many or one-to-many relationships), its type must be a list in which entries can be added, deleted, and updated, such as `ICollection<T>`.  You can specify `ICollection<T>` or a type such as `List<T>` or `HashSet<T>`. If you specify `ICollection<T>`, EF creates a `HashSet<T>` collection by default.  
+如果一个导航属性可能容纳多个实体（象在 多对多 或 一对多 关系中），它的类型必须是可以在其中进行添加、删除、和更新条目的列表，例如 `ICollection<T>`。你可以指定 `ICollection<T>` 或类似于   `List<T>` 或 `HashSet<T>` 的类型。如果你指定  `ICollection<T>`，EF在默认情况下将创建一个 `HashSet<T>` 集合。
+
+### The Enrollment entity  
+Enrollment实体  
 
 ![Enrollment entity diagram](intro/_static/enrollment-entity.png)
 
