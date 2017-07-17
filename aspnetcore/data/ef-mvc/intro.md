@@ -208,19 +208,14 @@ In the *Models* folder, create a class file named *Student.cs* and replace the t
 ```C#
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
 namespace ContosoUniversity.Models
 {
     public class Student
     {
         public int ID { get; set; }
-        [StringLength(50)]
         public string LastName { get; set; }
-        [StringLength(50, ErrorMessage = "First name cannot be longer than 50 characters.")]
         public string FirstMidName { get; set; }
-        [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime EnrollmentDate { get; set; }
 
         public ICollection<Enrollment> Enrollments { get; set; }
@@ -247,9 +242,6 @@ In the *Models* folder, create *Enrollment.cs* and replace the existing code wit
 
 [!code-csharp[Main](intro/samples/cu/Models/Enrollment.cs?name=snippet_Intro)]
 ```c#
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
 namespace ContosoUniversity.Models
 {
     public enum Grade
@@ -262,7 +254,6 @@ namespace ContosoUniversity.Models
         public int EnrollmentID { get; set; }
         public int CourseID { get; set; }
         public int StudentID { get; set; }
-        [DisplayFormat(NullDisplayText = "No grade")]
         public Grade? Grade { get; set; }
 
         public Course Course { get; set; }
@@ -299,7 +290,6 @@ In the *Models* folder, create *Course.cs* and replace the existing code with th
 [!code-csharp[Main](intro/samples/cu/Models/Course.cs?name=snippet_Intro)]
 ```c#
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ContosoUniversity.Models
@@ -307,20 +297,11 @@ namespace ContosoUniversity.Models
     public class Course
     {
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        [Display(Name = "Number")]
         public int CourseID { get; set; }
-
-        [StringLength(50, MinimumLength = 3)]
         public string Title { get; set; }
-
-        [Range(0, 5)]
         public int Credits { get; set; }
 
-        public int DepartmentID { get; set; }
-
-        public Department Department { get; set; }
         public ICollection<Enrollment> Enrollments { get; set; }
-        public ICollection<CourseAssignment> CourseAssignments { get; set; }
     }
 }
 ```
@@ -403,7 +384,8 @@ namespace ContosoUniversity.Data
 }
 #endregion
 ```
-## Register the context with dependency injection
+## Register the context with dependency injection  
+使用依赖注入注册 context（上下文）
 
 ASP.NET Core implements [dependency injection](../../fundamentals/dependency-injection.md) by default. Services (such as the EF database context) are registered with dependency injection during application startup. Components that require these services (such as MVC controllers) are provided these services via constructor parameters. You'll see the controller constructor code that gets a context instance later in this tutorial.
 
