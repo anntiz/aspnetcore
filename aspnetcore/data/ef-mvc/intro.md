@@ -8,7 +8,7 @@ Contoso University 示例 Web 应用程序示范了如何使用 Entity Framework
 The sample application is a web site for a fictional Contoso University. It includes functionality such as student admission, course creation, and instructor assignments. This is the first in a series of tutorials that explain how to build the Contoso University sample application from scratch.  
 这个示例应用程序是一个虚构的 Contoso University 网站。它包含了诸如学生录取、课程创建、和教师作业等功能。这是系列教程中的第一个，介绍了如何从头开始构建 Contoso University 大学示例应用程序。
 
-[Download or view the completed application.](https://github.com/aspnet/Docs/tree/master/aspnetcore/data/ef-mvc/intro/samples/cu-final)
+[Download or view the completed application(下载或查看完整的应用程序).](https://github.com/aspnet/Docs/tree/master/aspnetcore/data/ef-mvc/intro/samples/cu-final)
 
 EF Core 1.1 is the latest version of EF but does not yet have all the features of EF 6.x. For information about how to choose between EF 6.x and EF Core 1.0, see [EF Core vs. EF6.x](https://docs.microsoft.com/ef/efcore-and-ef6/). If you choose EF 6.x, see [the previous version of this tutorial series](https://docs.microsoft.com/aspnet/mvc/overview/getting-started/getting-started-with-ef-using-mvc/creating-an-entity-framework-data-model-for-an-asp-net-mvc-application).  
 EF Core 1.1 是 EF 的最新版本，但还没有具备 EF 6.x 的所有功能。有关如何在 EF 6.x 和 EF Core 1.0 之间进行选择的更多信息，请查看 [EF Core vs. EF6.x](https://docs.microsoft.com/ef/efcore-and-ef6/)。 如果你选择 EF 6.x ，请查看 [the previous version of this tutorial series](https://docs.microsoft.com/aspnet/mvc/overview/getting-started/getting-started-with-ef-using-mvc/creating-an-entity-framework-data-model-for-an-asp-net-mvc-application). 
