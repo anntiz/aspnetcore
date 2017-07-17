@@ -637,71 +637,95 @@ CRUD 操作方法和视图的自动创建称为 基架。基架不同于代码�
   使用默认的控制器名称  **StudentsController** 
 
   * Click **Add**.
-  单击  **Add(确定)**
+  单击  **Add(添加)**
 
   ![Scaffold Student](intro/_static/scaffold-student.png)
 
-  When you click **Add**, the Visual Studio scaffolding engine creates a *StudentsController.cs* file and a set of views (*.cshtml* files) that work with the controller.
+  When you click **Add**, the Visual Studio scaffolding engine creates a *StudentsController.cs* file and a set of views (*.cshtml* files) that work with the controller.  
+  当你单击了 **Add(添加)**， Visual Studio 基架引擎将创建一个 *StudentsController.cs* 文件和一组跟控制器一起工作的视图(*.cshtml* 文件)。
 
-(The scaffolding engine can also create the database context for you if you don't create it manually first as you did earlier for this tutorial. You can specify a new context class in the **Add Controller** box by clicking the plus sign to the right of **Data context class**.  Visual Studio will then create your `DbContext` class as well as the controller and views.)
+(The scaffolding engine can also create the database context for you if you don't create it manually first as you did earlier for this tutorial. You can specify a new context class in the **Add Controller** box by clicking the plus sign to the right of **Data context class**.  Visual Studio will then create your `DbContext` class as well as the controller and views.)  
+（如果你没有根据前面的教程首先手动创建数据库上下文，基架引擎同样可以帮你创建。你可以在 **Add Controller(添加控制器)** 对话框中单击 **Data context class** 右边的 "+" （加号按钮）指定一个新的上下文类。然后 Visual Studio 就会创建你的 `DbContext` 类以及控制器和视图。）
 
-You'll notice that the controller takes a `SchoolContext` as a constructor parameter.
+You'll notice that the controller takes a `SchoolContext` as a constructor parameter.  
+你会注意到控制器以 `SchoolContext`  作为构造函数参数。
 
 [!code-csharp[Main](intro/samples/cu/Controllers/StudentsController.cs?name=snippet_Context&highlight=5,7,9)]
 
-ASP.NET dependency injection will take care of passing an instance of `SchoolContext` into the controller. You configured that in the *Startup.cs* file earlier.
+ASP.NET dependency injection will take care of passing an instance of `SchoolContext` into the controller. You configured that in the *Startup.cs* file earlier.  
+ASP.NET 依赖注入将负责把  `SchoolContext` 实例传递到控制器中。前面的时候已经在 *Startup.cs* 文件进行过配置了。
 
-The controller contains an `Index` action method, which displays all students in the database. The method gets a list of students from the Students entity set by reading the `Students` property of the database context instance:
+The controller contains an `Index` action method, which displays all students in the database. The method gets a list of students from the Students entity set by reading the `Students` property of the database context instance:  
+控制器包含一个 `Index` 操作方法， 它显示数据库中的所有学生。 这个方法通过读取数据库上下文实例中的 `Students` 属性从 Students 实体集中获取学生的列表：  
 
 [!code-csharp[Main](intro/samples/cu/Controllers/StudentsController.cs?name=snippet_ScaffoldedIndex&highlight=3)]
 
-You'll learn about the asynchronous programming elements in this code later in the tutorial.
+You'll learn about the asynchronous programming elements in this code later in the tutorial.  
+在本教程后面的部分中，你将了解此代码中的异步编程元素。
 
-The *Views/Students/Index.cshtml* view displays this list in a table:
-
+The *Views/Students/Index.cshtml* view displays this list in a table:  
+ *Views/Students/Index.cshtml* 视图在表格中显示这些列表：
+ 
 [!code-html[](intro/samples/cu/Views/Students/Index1.cshtml)]
 
-Press CTRL+F5 to run the project or choose **Debug > Start Without Debugging** from the menu.
+Press CTRL+F5 to run the project or choose **Debug > Start Without Debugging** from the menu.  
+按  CTRL+F5 运行项目或从菜单中选择 **Debug(调试) > Start Without Debugging(开始执行(不调试))**
 
-Click the Students tab to see the test data that the `DbInitializer.Initialize` method inserted. Depending on how narrow your browser window is, you'll see the `Student` tab link at the top of the page or you'll have to click the navigation icon in the upper right corner to see the link.
+Click the Students tab to see the test data that the `DbInitializer.Initialize` method inserted. Depending on how narrow your browser window is, you'll see the `Student` tab link at the top of the page or you'll have to click the navigation icon in the upper right corner to see the link.  
+单击 Students 标签查看从  `DbInitializer.Initialize` 方法插入的测试数据。 取决于浏览器窗口的大小，你将在页面的顶部看到 `Student` 链接或是需要单击右上角的导航图标才能看到。
 
 ![Contoso University home page narrow](intro/_static/home-page-narrow.png)
 
 ![Students Index page](intro/_static/students-index.png)
 
-## View the Database
+## View the Database  
+查看数据库
 
-When you started the application, the `DbInitializer.Initialize` method calls `EnsureCreated`. EF saw that there was no database and so it created one, then the remainder of the `Initialize` method code populated the database with data. You can use **SQL Server Object Explorer** (SSOX) to view the database in Visual Studio.
+When you started the application, the `DbInitializer.Initialize` method calls `EnsureCreated`. EF saw that there was no database and so it created one, then the remainder of the `Initialize` method code populated the database with data. You can use **SQL Server Object Explorer** (SSOX) to view the database in Visual Studio.  
+当你启动应用程序时， `DbInitializer.Initialize` 方法将调用 `EnsureCreated`。EF 看到没有数据库时会创建一个，然后 `Initialize` 方法代码的其余部分将数据填充了数据库。 你可以在 Visual Studio 中使用 **SQL Server Object Explorer(SQL Server 对象资源管理器)** (SSOX) 查看数据库。
 
-Close the browser.
+Close the browser.  
+关闭浏览器。
 
-If the SSOX window isn't already open, select it from the **View** menu in Visual Studio.
+If the SSOX window isn't already open, select it from the **View** menu in Visual Studio.  
+如果 SSOX 窗口还没有打开，可以在 Visual Studio 的 **View(视图)** 菜单中打开它。
 
-In SSOX, click **(localdb)\MSSQLLocalDB > Databases**, and then click the entry for the database name that is in the connection string in your *appsettings.json* file.
+In SSOX, click **(localdb)\MSSQLLocalDB > Databases**, and then click the entry for the database name that is in the connection string in your *appsettings.json* file.  
+在 SSOX中，单击 **(localdb)\MSSQLLocalDB > Databases(数据库)**，然后单 *appsettings.json* 文件中连接字符串对应的数据库名称条目。
 
-Expand the **Tables** node to see the tables in your database.
+Expand the **Tables** node to see the tables in your database.  
+在你的数据库中展开 **Tables(表)** 节点查看表。
 
 ![Tables in SSOX](intro/_static/ssox-tables.png)
 
-Right-click the **Student** table and click **View Data** to see the columns that were created and the rows that were inserted into the table.
+Right-click the **Student** table and click **View Data** to see the columns that were created and the rows that were inserted into the table.  
+鼠标右键单击 **Student** 表并单击 **View Data(查看数据)**
 
 ![Student table in SSOX](intro/_static/ssox-student-table.png)
 
-The *.mdf* and *.ldf* database files are in the *C:Users<yourusername>* folder.
+The *.mdf* and *.ldf* database files are in the *C:Users<yourusername>* folder.  
+ *.mdf* 和 *.ldf* 数据库文件在 *C:Users<yourusername>* 文件夹中。
 
-Because you're calling `EnsureCreated` in the initializer method that runs on app start, you could now make a change to the `Student class`, delete the database, run the application again, and the database would automatically be re-created to match your change. For example, if you add an `EmailAddress` property to the `Student` class, you'll see a new `EmailAddress` column in the re-created table.
+Because you're calling `EnsureCreated` in the initializer method that runs on app start, you could now make a change to the `Student class`, delete the database, run the application again, and the database would automatically be re-created to match your change. For example, if you add an `EmailAddress` property to the `Student` class, you'll see a new `EmailAddress` column in the re-created table.  
+因为在应用程序启动时运行的初始化方法中调用 `EnsureCreated`，你现在可以改变一下 `Student class`， 删除数据库， 再次运行程序，这时候数据库会自动重建以匹配你做的修改。如果你添加一个 `EmailAddress` 属性到 `Student` 类，你可以看到一个新的 `EmailAddress` 列在重新创建的表中。
 
-## Conventions
+## Conventions  
+规范
 
-The amount of code you had to write in order for the Entity Framework to be able to create a complete database for you is minimal because of the use of conventions, or assumptions that the Entity Framework makes.
+The amount of code you had to write in order for the Entity Framework to be able to create a complete database for you is minimal because of the use of conventions, or assumptions that the Entity Framework makes.  
+因为使用了约定 或 Entity Framework 所做的假设，可以使 Entity Framework 能够创建一个完整的数据库而必须编写的代码量是最小的。
 
-* The names of `DbSet` properties are used as table names. For entities not referenced by a `DbSet` property, entity class names are used as table names.
+* The names of `DbSet` properties are used as table names. For entities not referenced by a `DbSet` property, entity class names are used as table names.  
+`DbSet` 属性的名字作为表名。对 `DbSet` 属性未被引用的实体，实体类名作为表名。
 
-* Entity property names are used for column names.
+* Entity property names are used for column names.  
+Entity 属性名用为列名
 
-* Entity properties that are named ID or classnameID are recognized as primary key properties.
+* Entity properties that are named ID or classnameID are recognized as primary key properties.  
+被命名为 named ID 或 classnameID 的 Entity 属性被识别为主键属性。
 
-* A property is interpreted as a foreign key property if it's named *<navigation property name><primary key property name>* (for example, `StudentID` for the `Student` navigation property since the `Student` entity's primary key is `ID`). Foreign key properties can also be named simply *<primary key property name>* (for example, `EnrollmentID` since the `Enrollment` entity's primary key is `EnrollmentID`).
+* A property is interpreted as a foreign key property if it's named *<navigation property name><primary key property name>* (for example, `StudentID` for the `Student` navigation property since the `Student` entity's primary key is `ID`). Foreign key properties can also be named simply *<primary key property name>* (for example, `EnrollmentID` since the `Enrollment` entity's primary key is `EnrollmentID`).  
+
 
 Conventional behavior can be overridden. For example, you can explicitly specify table names, as you saw earlier in this tutorial. And you can set column names and set any property as primary key or foreign key, as you'll see in a [later tutorial](complex-data-model.md) in this series.
 
