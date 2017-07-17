@@ -430,23 +430,121 @@ Add `using` statements for `ContosoUniversity.Data`  and `Microsoft.EntityFramew
 [!code-csharp[Main](intro/samples/cu/Startup.cs?name=snippet_Usings&highlight=1,4)]
 
 Open the *appsettings.json* file and add a connection string as shown in the following example.  
-打开 *appsettings.json* 文件并添加一个连接字符串
+打开 *appsettings.json* 文件并添加一个如下面示例显示的连接字符串。
 
-[!code-json[appsettings](./intro/samples/cu/appsettings1.json?highlight=2-4)]
+[!code-json[appsettings](./intro/samples/cu/appsettings1.json?highlight=2-4)]  
+```c#
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=(localdb)\\mssqllocaldb;Database=ContosoUniversity1;Trusted_Connection=True;MultipleActiveResultSets=true"
+  },
+  "Logging": {
+    "IncludeScopes": false,
+    "LogLevel": {
+      "Default": "Warning"
+    }
+  }
+}
+```
+
 
 ### SQL Server Express LocalDB
 
-The connection string specifies a SQL Server LocalDB database. LocalDB is a lightweight version of the SQL Server Express Database Engine and is intended for application development, not production use. LocalDB starts on demand and runs in user mode, so there is no complex configuration. By default, LocalDB creates *.mdf* database files in the `C:/Users/<user>` directory.
+The connection string specifies a SQL Server LocalDB database. LocalDB is a lightweight version of the SQL Server Express Database Engine and is intended for application development, not production use. LocalDB starts on demand and runs in user mode, so there is no complex configuration. By default, LocalDB creates *.mdf* database files in the `C:/Users/<user>` directory.  
+这个连接字符串指定了一个 SQL Server LocalDB 数据库。 LocalDB 是一个轻量级版本的 SQL Server Express(速成版) 数据库引擎，用于应用程序开发，不用于生产用途。LocalDB 按需要启动并以用户模式运行， 所以没有什么复杂的配置。默念情况下，LocalDB 在 `C:/Users/<user>` 文件夹中创建  *.mdf* 数据库文件。
 
-## Add code to initialize the database with test data
+## Add code to initialize the database with test data  
+使用测试数据添加代码实现初始化数据库
 
-The Entity Framework will create an empty database for you.  In this section, you write a method that is called after the database is created in order to populate it with test data.
+The Entity Framework will create an empty database for you.  In this section, you write a method that is called after the database is created in order to populate it with test data.  
+Entity Framework 将会为你创建一个空的数据库， 在本节中， 你将编写一个在创建数据库调用的方法，以便用测试数据填充它。
 
-Here you'll use the `EnsureCreated` method to automatically create the database. In a [later tutorial](migrations.md) you'll see how to handle model changes by using Code First Migrations to change the database schema instead of dropping and re-creating the database.
+Here you'll use the `EnsureCreated` method to automatically create the database. In a [later tutorial](migrations.md) you'll see how to handle model changes by using Code First Migrations to change the database schema instead of dropping and re-creating the database.  
+在这里，你将使用 `EnsureCreated` 方法自动创建数据库。在 [later tutorial](migrations.md) 你将看到如何通过使用代码优先迁移来更改数据库架构而不是删除和重新创建数据库来处理模型的更改。
 
-In the *Data* folder, create a new class file named *DbInitializer.cs* and replace the template code with the following code, which causes a database to be created when needed and loads test data into the new database.
+In the *Data* folder, create a new class file named *DbInitializer.cs* and replace the template code with the following code, which causes a database to be created when needed and loads test data into the new database.  
+在 *Data* 文件夹中，创建一个命名为 *DbInitializer.cs* 的类文件，并且用以下的代码替换掉模板生成的代码，使得数据库在需要的时候通被创建并将测试数据加载到这个新数据库中。
 
 [!code-csharp[Main](intro/samples/cu/Data/DbInitializer.cs?name=snippet_Intro)]
+```c#
+#region snippet_Intro
+using ContosoUniversity.Models;
+using System;
+using System.Linq;
+
+namespace ContosoUniversity.Data
+{
+    public static class DbInitializer
+    {
+        public static void Initialize(SchoolContext context)
+        {
+            context.Database.EnsureCreated();
+
+            // Look for any students.
+            if (context.Students.Any())
+            {
+                return;   // DB has been seeded
+            }
+
+            var students = new Student[]
+            {
+            new Student{FirstMidName="Carson",LastName="Alexander",EnrollmentDate=DateTime.Parse("2005-09-01")},
+            new Student{FirstMidName="Meredith",LastName="Alonso",EnrollmentDate=DateTime.Parse("2002-09-01")},
+            new Student{FirstMidName="Arturo",LastName="Anand",EnrollmentDate=DateTime.Parse("2003-09-01")},
+            new Student{FirstMidName="Gytis",LastName="Barzdukas",EnrollmentDate=DateTime.Parse("2002-09-01")},
+            new Student{FirstMidName="Yan",LastName="Li",EnrollmentDate=DateTime.Parse("2002-09-01")},
+            new Student{FirstMidName="Peggy",LastName="Justice",EnrollmentDate=DateTime.Parse("2001-09-01")},
+            new Student{FirstMidName="Laura",LastName="Norman",EnrollmentDate=DateTime.Parse("2003-09-01")},
+            new Student{FirstMidName="Nino",LastName="Olivetto",EnrollmentDate=DateTime.Parse("2005-09-01")}
+            };
+            foreach (Student s in students)
+            {
+                context.Students.Add(s);
+            }
+            context.SaveChanges();
+
+            var courses = new Course[]
+            {
+            new Course{CourseID=1050,Title="Chemistry",Credits=3},
+            new Course{CourseID=4022,Title="Microeconomics",Credits=3},
+            new Course{CourseID=4041,Title="Macroeconomics",Credits=3},
+            new Course{CourseID=1045,Title="Calculus",Credits=4},
+            new Course{CourseID=3141,Title="Trigonometry",Credits=4},
+            new Course{CourseID=2021,Title="Composition",Credits=3},
+            new Course{CourseID=2042,Title="Literature",Credits=4}
+            };
+            foreach (Course c in courses)
+            {
+                context.Courses.Add(c);
+            }
+            context.SaveChanges();
+
+            var enrollments = new Enrollment[]
+            {
+            new Enrollment{StudentID=1,CourseID=1050,Grade=Grade.A},
+            new Enrollment{StudentID=1,CourseID=4022,Grade=Grade.C},
+            new Enrollment{StudentID=1,CourseID=4041,Grade=Grade.B},
+            new Enrollment{StudentID=2,CourseID=1045,Grade=Grade.B},
+            new Enrollment{StudentID=2,CourseID=3141,Grade=Grade.F},
+            new Enrollment{StudentID=2,CourseID=2021,Grade=Grade.F},
+            new Enrollment{StudentID=3,CourseID=1050},
+            new Enrollment{StudentID=4,CourseID=1050},
+            new Enrollment{StudentID=4,CourseID=4022,Grade=Grade.F},
+            new Enrollment{StudentID=5,CourseID=4041,Grade=Grade.C},
+            new Enrollment{StudentID=6,CourseID=1045},
+            new Enrollment{StudentID=7,CourseID=3141,Grade=Grade.A},
+            };
+            foreach (Enrollment e in enrollments)
+            {
+                context.Enrollments.Add(e);
+            }
+            context.SaveChanges();
+        }
+    }
+}
+#endregion
+```
+
 
 The code checks if there are any students in the database, and if not, it assumes the database is new and needs to be seeded with test data.  It loads test data into arrays rather than `List<T>` collections to optimize performance.
 
