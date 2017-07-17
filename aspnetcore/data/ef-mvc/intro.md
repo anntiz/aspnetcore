@@ -387,21 +387,52 @@ namespace ContosoUniversity.Data
 ## Register the context with dependency injection  
 使用依赖注入注册 context（上下文）
 
-ASP.NET Core implements [dependency injection](../../fundamentals/dependency-injection.md) by default. Services (such as the EF database context) are registered with dependency injection during application startup. Components that require these services (such as MVC controllers) are provided these services via constructor parameters. You'll see the controller constructor code that gets a context instance later in this tutorial.
+ASP.NET Core implements [dependency injection](../../fundamentals/dependency-injection.md) by default. Services (such as the EF database context) are registered with dependency injection during application startup. Components that require these services (such as MVC controllers) are provided these services via constructor parameters. You'll see the controller constructor code that gets a context instance later in this tutorial.  
+ASP.NET Core 默认实现 [dependency injection(依赖注入)](../../fundamentals/dependency-injection.md)。服务 (例如 EF 数据库上下文)在应用程序启动期间通过依赖注入注册。需要这些服务的组件（例如 MVC 控制器）通过构造函数参数提供这些服务。在本教程后面的部分， 你将可以看到获得上下文实例的控制器构造函数的代码。
 
-To register `SchoolContext` as a service, open *Startup.cs*, and add the highlighted lines to the `ConfigureServices` method.
+To register `SchoolContext` as a service, open *Startup.cs*, and add the highlighted lines to the `ConfigureServices` method.  
+要将 `SchoolContext` 注册为服务， 请打开  *Startup.cs*，并将突出显示的行添加到  `ConfigureServices` 方法中。
 
 [!code-csharp[Main](intro/samples/cu/Startup.cs?name=snippet_SchoolContext&highlight=4-5)]
+```c#
+ public Startup(IHostingEnvironment env)
+        {
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(env.ContentRootPath)
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+                .AddEnvironmentVariables();
+            Configuration = builder.Build();
+        }
 
-The name of the connection string is passed in to the context by calling a method on a `DbContextOptionsBuilder` object. For local development, the [ASP.NET Core configuration system](../../fundamentals/configuration.md) reads the connection string from the *appsettings.json* file.
+        public IConfigurationRoot Configuration { get; }
 
-Add `using` statements for `ContosoUniversity.Data`  and `Microsoft.EntityFrameworkCore` namespaces, and then build the project.
+// This method gets called by the runtime. Use this method to add services to the container.
+        #region snippet_SchoolContext
+        public void ConfigureServices(IServiceCollection services)
+        {
+            // Add framework services.
+            services.AddDbContext<SchoolContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddMvc();
+        }
+#endregion
+```
+
+
+The name of the connection string is passed in to the context by calling a method on a `DbContextOptionsBuilder` object. For local development, the [ASP.NET Core configuration system](../../fundamentals/configuration.md) reads the connection string from the *appsettings.json* file.  
+通过调用 `DbContextOptionsBuilder` 对象中的方法，将连接字符串的名称传递到上下文中。对于本地开发，[ASP.NET Core configuration system](../../fundamentals/configuration.md) 从 *appsettings.json*  文件中读取连接字符串。
+
+Add `using` statements for `ContosoUniversity.Data`  and `Microsoft.EntityFrameworkCore` namespaces, and then build the project.  
+为 `ContosoUniversity.Data`  和 `Microsoft.EntityFrameworkCore` 命名空间添加  `using` 引用声明，然后 生成 这个项目。
 
 [!code-csharp[Main](intro/samples/cu/Startup.cs?name=snippet_Usings&highlight=1,4)]
 
-Open the *appsettings.json* file and add a connection string as shown in the following example.
+Open the *appsettings.json* file and add a connection string as shown in the following example.  
+打开 *appsettings.json* 文件并添加一个连接字符串
 
-[!code-json[](./intro/samples/cu/appsettings1.json?highlight=2-4)]
+[!code-json[appsettings](./intro/samples/cu/appsettings1.json?highlight=2-4)]
 
 ### SQL Server Express LocalDB
 
