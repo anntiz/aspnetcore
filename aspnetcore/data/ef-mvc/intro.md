@@ -11,8 +11,7 @@ The sample application is a web site for a fictional Contoso University. It incl
 [Download or view the completed application(下载或查看完整的应用程序).](https://github.com/aspnet/Docs/tree/master/aspnetcore/data/ef-mvc/intro/samples/cu-final)
 
 EF Core 1.1 is the latest version of EF but does not yet have all the features of EF 6.x. For information about how to choose between EF 6.x and EF Core 1.0, see [EF Core vs. EF6.x](https://docs.microsoft.com/ef/efcore-and-ef6/). If you choose EF 6.x, see [the previous version of this tutorial series](https://docs.microsoft.com/aspnet/mvc/overview/getting-started/getting-started-with-ef-using-mvc/creating-an-entity-framework-data-model-for-an-asp-net-mvc-application).  
-EF Core 1.1 是 EF 的最新版本，但还没有具备 EF 6.x 的所有功能。有关如何在 EF 6.x 和 EF Core 1.0 之间进行选择的更多信息，请查看 [EF Core vs. EF6.x](https://docs.microsoft.com/ef/efcore-and-ef6/)。 如果你选择 EF 6.x ，请查看 [the previous version of this tutorial series](https://docs.microsoft.com/aspnet/mvc/overview/getting-started/getting-started-with-ef-using-mvc/creating-an-entity-framework-data-model-for-an-asp-net-mvc-application). 
-
+EF Core 1.1 是 EF 的最新版本，但还没有具备 EF 6.x 的所有功能。有关如何在 EF 6.x 和 EF Core 1.0 之间进行选择的更多信息，请查看 [EF Core vs. EF6.x](https://docs.microsoft.com/ef/efcore-and-ef6/)。 如果你选择 EF 6.x ，请查看 [the previous version of this tutorial series](https://docs.microsoft.com/aspnet/mvc/overview/getting-started/getting-started-with-ef-using-mvc/creating-an-entity-framework-data-model-for-an-asp-net-mvc-application).  
 > [!NOTE]
 > For the Visual Studio 2015 version of this tutorial, see the [VS 2015 version of ASP.NET Core documentation in PDF format](https://github.com/aspnet/Docs/blob/master/aspnetcore/common/_static/aspnet-core-project-json.pdf).  
 > [!注意]
@@ -545,24 +544,62 @@ namespace ContosoUniversity.Data
 #endregion
 ```
 
+The code checks if there are any students in the database, and if not, it assumes the database is new and needs to be seeded with test data.  It loads test data into arrays rather than `List<T>` collections to optimize performance.  
+代码检查数据库中是否有学生，如果没有，它假定数据库是新的并且需要使用测试数据进行种子化（将测试植入到数据库中）。它将测试数据加载到数据组都不是  `List<T>`集合中以优化性能。
 
-The code checks if there are any students in the database, and if not, it assumes the database is new and needs to be seeded with test data.  It loads test data into arrays rather than `List<T>` collections to optimize performance.
-
-In *Startup.cs*, modify the `Configure` method to call this seed method on application startup. First, add the context to the method signature so that ASP.NET dependency injection can provide it to your `DbInitializer` class.
+In *Startup.cs*, modify the `Configure` method to call this seed method on application startup. First, add the context to the method signature so that ASP.NET dependency injection can provide it to your `DbInitializer` class.  
+在 *Startup.cs* 文件中，修改 `Configure` 方法以便在应用程序启动时调用这个种子方法。首先，添加上下文到方法签名中以便 ASP.NET 依赖注入能将其提供给你的  `DbInitializer(数据库初始化)`类。
 
 [!code-csharp[Main](intro/samples/cu/Startup.cs?name=snippet_ConfigureSignature&highlight=1)]
 
 Then call your `DbInitializer.Initialize` method at the end of the `Configure` method.
 
 [!code-csharp[Main](intro/samples/cu/Startup.cs?name=snippet_RouteAndSeed&highlight=8)]
+```c#
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        #region snippet_ConfigureSignature
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, SchoolContext context)
+        {
+            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
+            loggerFactory.AddDebug();
+            #endregion
 
-Now the first time you run the application the database will be created and seeded with test data. Whenever you change your data model, you can delete the database, update your seed method, and start afresh with a new database the same way. In later tutorials you'll see how to modify the database when the data model changes, without deleting and re-creating it.
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+                app.UseBrowserLink();
+            }
+            else
+            {
+                app.UseExceptionHandler("/Home/Error");
+            }
 
-## Create a controller and views
+            app.UseStaticFiles();
 
-Next, you'll use the scaffolding engine in Visual Studio to add an MVC controller and views that will use EF to query and save data.
+            #region snippet_RouteAndSeed
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller=Home}/{action=Index}/{id?}");
+            });
 
-The automatic creation of CRUD action methods and views is known as scaffolding. Scaffolding differs from code generation in that the scaffolded code is a starting point that you can modify to suit your own requirements, whereas you typically don't modify generated code. When you need to customize generated code, you use partial classes or you regenerate the code when things change.
+            DbInitializer.Initialize(context);
+            #endregion
+        }
+```
+
+Now the first time you run the application the database will be created and seeded with test data. Whenever you change your data model, you can delete the database, update your seed method, and start afresh with a new database the same way. In later tutorials you'll see how to modify the database when the data model changes, without deleting and re-creating it.  
+现在第一次运行这个应用程序的时候数据库将会被创建并且植入测试数据。 每当更改了数据模型，你可以删除这个数据库，更改种子方法，然后同样的方式重新开始新的数据库。在后面的教程中你可以看到当数据模型更改时如何修改数据库，而不删除了再重建它。
+
+## Create a controller and views  
+创建控制器和视图
+
+Next, you'll use the scaffolding engine in Visual Studio to add an MVC controller and views that will use EF to query and save data.  
+接下来，你将在 Visual Studio 中使用基架引擎添加一个 MVC 控制器和视图，以便使用 EF 查询和保存数据。
+
+The automatic creation of CRUD action methods and views is known as scaffolding. Scaffolding differs from code generation in that the scaffolded code is a starting point that you can modify to suit your own requirements, whereas you typically don't modify generated code. When you need to customize generated code, you use partial classes or you regenerate the code when things change.  
+
 
 * Right-click the **Controllers** folder in **Solution Explorer** and select **Add > New Scaffolded Item**.
 
