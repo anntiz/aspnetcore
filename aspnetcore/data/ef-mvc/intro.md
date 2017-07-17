@@ -337,15 +337,37 @@ We'll say more about the `DatabaseGenerated` attribute in a [later tutorial](com
 The main class that coordinates Entity Framework functionality for a given data model is the database context class. You create this class by deriving from the `Microsoft.EntityFrameworkCore.DbContext` class. In your code you specify which entities are included in the data model. You can also customize certain Entity Framework behavior. In this project, the class is named `SchoolContext`.  
 为给定的数据模型协调 Entity Framework 功能的主类是数据库上下文。通过 `Microsoft.EntityFrameworkCore.DbContext` 类派生来创建这个类。在代码中说明哪些实体被包含在数据模型中。你还可以自定义某些 Entity Framework 的行为。在本项目中，这个类被命名为 `SchoolContext`。
 
-In the project folder, create a folder named *Data*.
+In the project folder, create a folder named *Data*.  
+在项目文件夹中，创建一个名为 *Data* 的文件夹。
 
-In the *Data* folder create a new class file named *SchoolContext.cs*, and replace the template code with the following code:
+In the *Data* folder create a new class file named *SchoolContext.cs*, and replace the template code with the following code:  
+在 *Data* 文件夹中创建一个新的类文件，命名为 *SchoolContext.cs* ，然后用以下代码替换模板生成的代码：
 
 [!code-csharp[Main](intro/samples/cu/Data/SchoolContext.cs?name=snippet_Intro)]
+```c#
+using ContosoUniversity.Models;
+using Microsoft.EntityFrameworkCore;
 
-This code creates a `DbSet` property for each entity set. In Entity Framework terminology, an entity set typically corresponds to a database table, and an entity corresponds to a row in the table.
+namespace ContosoUniversity.Data
+{
+    public class SchoolContext : DbContext
+    {
+        public SchoolContext(DbContextOptions<SchoolContext> options) : base(options)
+        {
+        }
 
-You could have omitted the `DbSet<Enrollment>` and `DbSet<Course>` statements and it would work the same. The Entity Framework would include them implicitly because the `Student` entity references the `Enrollment` entity and the `Enrollment` entity references the `Course` entity.
+        public DbSet<Course> Courses { get; set; }
+        public DbSet<Enrollment> Enrollments { get; set; }
+        public DbSet<Student> Students { get; set; }
+    }
+}
+```
+
+This code creates a `DbSet` property for each entity set. In Entity Framework terminology, an entity set typically corresponds to a database table, and an entity corresponds to a row in the table.  
+这段代码为每一个实体集创建了个对应的 `DbSet` 属性， 在 Entity Framework 术语中， 一个实体集通常对应于一个数据库的表，一个实体则对应于表中的一行。
+
+You could have omitted the `DbSet<Enrollment>` and `DbSet<Course>` statements and it would work the same. The Entity Framework would include them implicitly because the `Student` entity references the `Enrollment` entity and the `Enrollment` entity references the `Course` entity.  
+你可以省略掉 `DbSet<Enrollment>` 和 `DbSet<Course>` 的声明语句因为他们的工作是一样的，Entity Framework 将隐式包含它们，因为 `Student` 实体引用 `Enrollment` 实体，而 `Enrollment` 实体引用了  `Course` 实体。
 
 When the database is created, EF creates tables that have names the same as the `DbSet` property names. Property names for collections are typically plural (Students rather than Student), but developers disagree about whether table names should be pluralized or not. For these tutorials you'll override the default behavior by specifying singular table names in the DbContext. To do that, add the following highlighted code after the last DbSet property.
 
