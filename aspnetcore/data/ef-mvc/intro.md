@@ -367,7 +367,7 @@ This code creates a `DbSet` property for each entity set. In Entity Framework te
 这段代码为每一个实体集创建了个对应的 `DbSet` 属性， 在 Entity Framework 术语中， 一个实体集通常对应于一个数据库的表，一个实体则对应于表中的一行。
 
 You could have omitted the `DbSet<Enrollment>` and `DbSet<Course>` statements and it would work the same. The Entity Framework would include them implicitly because the `Student` entity references the `Enrollment` entity and the `Enrollment` entity references the `Course` entity.  
-你可以省略掉 `DbSet<Enrollment>` 和 `DbSet<Course>` 的声明语句因为他们的工作是一样的，Entity Framework 将隐式包含它们，因为 `Student` 实体引用 `Enrollment` 实体，而 `Enrollment` 实体引用了  `Course` 实体。
+你可以省略掉 `DbSet<Enrollment>` 和 `DbSet<Course>` 的声明语句因为他们的作用是一样的，Entity Framework 将隐式包含它们，因为 `Student` 实体引用 `Enrollment` 实体，而 `Enrollment` 实体引用了  `Course` 实体。
 
 When the database is created, EF creates tables that have names the same as the `DbSet` property names. Property names for collections are typically plural (Students rather than Student), but developers disagree about whether table names should be pluralized or not. For these tutorials you'll override the default behavior by specifying singular table names in the DbContext. To do that, add the following highlighted code after the last DbSet property.
 
