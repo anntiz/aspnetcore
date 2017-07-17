@@ -599,33 +599,45 @@ Next, you'll use the scaffolding engine in Visual Studio to add an MVC controlle
 接下来，你将在 Visual Studio 中使用基架引擎添加一个 MVC 控制器和视图，以便使用 EF 查询和保存数据。
 
 The automatic creation of CRUD action methods and views is known as scaffolding. Scaffolding differs from code generation in that the scaffolded code is a starting point that you can modify to suit your own requirements, whereas you typically don't modify generated code. When you need to customize generated code, you use partial classes or you regenerate the code when things change.  
+CRUD 操作方法和视图的自动创建称为 基架。基架不同于代码生成，因为搭建代码是一个起点，你可以根据自己的需要进行修改，而通常情况下你不修改生成的代码。当需要自定义生成的代码时，你可以使用 partial classes (分部类)或者当对象发生变化的时候重新生成代码。
 
+* Right-click the **Controllers** folder in **Solution Explorer** and select **Add > New Scaffolded Item**.  
+在 **Solution Explorer(项目资源管理器)** 中鼠标右键单击 **Controllers** 文件夹，然后选择  **Add(添加) > New Scaffolded Item(新搭建基架的项目)**.   
 
-* Right-click the **Controllers** folder in **Solution Explorer** and select **Add > New Scaffolded Item**.
-
-* In the **Add MVC Dependencies** dialog, select **Minimal Dependencies**, and select **Add**.
+* In the **Add MVC Dependencies** dialog, select **Minimal Dependencies**, and select **Add**.  
+在 **Add MVC Dependencies(添加 MVC 依赖项)** 对话框中，选择  **Minimal Dependencies(最小依赖项)**, 然后选择 **Add(添加)**.  
 
   ![Add dependencies](intro/_static/add-depend.png)
 
-  Visual Studio adds the dependencies needed to scaffold a controller, including a package with design-time EF functionality (`Microsoft.EntityFrameworkCore.Design`). A package that is needed only for scaffolding a DbContext from an existing database is also included (`Microsoft.EntityFrameworkCore.SqlServer.Design`). A *ScaffoldingReadMe.txt* file is created which you can delete.
+  Visual Studio adds the dependencies needed to scaffold a controller, including a package with design-time EF functionality (`Microsoft.EntityFrameworkCore.Design`). A package that is needed only for scaffolding a DbContext from an existing database is also included (`Microsoft.EntityFrameworkCore.SqlServer.Design`). A *ScaffoldingReadMe.txt* file is created which you can delete.  
+ Visual Studio 添加基架控制器所需要的依赖项，包括有设计时(design-time) EF 功能的包(`Microsoft.EntityFrameworkCore.Design`)；还包括一个从现有的数据库搭建 DbContext(数据库上下文) 的包 (`Microsoft.EntityFrameworkCore.SqlServer.Design`)；创建了一个 *ScaffoldingReadMe.txt* 文件，当然你可以删除它。
 
-* Once again, right-click the **Controllers** folder in **Solution Explorer** and select **Add > New Scaffolded Item**.
+* Once again, right-click the **Controllers** folder in **Solution Explorer** and select **Add > New Scaffolded Item**.  
+再次在 **Solution Explorer(项目资源管理器)** 中鼠标右键单击 **Controllers** 文件夹，然后选择  **Add(添加) > New Scaffolded Item(新搭建基架的项目)**
 
-* In the **Add Scaffold** dialog box:
+* In the **Add Scaffold** dialog box:  
+在  **Add Scaffold(添加基架)** 对话框中：
 
-  * Select **MVC controller with views, using Entity Framework**.
+  * Select **MVC controller with views, using Entity Framework**.  
+  选择 **MVC controller with views, using Entity Framework**
+
+  * Click **Add**.  
+  单击  **Add(添加)**
+
+* In the **Add Controller** dialog box:  
+在  **Add Controller(添加控制器)** 对话框中：
+
+  * In **Model class** select **Student**.  
+  在 **Model class** 处选择 **Student**. 
+
+  * In **Data context class** select **SchoolContext**.  
+ 在 **Data context class** 处选择 **SchoolContext**
+
+  * Accept the default **StudentsController** as the name.  
+  使用默认的控制器名称  **StudentsController** 
 
   * Click **Add**.
-
-* In the **Add Controller** dialog box:
-
-  * In **Model class** select **Student**.
-
-  * In **Data context class** select **SchoolContext**.
-
-  * Accept the default **StudentsController** as the name.
-
-  * Click **Add**.
+  单击  **Add(确定)**
 
   ![Scaffold Student](intro/_static/scaffold-student.png)
 
