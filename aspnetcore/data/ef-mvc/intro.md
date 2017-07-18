@@ -710,10 +710,10 @@ Because you're calling `EnsureCreated` in the initializer method that runs on ap
 因为在应用程序启动时运行的初始化方法中调用 `EnsureCreated`，你现在可以改变一下 `Student class`， 删除数据库， 再次运行程序，这时候数据库会自动重建以匹配你做的修改。如果你添加一个 `EmailAddress` 属性到 `Student` 类，你可以看到一个新的 `EmailAddress` 列在重新创建的表中。
 
 ## Conventions  
-规范
+约定
 
 The amount of code you had to write in order for the Entity Framework to be able to create a complete database for you is minimal because of the use of conventions, or assumptions that the Entity Framework makes.  
-因为使用了约定 或 Entity Framework 所做的假设，可以使 Entity Framework 能够创建一个完整的数据库而必须编写的代码量是最小的。
+因为使用了约定 或 Entity Framework 所做的假设，可以使 Entity Framework 能用必须编写的最小代码来创建一个完整的数据库。
 
 * The names of `DbSet` properties are used as table names. For entities not referenced by a `DbSet` property, entity class names are used as table names.  
 `DbSet` 属性的名字作为表名。对 `DbSet` 属性未被引用的实体，实体类名作为表名。
@@ -725,43 +725,85 @@ Entity 属性名用为列名
 被命名为 named ID 或 classnameID 的 Entity 属性被识别为主键属性。
 
 * A property is interpreted as a foreign key property if it's named *<navigation property name><primary key property name>* (for example, `StudentID` for the `Student` navigation property since the `Student` entity's primary key is `ID`). Foreign key properties can also be named simply *<primary key property name>* (for example, `EnrollmentID` since the `Enrollment` entity's primary key is `EnrollmentID`).  
+如果一个属性被命令为 *<navigation property name><primary key property name>*(例如，`Student` 的导航属性 `StudentID`, 因为 `Student` 实体的主键是 `ID`) 会被解释为一个外键属性。外键属性也可以简单地命名为 *<primary key property name>* （例如，`EnrollmentID` 是因为 `Enrollment` 实体的主键是 `EnrollmentID`）
 
+Conventional behavior can be overridden. For example, you can explicitly specify table names, as you saw earlier in this tutorial. And you can set column names and set any property as primary key or foreign key, as you'll see in a [later tutorial](complex-data-model.md) in this series.  
+当然我们也可以重写常规行为。例如，你可以显示地指定表名，就象在本教程前面部分看到的一样。并且你可以设置列名，并将任何属性设为主键或外键，相关的内容你在本教程中查看 [later tutorial(复杂数据模型)](complex-data-model.md)
 
-Conventional behavior can be overridden. For example, you can explicitly specify table names, as you saw earlier in this tutorial. And you can set column names and set any property as primary key or foreign key, as you'll see in a [later tutorial](complex-data-model.md) in this series.
+## Asynchronous code  
+异步代码
 
-## Asynchronous code
+Asynchronous programming is the default mode for ASP.NET Core and EF Core.  
+异步编程是 ASP.NET Core 和 EF Core 的默认模式
 
-Asynchronous programming is the default mode for ASP.NET Core and EF Core.
+A web server has a limited number of threads available, and in high load situations all of the available threads might be in use. When that happens, the server can't process new requests until the threads are freed up. With synchronous code, many threads may be tied up while they aren't actually doing any work because they're waiting for I/O to complete. With asynchronous code, when a process is waiting for I/O to complete, its thread is freed up for the server to use for processing other requests. As a result, asynchronous code enables server resources to be used more efficiently, and the server is enabled to handle more traffic without delays.  
+一个 Web 服务器的可用线程数量是有限的，在高负载的情况下，所有的可用线程可能都正在使用中。当这种情况发生时，服务器不能处理新的请求直到有线程被释放。使用同步代码，当进程处理等待 I/O 完成时，它的线程会被释放，以供服务器用于处理其他的请求。因此，异步代码能更有效地使用服务器的资源，并使服务器能够处理更多的通信，而不会出现延迟。
 
-A web server has a limited number of threads available, and in high load situations all of the available threads might be in use. When that happens, the server can't process new requests until the threads are freed up. With synchronous code, many threads may be tied up while they aren't actually doing any work because they're waiting for I/O to complete. With asynchronous code, when a process is waiting for I/O to complete, its thread is freed up for the server to use for processing other requests. As a result, asynchronous code enables server resources to be used more efficiently, and the server is enabled to handle more traffic without delays.
+Asynchronous code does introduce a small amount of overhead at run time, but for low traffic situations the performance hit is negligible, while for high traffic situations, the potential performance improvement is substantial.  
+异步代码在运行时会引入少量的开销，但对于低流量的情况下，性能的损失是微不足道的。而对于高流量的情况，潜在的性能改进是很大的。
 
-Asynchronous code does introduce a small amount of overhead at run time, but for low traffic situations the performance hit is negligible, while for high traffic situations, the potential performance improvement is substantial.
+In the following code, the `async` keyword, `Task<T>` return value, `await` keyword, and `ToListAsync` method make the code execute asynchronously.  
+在以下的代码中， `async` 关键字、 `Task<T>` 返回值、`await` 关键字、还有 `ToListAsync` 方法使得代码能够以异步方式执行。
 
-In the following code, the `async` keyword, `Task<T>` return value, `await` keyword, and `ToListAsync` method make the code execute asynchronously.
+[!code-csharp[Main(异步控制器完整代码)](intro/samples/cu/Controllers/StudentsController.cs?name=snippet_ScaffoldedIndex)]
+```c#
+        public async Task<IActionResult> Index(string sortOrder)
+        {
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
+            var students = from s in _context.Students
+                           select s;
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    students = students.OrderByDescending(s => s.LastName);
+                    break;
+                case "Date":
+                    students = students.OrderBy(s => s.EnrollmentDate);
+                    break;
+                case "date_desc":
+                    students = students.OrderByDescending(s => s.EnrollmentDate);
+                    break;
+                default:
+                    students = students.OrderBy(s => s.LastName);
+                    break;
+            }
+            return View(await students.AsNoTracking().ToListAsync());
+}
+```
 
-[!code-csharp[Main](intro/samples/cu/Controllers/StudentsController.cs?name=snippet_ScaffoldedIndex)]
+* The `async` keyword tells the compiler to generate callbacks for parts of the method body and to automatically create the `Task<IActionResult>` object that is returned.  
+ `async` 关键字通知编译器为方法的某些部分生成回调，并自动创建返回的 `Task<IActionResult>`  对象。
 
-* The `async` keyword tells the compiler to generate callbacks for parts of the method body and to automatically create the `Task<IActionResult>` object that is returned.
+* The return type `Task<IActionResult>` represents ongoing work with a result of type `IActionResult`.  
+返回类型 `Task<IActionResult>` 正在进行的工作，其结果是一个`IActionResult` 类型。
 
-* The return type `Task<IActionResult>` represents ongoing work with a result of type `IActionResult`.
+* The `await` keyword causes the compiler to split the method into two parts. The first part ends with the operation that is started asynchronously. The second part is put into a callback method that is called when the operation completes.  
+ `await` 会导致编译器将方法拆分为两个部分。第一部分以异步启动的操作结束。第二部分被放入一个回调方法中，当操作完成后被调用。
 
-* The `await` keyword causes the compiler to split the method into two parts. The first part ends with the operation that is started asynchronously. The second part is put into a callback method that is called when the operation completes.
+* `ToListAsync` is the asynchronous version of the `ToList` extension method.  
+`ToListAsync` 是 `ToList` 扩展方法的异步版本。
 
-* `ToListAsync` is the asynchronous version of the `ToList` extension method.
+Some things to be aware of when you are writing asynchronous code that uses the Entity Framework:  
+在编写使用 Entity Framework 的异步代码时需要注意的一些事项：
 
-Some things to be aware of when you are writing asynchronous code that uses the Entity Framework:
+* Only statements that cause queries or commands to be sent to the database are executed asynchronously. That includes, for example, `ToListAsync`, `SingleOrDefaultAsync`, and `SaveChangesAsync`.  It does not include, for example, statements that just change an `IQueryable`, such as `var students = context.Students.Where(s => s.LastName == "Davolio")`.  
+只异步执行那些发送到数据库导致查询或命令的语句。这包括，例如，`ToListAsync`, `SingleOrDefaultAsync`, 和 `SaveChangesAsync`。不包括，例如，只会改变 `IQueryable` 的语句，诸如 `var students = context.Students.Where(s => s.LastName == "Davolio")`。
 
-* Only statements that cause queries or commands to be sent to the database are executed asynchronously. That includes, for example, `ToListAsync`, `SingleOrDefaultAsync`, and `SaveChangesAsync`.  It does not include, for example, statements that just change an `IQueryable`, such as `var students = context.Students.Where(s => s.LastName == "Davolio")`.
+* An EF context is not thread safe: don't try to do multiple operations in parallel. When you call any async EF method, always use the `await` keyword.  
+EF context 是非线程安全的：不要尝试并行执行多个操作。当你调用任何的异步 EF 方法，都必须使用 `await` 关键字。
 
-* An EF context is not thread safe: don't try to do multiple operations in parallel. When you call any async EF method, always use the `await` keyword.
+* If you want to take advantage of the performance benefits of async code, make sure that any library packages that you're using (such as for paging), also use async if they call any Entity Framework methods that cause queries to be sent to the database.  
+如果要利用异步代码的性能优势，确保你正在使用的任何库程序包(比如分布)，如果调用任何导致查询发送到数据库的 Entity Framework 方法也使用异步方法。
 
-* If you want to take advantage of the performance benefits of async code, make sure that any library packages that you're using (such as for paging), also use async if they call any Entity Framework methods that cause queries to be sent to the database.
+For more information about asynchronous programming in .NET, see [Async Overview](https://docs.microsoft.com/dotnet/articles/standard/async).  
+有关 .NET 中关于异步编程的更多信息，请查看 [Async Overview(异步概述)](https://docs.microsoft.com/dotnet/articles/standard/async).  
 
-For more information about asynchronous programming in .NET, see [Async Overview](https://docs.microsoft.com/dotnet/articles/standard/async).
+## Summary  
+小结
 
-## Summary
-
-You've now created a simple application that uses the Entity Framework Core and SQL Server Express LocalDB to store and display data. In the following tutorial, you'll learn how to perform basic CRUD (create, read, update, delete) operations.
+You've now created a simple application that uses the Entity Framework Core and SQL Server Express LocalDB to store and display data. In the following tutorial, you'll learn how to perform basic CRUD (create, read, update, delete) operations.  
+现在你已经可以创建一个使用 Entity Framework Core 和 SQL Server Express LocalDB 来存储和显示数据的简单应用程序。在接下来的教程中，你将学习如何执行基本的 CRUD(create, read, update, delete) 操作。
 
 >[!div class="step-by-step"]
-[Next](crud.md)  
+[下一页](crud.md)  
