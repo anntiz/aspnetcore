@@ -552,7 +552,8 @@ In *Startup.cs*, modify the `Configure` method to call this seed method on appli
 
 [!code-csharp[Main](intro/samples/cu/Startup.cs?name=snippet_ConfigureSignature&highlight=1)]
 
-Then call your `DbInitializer.Initialize` method at the end of the `Configure` method.
+Then call your `DbInitializer.Initialize` method at the end of the `Configure` method.  
+然后在 Configure 方法的末尾调用你的 DbInitializer.Initialize 方法。
 
 [!code-csharp[Main](intro/samples/cu/Startup.cs?name=snippet_RouteAndSeed&highlight=8)]
 ```c#
