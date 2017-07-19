@@ -1,27 +1,19 @@
----
-title: ASP.NET Core MVC with EF Core - CRUD - 2 of 10
-author: tdykstra
-description: 
-keywords: ASP.NET Core, Entity Framework Core, CRUD, create, read, update, delete
-ms.author: tdykstra
-manager: wpickett
-ms.date: 03/15/2017
-ms.topic: get-started-article
-ms.assetid: 6e1cd570-40f1-4b24-8b6e-7d2d27758f18
-ms.technology: aspnet
-ms.prod: asp.net-core
-uid: data/ef-mvc/crud
----
-# Create, Read, Update, and Delete - EF Core with ASP.NET Core MVC tutorial (2 of 10)
+# Create, Read, Update, and Delete - EF Core with ASP.NET Core MVC tutorial (2 of 10)  
+增、查、改、删 -- ASP.NET Core MVC 使用 EF Core 教程
 
 By [Tom Dykstra](https://github.com/tdykstra) and [Rick Anderson](https://twitter.com/RickAndMSFT)
 
-The Contoso University sample web application demonstrates how to create ASP.NET Core 1.1 MVC web applications using Entity Framework Core 1.1 and Visual Studio 2017. For information about the tutorial series, see [the first tutorial in the series](intro.md).
+The Contoso University sample web application demonstrates how to create ASP.NET Core 1.1 MVC web applications using Entity Framework Core 1.1 and Visual Studio 2017. For information about the tutorial series, see [the first tutorial in the series](intro.md).  
+Contoso University 简单 web 应用程序演示了如何使用 Visual Studio 2017 和 Entity Framework Core 1.1 创建 ASP.NET Core 1.1 MVC web 应用程序。相关教程信息，请查看 [the first tutorial in the series(系列教程第一部分)](intro.md).  
 
-In the previous tutorial you created an MVC application that stores and displays data using the Entity Framework and SQL Server LocalDB. In this tutorial you'll review and customize the CRUD (create, read, update, delete) code that the MVC scaffolding automatically creates for you in controllers and views.
+In the previous tutorial you created an MVC application that stores and displays data using the Entity Framework and SQL Server LocalDB. In this tutorial you'll review and customize the CRUD (create, read, update, delete) code that the MVC scaffolding automatically creates for you in controllers and views.  
+在前一部分的教程中，使用了 Entity Framework 和 SQL Server LocalDB 创建一个 MVC 应用程序用于存储和显示数据。在本教程中，你将查看并自定义 MVC 基架在控制器和视图中为你自动创建的 CRUD (create, read, update, delete)代码。 
 
 > [!NOTE] 
-> It's a common practice to implement the repository pattern in order to create an abstraction layer between your controller and the data access layer. To keep these tutorials simple and focused on teaching how to use the Entity Framework itself, they don't use repositories. For information about repositories with EF, see [the last tutorial in this series](advanced.md).
+> It's a common practice to implement the repository pattern in order to create an abstraction layer between your controller and the data access layer. To keep these tutorials simple and focused on teaching how to use the Entity Framework itself, they don't use repositories. For information about repositories with EF, see [the last tutorial in this series](advanced.md).  
+> [!注意] 
+> 
+
 
 In this tutorial, you'll work with the following web pages:
 
