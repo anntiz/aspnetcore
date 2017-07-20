@@ -11,11 +11,12 @@ In the previous tutorial you created an MVC application that stores and displays
 
 > [!NOTE] 
 > It's a common practice to implement the repository pattern in order to create an abstraction layer between your controller and the data access layer. To keep these tutorials simple and focused on teaching how to use the Entity Framework itself, they don't use repositories. For information about repositories with EF, see [the last tutorial in this series](advanced.md).  
-> [!注意] 
-> 
+> [!注意]  
+> 实现存储模式是一种常见的作法，以在控制器和 DAL（data access layer 数据访问层）之间创建一个抽象层。为了保持本教程的简单化并专注于如何使用 Entity Framework 本身，这里并不使用存储库。关于 EF 中使用存储库的更多信息，请浏览 [the last tutorial in this series](advanced.md)
 
 
-In this tutorial, you'll work with the following web pages:
+In this tutorial, you'll work with the following web pages:  
+在本教程中，你将使用以下的网页：  
 
 ![Student Details page](crud/_static/student-details.png)
 
@@ -25,19 +26,49 @@ In this tutorial, you'll work with the following web pages:
 
 ![Student Delete page](crud/_static/student-delete.png)
 
-## Customize the Details page
+## Customize the Details page  
+定制详细信息页
 
-The scaffolded code for the Students Index page left out the `Enrollments` property, because that property holds a collection. In the **Details** page you'll display the contents of the collection in an HTML table.
+The scaffolded code for the Students Index page left out the `Enrollments` property, because that property holds a collection. In the **Details** page you'll display the contents of the collection in an HTML table.  
+由基架为 Students Index  页生成的代码遗漏了 `Enrollments` 属性，因为这个属性保存的内容是一个集合。在  **Details**  页，你将在 HTML 表格中显示这个集合中的内容。
 
-In *Controllers/StudentsController.cs*, the action method for the Details view uses the `SingleOrDefaultAsync` method to retrieve a single `Student` entity. Add code that calls `Include`. `ThenInclude`,  and `AsNoTracking` methods, as shown in the following highlighted code.
+In *Controllers/StudentsController.cs*, the action method for the Details view uses the `SingleOrDefaultAsync` method to retrieve a single `Student` entity. Add code that calls `Include`. `ThenInclude`,  and `AsNoTracking` methods, as shown in the following highlighted code.  
+在 *Controllers/StudentsController.cs* 中，Details 视图的操作方法使用 `SingleOrDefaultAsync` 方法去检索单个 `Student` 实体。添加调用`Include` 代码。`ThenInclude`,  和 `AsNoTracking` 方法，如以下显示的代码所示。
 
-[!code-csharp[Main](intro/samples/cu/Controllers/StudentsController.cs?name=snippet_Details&highlight=8-12)]
+[!code-csharp[Main(StudentsController完整代码)](intro/samples/cu/Controllers/StudentsController.cs?name=snippet_Details&highlight=8-12)]
+```c#
+#region snippet_Details
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
 
-The `Include` and `ThenInclude` methods cause the context to load the `Student.Enrollments` navigation property, and within each enrollment the `Enrollment.Course` navigation property.  You'll learn more about these methods in the [reading related data](read-related-data.md) tutorial.
+            var student = await _context.Students
+                .Include(s => s.Enrollments)
+                    .ThenInclude(e => e.Course)
+                .AsNoTracking()
+                .SingleOrDefaultAsync(m => m.ID == id);
 
-The `AsNoTracking` method improves performance in scenarios where the entities returned will not be updated in the current context's lifetime. You'll learn more about `AsNoTracking` at the end of this tutorial.
+            if (student == null)
+            {
+                return NotFound();
+            }
 
-### Route data
+            return View(student);
+        }
+#endregion
+```
+
+The `Include` and `ThenInclude` methods cause the context to load the `Student.Enrollments` navigation property, and within each enrollment the `Enrollment.Course` navigation property.  You'll learn more about these methods in the [reading related data](read-related-data.md) tutorial.  
+`Include` 和 `ThenInclude` 方法导致上下文加载 `Student.Enrollments` 导航属性，以及在每个 enrollment 中的 `Enrollment.Course` 导航属性。您将在 [reading related data(读取相关数据)](read-related-data.md)教程中了解有关这些方法的更多信息。
+
+The `AsNoTracking` method improves performance in scenarios where the entities returned will not be updated in the current context's lifetime. You'll learn more about `AsNoTracking` at the end of this tutorial.  
+`AsNoTracking` 方法能够提高在当前上下文的生命周期内返回的实体不被更新的情况下的性能。在本教程的结尾部分，你将会学习更多关于 `AsNoTracking` 的内容。
+
+### Route data  
+路由数据
 
 The key value that is passed to the `Details` method comes from *route data*. Route data is data that the model binder found in a segment of the URL. For example, the default route specifies controller, action, and id segments:
 
