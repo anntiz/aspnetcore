@@ -247,15 +247,19 @@ After the last field and immediately before the closing `</dl>` tag, add the fol
     <a asp-action="Index">Back to List</a>
 </div>
 ```
-If code indentation is wrong after you paste the code, press CTRL-K-D to correct it.
+If code indentation is wrong after you paste the code, press CTRL-K-D to correct it.    
+如果在粘贴代码后出现代码缩进错误, 请按 CTRL-K-D 进行更正。
 
-This code loops through the entities in the `Enrollments` navigation property. For each enrollment, it displays the course title and the grade. The course title is retrieved from the Course entity that's stored in the `Course` navigation property of the Enrollments entity.
+This code loops through the entities in the `Enrollments` navigation property. For each enrollment, it displays the course title and the grade. The course title is retrieved from the Course entity that's stored in the `Course` navigation property of the Enrollments entity.  
+这段代码将循环遍历 `Enrollments` 导航属性中的实体，对于每个 enrollment，都显示它的课程标题和成绩。课程标题都是从存储在 Enrollments 实体的 Course 导航属性中的 Course 实体中检索出来的。
 
-Run the application, select the **Students** tab, and click the **Details** link for a student. You see the list of courses and grades for the selected student:
+Run the application, select the **Students** tab, and click the **Details** link for a student. You see the list of courses and grades for the selected student:  
+运行应用程序，选择 **Students** 标签，然后单击 **Details** 中的一个学生链接。就可以看到被选中学生的课程和成绩列表：
 
 ![Student Details page](crud/_static/student-details.png)
 
-## Update the Create page
+## Update the Create page  
+修改 Create(增加)页 
 
 In *StudentsController.cs*, modify the HttpPost `Create` method by adding a try-catch block and removing ID from the `Bind` attribute.
 
