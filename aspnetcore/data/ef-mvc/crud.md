@@ -70,57 +70,79 @@ The `AsNoTracking` method improves performance in scenarios where the entities r
 ### Route data  
 路由数据
 
-The key value that is passed to the `Details` method comes from *route data*. Route data is data that the model binder found in a segment of the URL. For example, the default route specifies controller, action, and id segments:
+The key value that is passed to the `Details` method comes from *route data*. Route data is data that the model binder found in a segment of the URL. For example, the default route specifies controller, action, and id segments:  
+传送给 `Details` 方法的键值来自 *route data(路由数据)*。路由数据模型绑定器在URL段中找到的数据。例如，默认路由指定控制器、动作和id段。
 
 [!code-csharp[Main](intro/samples/cu/Startup.cs?name=snippet_RouteAndSeed&highlight=5)]
+```c#
+            #region snippet_RouteAndSeed
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller=Home}/{action=Index}/{id?}");
+            });
 
-In the following URL, the default route maps Instructor as the controller, Index as the action, and 1 as the id; these are route data values.
+            DbInitializer.Initialize(context);
+            #endregion
+```
+
+In the following URL, the default route maps Instructor as the controller, Index as the action, and 1 as the id; these are route data values.  
+在下面的 URL，默认路由将 Instructor 映射为控制器，Index 映射为一个操作方法，1 映射为id（的值）；这些就是路由数据值。
 
 ```
 http://localhost:1230/Instructor/Index/1?courseID=2021
 ```
 
-The last part of the URL ("?courseID=2021") is a query string value. The model binder will also pass the ID value to the `Details` method `id` parameter if you pass it as a query string value:
+The last part of the URL ("?courseID=2021") is a query string value. The model binder will also pass the ID value to the `Details` method `id` parameter if you pass it as a query string value:  
+URL 的最后一部分("?courseID=2021") 是一个查询字符串值。如果将其做为查询字符值进行传递，模型绑定器也将 ID 的值传递到 `Details` 方法的 `id` 参数中。
 
 ```
 http://localhost:1230/Instructor/Index?id=1&CourseID=2021
 ```
 
-In the Index page, hyperlink URLs are created by tag helper statements in the Razor view. In the following Razor code, the `id` parameter matches the default route, so `id` is added to the route data.
+In the Index page, hyperlink URLs are created by tag helper statements in the Razor view. In the following Razor code, the `id` parameter matches the default route, so `id` is added to the route data.  
+在 Index 页中，超链接 URL 是由 Razor 视图的 tag helper 语句创建。 在以下的 Razor 代码中， `id` 参数匹配默认路由，所以 `id` 会被添加到路由数据中。
 
 ```html
 <a asp-action="Edit" asp-route-id="@item.ID">Edit</a>
 ```
 
-This generates the following HTML when `item.ID` is 6:
+This generates the following HTML when `item.ID` is 6:  
+当 `item.ID` 的值为6时，将产生以下的 HTML 代码：
 
 ```html
 <a href="/Students/Edit/6">Edit</a>
 ```
 
-In the following Razor code, `studentID` doesn't match a parameter in the default route, so it's added as a query string.
+In the following Razor code, `studentID` doesn't match a parameter in the default route, so it's added as a query string.  
+在以下的 Razor 代码中， `studentID` 不匹配默认路由中的参数，所以它会被做为查询字符串添加。
 
 ```html
 <a asp-action="Edit" asp-route-studentID="@item.ID">Edit</a>
 ```
 
-This generates the following HTML when `item.ID` is 6:
+This generates the following HTML when `item.ID` is 6:  
+当 `item.ID` 的值为6时，将产生以下的 HTML 代码：
 
 ```html
 <a href="/Students/Edit?studentID=6">Edit</a>
 ```
 
-For more information about tag helpers, see [Tag helpers in ASP.NET Core](xref:mvc/views/tag-helpers/intro).
+For more information about tag helpers, see [Tag helpers in ASP.NET Core](xref:mvc/views/tag-helpers/intro).  
+更多关于 about tag helpers 的信息，请浏览 [Tag helpers in ASP.NET Core](xref:mvc/views/tag-helpers/intro).
 
-### Add enrollments to the Details view
+### Add enrollments to the Details view  
+添加在校人数到详细信息视图
 
-Open *Views/Students/Details.cshtml*. Each field is displayed using `DisplayNameFor` and `DisplayFor` helper, as shown in the following example:
+Open *Views/Students/Details.cshtml*. Each field is displayed using `DisplayNameFor` and `DisplayFor` helper, as shown in the following example:  
+打开  *Views/Students/Details.cshtml* 文件，每个字段都使用 `DisplayNameFor` 和 `DisplayFor` 帮助器显示，如下面的例子所示：
 
-[!code-html[](intro/samples/cu/Views/Students/Details.cshtml?range=13-18&highlight=2,5)]
+[!code-html[Details](intro/samples/cu/Views/Students/Details.cshtml?range=13-18&highlight=2,5)]
 
 After the last field and immediately before the closing `</dl>` tag, add the following code to display a list of enrollments:
 
-[!code-html[](intro/samples/cu/Views/Students/Details.cshtml?range=31-52)]
+[!code-html[Details](intro/samples/cu/Views/Students/Details.cshtml?range=31-52)]
 
 If code indentation is wrong after you paste the code, press CTRL-K-D to correct it.
 
