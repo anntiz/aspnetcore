@@ -261,22 +261,58 @@ Run the application, select the **Students** tab, and click the **Details** link
 ## Update the Create page  
 修改 Create(增加)页 
 
-In *StudentsController.cs*, modify the HttpPost `Create` method by adding a try-catch block and removing ID from the `Bind` attribute.
+In *StudentsController.cs*, modify the HttpPost `Create` method by adding a try-catch block and removing ID from the `Bind` attribute.  
+在 *StudentsController.cs* 文件中，修改包含 HttpPost 特性的 `Create` 方法，添加一个  try-catch 块结构并从 `Bind` 特性中删除 ID。
 
-[!code-csharp[Main](intro/samples/cu/Controllers/StudentsController.cs?name=snippet_Create&highlight=4,6-7,14-21)]
+[!code-csharp[Main](intro/samples/cu/Controllers/StudentsController.cs?name=snippet_Create&highlight=4,6-7,14-21)]  
+```c#
+        // POST: Students/Create
+#region snippet_Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(
+            [Bind("EnrollmentDate,FirstMidName,LastName")] Student student)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    _context.Add(student);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction("Index");
+                }
+            }
+            catch (DbUpdateException /* ex */)
+            {
+                //Log the error (uncomment ex variable name and write a log.
+                ModelState.AddModelError("", "Unable to save changes. " +
+                    "Try again, and if the problem persists " +
+                    "see your system administrator.");
+            }
+            return View(student);
+        }
+#endregion
+```
 
-This code adds the Student entity created by the ASP.NET MVC model binder to the Students entity set and then saves the changes to the database. (Model binder refers to the ASP.NET MVC functionality that makes it easier for you to work with data submitted by a form; a model binder converts posted form values to CLR types and passes them to the action method in parameters. In this case, the model binder instantiates a Student entity for you using property values from the Form collection.)
+This code adds the Student entity created by the ASP.NET MVC model binder to the Students entity set and then saves the changes to the database. (Model binder refers to the ASP.NET MVC functionality that makes it easier for you to work with data submitted by a form; a model binder converts posted form values to CLR types and passes them to the action method in parameters. In this case, the model binder instantiates a Student entity for you using property values from the Form collection.)  
+这段代码将由 ASP.NET MVC 模型绑定器创建的 Student 实体添加到 Students 实体集，然后将更改可在到数据库中。(模型绑定器引用 ASP.NET MVC 功能，可以更轻松处理从表单提交的数据；模型绑定器将发布的表单值转换为CLR类型，并将它们传递给参数中的操作方法。在这种情况下，模型绑定器使用 Form 集合中的属性值实例化一个 Student 实体。)
 
-You removed `ID` from the `Bind` attribute because ID is the primary key value which SQL Server will set automatically when the row is inserted. Input from the user does not set the ID value.
+You removed `ID` from the `Bind` attribute because ID is the primary key value which SQL Server will set automatically when the row is inserted. Input from the user does not set the ID value.  
+从 `Bind` 特性中删除 `ID` 是因为  `ID` 是 任何一个 SQL Server 插入行时都会自动添加的主键值。而来看成用户的输入并没有提供 ID 值。
 
-Other than the `Bind` attribute, the try-catch block is the only change you've made to the scaffolded code. If an exception that derives from `DbUpdateException` is caught while the changes are being saved, a generic error message is displayed. `DbUpdateException` exceptions are sometimes caused by something external to the application rather than a programming error, so the user is advised to try again. Although not implemented in this sample, a production quality application would log the exception. For more information, see the **Log for insight** section in [Monitoring and Telemetry (Building Real-World Cloud Apps with Azure)](http://www.asp.net/aspnet/overview/developing-apps-with-windows-azure/building-real-world-cloud-apps-with-windows-azure/monitoring-and-telemetry).
+Other than the `Bind` attribute, the try-catch block is the only change you've made to the scaffolded code. If an exception that derives from `DbUpdateException` is caught while the changes are being saved, a generic error message is displayed. `DbUpdateException` exceptions are sometimes caused by something external to the application rather than a programming error, so the user is advised to try again. Although not implemented in this sample, a production quality application would log the exception. For more information, see the **Log for insight** section in [Monitoring and Telemetry (Building Real-World Cloud Apps with Azure)](http://www.asp.net/aspnet/overview/developing-apps-with-windows-azure/building-real-world-cloud-apps-with-windows-azure/monitoring-and-telemetry).  
+除了 `Bind` 特性之外，try-catch 块结构是对由基架生成的代码的唯一更改。
 
-The `ValidateAntiForgeryToken` attribute helps prevent cross-site request forgery (CSRF) attacks. The token is automatically injected into the view by the [FormTagHelper](xref:mvc/views/working-with-forms#the-form-tag-helper) and is included when the form is submitted by the user. The token is validated by the `ValidateAntiForgeryToken` attribute. For more information about CSRF, see [🔧 Anti-Request Forgery](../../security/anti-request-forgery.md).
+The `ValidateAntiForgeryToken` attribute helps prevent cross-site request forgery (CSRF) attacks. The token is automatically injected into the view by the [FormTagHelper](xref:mvc/views/working-with-forms#the-form-tag-helper) and is included when the form is submitted by the user. The token is validated by the `ValidateAntiForgeryToken` attribute. For more information about CSRF, see [🔧 Anti-Request Forgery](../../security/anti-request-forgery.md).  
+`ValidateAntiForgeryToken` 特性有助于防止跨站点请求伪造（CSRF）攻击。这个 token(令牌)是 [FormTagHelper](xref:mvc/views/working-with-forms#the-form-tag-helper) 自动注入视图，并在用户提交表单时包含该令牌。 令牌由 `ValidateAntiForgeryToken` 特性验证。更多有关 CSRF 的令牌，请浏览  [🔧 Anti-Request Forgery](../../security/anti-request-forgery.md).  
+
 
 <a id="overpost"></a>
-### Security note about overposting
+### Security note about overposting  
+关于 overposting(过多发布) 的安全说明
 
-The `Bind` attribute that the scaffolded code includes on the `Create` method is one way to protect against overposting in create scenarios. For example, suppose the Student entity includes a `Secret` property that you don't want this web page to set.
+The `Bind` attribute that the scaffolded code includes on the `Create` method is one way to protect against overposting in create scenarios. For example, suppose the Student entity includes a `Secret` property that you don't want this web page to set.  
+ 基架代码包含在 `Create` 方法中的 `Bind` 特性是在创建方案中防止过多发布的一种方法。例如，假设 Student 实体中包含一个你不希望在这个网页中设置的 `Secret` 属性。
 
 ```csharp
 public class Student
@@ -289,11 +325,13 @@ public class Student
 }
 ```
 
-Even if you don't have a `Secret` field on the web page, a hacker could use a tool such as Fiddler, or write some JavaScript, to post a `Secret` form value. Without the `Bind` attribute limiting the fields that the model binder uses when it creates a Student instance, the model binder would pick up that `Secret` form value and use it to create the Student entity instance. Then whatever value the hacker specified for the `Secret` form field would be updated in your database. The following image shows the Fiddler tool adding the `Secret` field (with the value "OverPost") to the posted form values.
+Even if you don't have a `Secret` field on the web page, a hacker could use a tool such as Fiddler, or write some JavaScript, to post a `Secret` form value. Without the `Bind` attribute limiting the fields that the model binder uses when it creates a Student instance, the model binder would pick up that `Secret` form value and use it to create the Student entity instance. Then whatever value the hacker specified for the `Secret` form field would be updated in your database. The following image shows the Fiddler tool adding the `Secret` field (with the value "OverPost") to the posted form values.  
+即使你的的网页上没有 `Secret` 字段，黑客也可以使用诸如 Fiddler 之类的工具，或者编写一段 JavaScript代码，去提交一个 `Secret`表单值。如果不使用 `Bind` 特性限制模型绑定器创建 Student 实例时使用的字段，模型绑定器将获取  `Secret` 表单值，并使用它去创建 Student 实体实例。然后，无论黑客为  `Secret` 表单字段指定的是什么值都会被更新到数据库中。下图显示了 Fiddler 工具将 `Secret` 字段(字段的值为 "OverPost") 添加到已提交的表单值中。
 
 ![Fiddler adding Secret field](crud/_static/fiddler.png)
 
-The value "OverPost" would then be successfully added to the `Secret` property of the inserted row, although you never intended that the web page be able to set that property.
+The value "OverPost" would then be successfully added to the `Secret` property of the inserted row, although you never intended that the web page be able to set that property.  
+然后，值 "OverPost" 将被成功地添加到插入行的 `Secret`属性中，尽管你从未打算在网页中设置该属性。
 
 You can prevent overposting in edit scenarios by reading the entity from the database first and then calling `TryUpdateModel`, passing in an explicit allowed properties list. That is the method used in these tutorials.
 
