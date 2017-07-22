@@ -333,21 +333,28 @@ Even if you don't have a `Secret` field on the web page, a hacker could use a to
 The value "OverPost" would then be successfully added to the `Secret` property of the inserted row, although you never intended that the web page be able to set that property.  
 然后，值 "OverPost" 将被成功地添加到插入行的 `Secret`属性中，尽管你从未打算在网页中设置该属性。
 
-You can prevent overposting in edit scenarios by reading the entity from the database first and then calling `TryUpdateModel`, passing in an explicit allowed properties list. That is the method used in these tutorials.
+You can prevent overposting in edit scenarios by reading the entity from the database first and then calling `TryUpdateModel`, passing in an explicit allowed properties list. That is the method used in these tutorials.  
+你可以先从数据库中读取实体，然后再调用  `TryUpdateModel` 来阻止编辑场景中的 overposting (过多发布)。传入一个显示允许（白名单）的属性列表。这是在本教程中使用的方法。
 
-An alternative way to prevent overposting that is preferred by many developers is to use view models rather than entity classes with model binding. Include only the properties you want to update in the view model. Once the MVC model binder has finished, copy the view model properties to the entity instance, optionally using a tool such as AutoMapper. Use `_context.Entry` on the entity instance to set its state to `Unchanged`, and then set `Property("PropertyName").IsModified` to true on each entity property that is included in the view model. This method works in both edit and create scenarios.
+An alternative way to prevent overposting that is preferred by many developers is to use view models rather than entity classes with model binding. Include only the properties you want to update in the view model. Once the MVC model binder has finished, copy the view model properties to the entity instance, optionally using a tool such as AutoMapper. Use `_context.Entry` on the entity instance to set its state to `Unchanged`, and then set `Property("PropertyName").IsModified` to true on each entity property that is included in the view model. This method works in both edit and create scenarios.  
+防止 overposting (过多发布)的另一种办法是使用视图模型而不是具有模型绑定的实体类。仅包含在视图模型中需要更新的属性。 MVC 模型绑定器完成后，将视图模型属性复制到实体实例中，可以使用诸如 AutoMapper 之类的工具。在实体实例上使用 `_context.Entry`，将其状态设置为 `Unchanged`，然后在视图模型中包含的每个实体属性上设置 `Property("PropertyName").IsModified` 设置为 true。这个方法适用于编辑和创建场景。
 
-### Test the Create page
+### Test the Create page  
+测试 Create 页
 
-The code in *Views/Students/Create.cshtml* uses `label`, `input`, and `span` (for validation messages) tag helpers for each field.
+The code in *Views/Students/Create.cshtml* uses `label`, `input`, and `span` (for validation messages) tag helpers for each field.  
+对 *Views/Students/Create.cshtml* 文件中的每一个字段使用 `label`, `input`, 和 `span`(用于验证消息) 标记辅助代码。
 
-Run the page by selecting the **Students** tab and clicking **Create New**.
+Run the page by selecting the **Students** tab and clicking **Create New**.  
+通过选择 **Students** 标签并单击 **Create New** 运行这个页面。
 
-Enter names and an invalid date and click **Create** to see the error message.
+Enter names and an invalid date and click **Create** to see the error message.  
+输入名字 和一个无效的日期然后单击 **Create** 以查看错误信息。
 
 ![Date validation error](crud/_static/date-error.png)
 
-This is server-side validation that you get by default; in a later tutorial you'll see how to add attributes that will generate code for client-side validation also. The following highlighted code shows the model validation check in the `Create` method.
+This is server-side validation that you get by default; in a later tutorial you'll see how to add attributes that will generate code for client-side validation also. The following highlighted code shows the model validation check in the `Create` method.  
+
 
 [!code-csharp[Main](intro/samples/cu/Controllers/StudentsController.cs?name=snippet_Create&highlight=8)]
 
