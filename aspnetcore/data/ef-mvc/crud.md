@@ -262,7 +262,7 @@ Run the application, select the **Students** tab, and click the **Details** link
 修改 Create(增加)页 
 
 In *StudentsController.cs*, modify the HttpPost `Create` method by adding a try-catch block and removing ID from the `Bind` attribute.  
-在 *StudentsController.cs* 文件中，修改包含 HttpPost 特性的 `Create` 方法，添加一个  try-catch 块结构并从 `Bind` 特性中删除 ID。
+在 *StudentsController.cs* 文件中，修改 HttpPost 方式的 `Create` 方法，添加一个  try-catch 块结构并从 `Bind` 特性中删除 ID。
 
 [!code-csharp[Main](intro/samples/cu/Controllers/StudentsController.cs?name=snippet_Create&highlight=4,6-7,14-21)]  
 ```c#
@@ -392,17 +392,57 @@ Change the date to a valid value and click **Create** to see the new student app
 ## Update the Edit page  
 更新 Edit 页
 
-In *StudentController.cs*, the HttpGet `Edit` method (the one without the `HttpPost` attribute) uses the `SingleOrDefaultAsync` method to retrieve the selected Student entity, as you saw in the `Details` method. You don't need to change this method.
+In *StudentController.cs*, the HttpGet `Edit` method (the one without the `HttpPost` attribute) uses the `SingleOrDefaultAsync` method to retrieve the selected Student entity, as you saw in the `Details` method. You don't need to change this method.  
+在 *StudentController.cs* 文件中， HttpGet 方式的 `Edit` 方法（没有 `HttpPost` 特性的那一个）使用 `SingleOrDefaultAsync` 方法来检索已经选定的 Student 实体，就象你在 `Details`方法中看到的那样。你不需要修改这个方法。
 
-### Recommended HttpPost Edit code: Read and update
+### Recommended HttpPost Edit code: Read and update  
+推荐 HttpPost Edit 代码：读取和更新
 
-Replace the HttpPost Edit action method with the following code.
+Replace the HttpPost Edit action method with the following code.  
+使用以下的代码替换 HttpPost Edit 操作方法的内容。
 
 [!code-csharp[Main](intro/samples/cu/Controllers/StudentsController.cs?name=snippet_ReadFirst)]
+```c#
+#elif (ReadFirst)
+#region snippet_ReadFirst
+        [HttpPost, ActionName("Edit")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditPost(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var studentToUpdate = await _context.Students.SingleOrDefaultAsync(s => s.ID == id);
+            if (await TryUpdateModelAsync<Student>(
+                studentToUpdate,
+                "",
+                s => s.FirstMidName, s => s.LastName, s => s.EnrollmentDate))
+            {
+                try
+                {
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction("Index");
+                }
+                catch (DbUpdateException /* ex */)
+                {
+                    //Log the error (uncomment ex variable name and write a log.)
+                    ModelState.AddModelError("", "Unable to save changes. " +
+                        "Try again, and if the problem persists, " +
+                        "see your system administrator.");
+                }
+            }
+            return View(studentToUpdate);
+        }
+#endregion
+#endif
+```
 
-These changes implement a security best practice to prevent overposting. The scaffolder generated a `Bind` attribute and added the entity created by the model binder to the entity set with a `Modified` flag. That code is not recommended for many scenarios because the `Bind` attribute clears out any pre-existing data in fields not listed in the `Include` parameter.
+These changes implement a security best practice to prevent overposting. The scaffolder generated a `Bind` attribute and added the entity created by the model binder to the entity set with a `Modified` flag. That code is not recommended for many scenarios because the `Bind` attribute clears out any pre-existing data in fields not listed in the `Include` parameter.  
+这些更改实现国安全最佳做法以防止过多发布。基架生成了一个 `Bind` 特性并添加模型绑定器创建的实体到 `Modified` 标志的实体集中。在很多情况下都不推荐使用这些代码，因为 `Bind` 特性清除了 `Include` 参数中未列出来的字段中的任何预先存在的代码。
 
-The new code reads the existing entity and calls `TryUpdateModel` to update fields in the retrieved entity [based on user input in the posted form data](xref:mvc/models/model-binding#how-model-binding-works). The Entity Framework's automatic change tracking sets the `Modified` flag on the fields that are changed by form input. When the `SaveChanges` method is called, the Entity Framework creates SQL statements to update the database row. Concurrency conflicts are ignored, and only the table columns that were updated by the user are updated in the database. (A later tutorial shows how to handle concurrency conflicts.)
+The new code reads the existing entity and calls `TryUpdateModel` to update fields in the retrieved entity [based on user input in the posted form data](xref:mvc/models/model-binding#how-model-binding-works). The Entity Framework's automatic change tracking sets the `Modified` flag on the fields that are changed by form input. When the `SaveChanges` method is called, the Entity Framework creates SQL statements to update the database row. Concurrency conflicts are ignored, and only the table columns that were updated by the user are updated in the database. (A later tutorial shows how to handle concurrency conflicts.)  
+
 
 As a best practice to prevent overposting, the fields that you want to be updateable by the **Edit** page are whitelisted in the `TryUpdateModel` parameters. (The empty string preceding the list of fields in the parameter list is for a prefix to use with the form fields names.) Currently there are no extra fields that you're protecting, but listing the fields that you want the model binder to bind ensures that if you add fields to the data model in the future, they're automatically protected until you explicitly add them here.
 
