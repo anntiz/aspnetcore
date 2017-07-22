@@ -354,13 +354,43 @@ Enter names and an invalid date and click **Create** to see the error message.
 ![Date validation error](crud/_static/date-error.png)
 
 This is server-side validation that you get by default; in a later tutorial you'll see how to add attributes that will generate code for client-side validation also. The following highlighted code shows the model validation check in the `Create` method.  
-
+这是默认情况下得到的服务器端验证；在后面的教程，你将看到如何添加为客户端验证生成代码的特性。以下突出显示的代码显示了在 `Create` 方法中的模型验证检查。
 
 [!code-csharp[Main](intro/samples/cu/Controllers/StudentsController.cs?name=snippet_Create&highlight=8)]
+```c#
+        // POST: Students/Create
+#region snippet_Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(
+            [Bind("EnrollmentDate,FirstMidName,LastName")] Student student)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    _context.Add(student);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction("Index");
+                }
+            }
+            catch (DbUpdateException /* ex */)
+            {
+                //Log the error (uncomment ex variable name and write a log.
+                ModelState.AddModelError("", "Unable to save changes. " +
+                    "Try again, and if the problem persists " +
+                    "see your system administrator.");
+            }
+            return View(student);
+        }
+#endregion
+```
 
-Change the date to a valid value and click **Create** to see the new student appear in the **Index** page.
+Change the date to a valid value and click **Create** to see the new student appear in the **Index** page.  
+把日期更改为一个有效的值然后单击 **Create** 查看出现在 **Index**  页面的新 student 。
 
-## Update the Edit page
+## Update the Edit page  
+更新 Edit 页
 
 In *StudentController.cs*, the HttpGet `Edit` method (the one without the `HttpPost` attribute) uses the `SingleOrDefaultAsync` method to retrieve the selected Student entity, as you saw in the `Details` method. You don't need to change this method.
 
