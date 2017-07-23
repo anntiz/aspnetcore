@@ -445,13 +445,16 @@ The new code reads the existing entity and calls `TryUpdateModel` to update fiel
 新代码读取现在实体并调用 `TryUpdateModel` 去更新检索实体 [based on user input in the posted form data](xref:mvc/models/model-binding#how-model-binding-works)中的字段。 Entity Framework的自动更改跟踪在通过表单输入更改的字段上设置 `Modified` 标志。当 `SaveChanges` 方法被调用，Entity Framework 会创建 SQL 语句去更新数据库中的行。忽略并发冲突，并且在数据库中只更新由用户更新的表列(后面的教程将演示如何处理并发冲突)。
 
 As a best practice to prevent overposting, the fields that you want to be updateable by the **Edit** page are whitelisted in the `TryUpdateModel` parameters. (The empty string preceding the list of fields in the parameter list is for a prefix to use with the form fields names.) Currently there are no extra fields that you're protecting, but listing the fields that you want the model binder to bind ensures that if you add fields to the data model in the future, they're automatically protected until you explicitly add them here.  
-作为防止 overposting(过多发布) 的最佳做法， 你可以通过在 **Edit** 页面更新的字段在 `TryUpdateModel` 参数中列入白名单。
+作为防止 overposting(过多发布) 的最佳做法， 你可以通过在 **Edit** 页面把要更新的字段加入到 `TryUpdateModel` 参数的白名单(参数列表中的字段列表之前的空字符串是用于表单字段名称的前缀)。当前没有要保护的额外字段，但是列出你希望模型绑定器绑定的字段以确保如果你在将来为数据模型添加字段时，它们会被自动保护直到你在这里显式添加它们为止。
 
-As a result of these changes, the method signature of the HttpPost `Edit` method is the same as the HttpGet `Edit` method; therefore you've renamed the method `EditPost`.
+As a result of these changes, the method signature of the HttpPost `Edit` method is the same as the HttpGet `Edit` method; therefore you've renamed the method `EditPost`.  
+作为这些更改的结果，HttpPost 方式的 `Edit` 方法的方法签名与 HttpGet 方式的 `Edit` 方法相同；所以你已经重命名了  `EditPost` 方法。
 
-### Alternative HttpPost Edit code: Create and attach
+### Alternative HttpPost Edit code: Create and attach  
+替代的 HttpPost Edit 代码：创建和附加
 
-The recommended HttpPost edit code ensures that only changed columns get updated and preserves data in properties that you don't want included for model binding. However, the read-first approach requires an extra database read, and can result in more complex code for handling concurrency conflicts. An alternative is to attach an entity created by the model binder to the EF context and mark it as modified. (Don't update your project with this code, it's only shown to illustrate an optional approach.) 
+The recommended HttpPost edit code ensures that only changed columns get updated and preserves data in properties that you don't want included for model binding. However, the read-first approach requires an extra database read, and can result in more complex code for handling concurrency conflicts. An alternative is to attach an entity created by the model binder to the EF context and mark it as modified. (Don't update your project with this code, it's only shown to illustrate an optional approach.)  
+推荐的 HttpPost edit 代码可确保只有变了的列得到更新，并保留不想包含在模型绑定的属性中的数据。然而，第一种方法需要额外的数据库读取，并会导致更复杂的代码来处理并发冲突。另一种方法是将由模型绑定器创建的实体附加到 EF 上下文并将其标记为已修改（不要用此代码更新你的项目，这里只是演示了一个可选的方法）。
 
 [!code-csharp[Main](intro/samples/cu/Controllers/StudentsController.cs?name=snippet_CreateAndAttach)]
 
