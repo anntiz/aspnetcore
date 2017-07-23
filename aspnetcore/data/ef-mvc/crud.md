@@ -457,30 +457,104 @@ The recommended HttpPost edit code ensures that only changed columns get updated
 推荐的 HttpPost edit 代码可确保只有变了的列得到更新，并保留不想包含在模型绑定的属性中的数据。然而，第一种方法需要额外的数据库读取，并会导致更复杂的代码来处理并发冲突。另一种方法是将由模型绑定器创建的实体附加到 EF 上下文并将其标记为已修改（不要用此代码更新你的项目，这里只是演示了一个可选的方法）。
 
 [!code-csharp[Main](intro/samples/cu/Controllers/StudentsController.cs?name=snippet_CreateAndAttach)]
+```c#
+#if (CreateAndAttach)
+#region snippet_CreateAndAttach
+        public async Task<IActionResult> Edit(int id, [Bind("ID,EnrollmentDate,FirstMidName,LastName")] Student student)
+        {
+            if (id != student.ID)
+            {
+                return NotFound();
+            }
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(student);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction("Index");
+                }
+                catch (DbUpdateException /* ex */)
+                {
+                    //Log the error (uncomment ex variable name and write a log.)
+                    ModelState.AddModelError("", "Unable to save changes. " +
+                        "Try again, and if the problem persists, " +
+                        "see your system administrator.");
+                }
+            }
+            return View(student);
+        }
+#endregion
+#elif (ReadFirst)
+#region snippet_ReadFirst
+        [HttpPost, ActionName("Edit")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditPost(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var studentToUpdate = await _context.Students.SingleOrDefaultAsync(s => s.ID == id);
+            if (await TryUpdateModelAsync<Student>(
+                studentToUpdate,
+                "",
+                s => s.FirstMidName, s => s.LastName, s => s.EnrollmentDate))
+            {
+                try
+                {
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction("Index");
+                }
+                catch (DbUpdateException /* ex */)
+                {
+                    //Log the error (uncomment ex variable name and write a log.)
+                    ModelState.AddModelError("", "Unable to save changes. " +
+                        "Try again, and if the problem persists, " +
+                        "see your system administrator.");
+                }
+            }
+            return View(studentToUpdate);
+        }
+#endregion
+#endif
+```
 
-You can use this approach when the web page UI includes all of the fields in the entity and can update any of them.
+You can use this approach when the web page UI includes all of the fields in the entity and can update any of them.  
+当网页UI包含实体中的所有字段并且可以更新它们中的任意一个的时候，可以使用这个方法。
 
-The scaffolded code uses the create-and-attach approach but only catches `DbUpdateConcurrencyException` exceptions and returns 404 error codes.  The example shown catches any database update exception and displays an error message.
+The scaffolded code uses the create-and-attach approach but only catches `DbUpdateConcurrencyException` exceptions and returns 404 error codes.  The example shown catches any database update exception and displays an error message.  
+基架代码使用创建附加方法，但只捕获 `DbUpdateConcurrencyException` 异常并返回 404 错误代码。显示的示例会捕获任何数据库更新异常并显示错误信息。
 
 ### Entity States
+实体状态
 
-The database context keeps track of whether entities in memory are in sync with their corresponding rows in the database, and this information determines what happens when you call the `SaveChanges` method. For example, when you pass a new entity to the `Add` method, that entity's state is set to `Added`. Then when you call the `SaveChanges` method, the database context issues a SQL INSERT command.
+The database context keeps track of whether entities in memory are in sync with their corresponding rows in the database, and this information determines what happens when you call the `SaveChanges` method. For example, when you pass a new entity to the `Add` method, that entity's state is set to `Added`. Then when you call the `SaveChanges` method, the database context issues a SQL INSERT command.  
+数据库上下文跟踪内存中的实体是否与数据库中相应的行同步，并且此信息确定当你调用 `SaveChanges` 方法时会发生什么。例如，当你传递一个新的实体到 `Add` 方法时，该实体的状态设置为 `Added`。当调用 `SaveChanges` 方法时，数据库上下文则会发出一个 INSERT 的 SQL 命令。
 
-An entity may be in one of the following states:
+An entity may be in one of the following states:  
+实体可能处于下列状态之一：
 
-* `Added`. The entity does not yet exist in the database. The `SaveChanges` method issues an INSERT statement.
+* `Added`. The entity does not yet exist in the database. The `SaveChanges` method issues an INSERT statement.  
+ `Added`：该实体还不存在于数据库中。 `SaveChanges` 方法发出一个 INSERT 语句。
 
-* `Unchanged`. Nothing needs to be done with this entity by the `SaveChanges` method. When you read an entity from the database, the entity starts out with this status.
+* `Unchanged`. Nothing needs to be done with this entity by the `SaveChanges` method. When you read an entity from the database, the entity starts out with this status.  
+`Unchanged`：`SaveChanges`方法不需要对该实体进行任何操作。当从数据库中读取一个实体时，就是从这个状态开始的。
 
-* `Modified`. Some or all of the entity's property values have been modified. The `SaveChanges` method issues an UPDATE statement.
+* `Modified`. Some or all of the entity's property values have been modified. The `SaveChanges` method issues an UPDATE statement.  
+ `Modified`：该实体中的部分或全部属性被修改。`SaveChanges` 方法发出一个 UPDATE 语句。
 
-* `Deleted`. The entity has been marked for deletion. The `SaveChanges` method issues a DELETE statement.
+* `Deleted`. The entity has been marked for deletion. The `SaveChanges` method issues a DELETE statement.  
+`Deleted`：该实体被标记为删除。`SaveChanges` 方法发出一个 DELETE 语句。
 
-* `Detached`. The entity isn't being tracked by the database context.
+* `Detached`. The entity isn't being tracked by the database context.  
+`Detached`：该实体没有被数据库上下文跟踪。
 
-In a desktop application, state changes are typically set automatically. You read an entity and make changes to some of its property values. This causes its entity state to automatically be changed to `Modified`. Then when you call `SaveChanges`, the Entity Framework generates a SQL UPDATE statement that updates only the actual properties that you changed.
+In a desktop application, state changes are typically set automatically. You read an entity and make changes to some of its property values. This causes its entity state to automatically be changed to `Modified`. Then when you call `SaveChanges`, the Entity Framework generates a SQL UPDATE statement that updates only the actual properties that you changed.  
+在桌面应用程序中，状态改变通常是自动设置的。读取一个实体并改变其中的一些属性值，会导致该实体的状态自动更改为 `Modified`。那么当你调用  `SaveChanges` 方法时， Entity Framework 会生成一个 UPDATE 的 SQL 语句，只更新你改变了的实际属性。
 
-In a web app, the `DbContext` that initially reads an entity and displays its data to be edited is disposed after a page is rendered. When the HttpPost `Edit` action method is called,  a new web request is made and you have a new instance of the `DbContext`. If you re-read the entity in that new context, you simulate desktop processing.
+In a web app, the `DbContext` that initially reads an entity and displays its data to be edited is disposed after a page is rendered. When the HttpPost `Edit` action method is called,  a new web request is made and you have a new instance of the `DbContext`. If you re-read the entity in that new context, you simulate desktop processing.  
+在 web 应用程序中， `DbContext` 最初
 
 But if you don't want to do the extra read operation, you have to use the entity object created by the model binder.  The simplest way to do this is to set the entity state to Modified as is done in the alternative HttpPost Edit code shown earlier. Then when you call `SaveChanges`, the Entity Framework updates all columns of the database row, because the context has no way to know which properties you changed.
 
