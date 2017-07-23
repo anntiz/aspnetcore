@@ -451,7 +451,7 @@ As a result of these changes, the method signature of the HttpPost `Edit` method
 作为这些更改的结果，HttpPost 方式的 `Edit` 方法的方法签名与 HttpGet 方式的 `Edit` 方法相同；所以你已经重命名了  `EditPost` 方法。
 
 ### Alternative HttpPost Edit code: Create and attach  
-替代的 HttpPost Edit 代码：创建和附加
+可供选择的 HttpPost Edit 代码：创建和附加
 
 The recommended HttpPost edit code ensures that only changed columns get updated and preserves data in properties that you don't want included for model binding. However, the read-first approach requires an extra database read, and can result in more complex code for handling concurrency conflicts. An alternative is to attach an entity created by the model binder to the EF context and mark it as modified. (Don't update your project with this code, it's only shown to illustrate an optional approach.)  
 推荐的 HttpPost edit 代码可确保只有变了的列得到更新，并保留不想包含在模型绑定的属性中的数据。然而，第一种方法需要额外的数据库读取，并会导致更复杂的代码来处理并发冲突。另一种方法是将由模型绑定器创建的实体附加到 EF 上下文并将其标记为已修改（不要用此代码更新你的项目，这里只是演示了一个可选的方法）。
