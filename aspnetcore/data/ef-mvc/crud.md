@@ -451,10 +451,10 @@ As a result of these changes, the method signature of the HttpPost `Edit` method
 作为这些更改的结果，HttpPost 方式的 `Edit` 方法的方法签名与 HttpGet 方式的 `Edit` 方法相同；所以你已经重命名了  `EditPost` 方法。
 
 ### Alternative HttpPost Edit code: Create and attach  
-可供选择的 HttpPost Edit 代码：创建和附加
+替代的 HttpPost Edit 代码：创建和附加
 
 The recommended HttpPost edit code ensures that only changed columns get updated and preserves data in properties that you don't want included for model binding. However, the read-first approach requires an extra database read, and can result in more complex code for handling concurrency conflicts. An alternative is to attach an entity created by the model binder to the EF context and mark it as modified. (Don't update your project with this code, it's only shown to illustrate an optional approach.)  
-推荐的 HttpPost edit 代码可确保只有变了的列得到更新，并保留不想包含在模型绑定的属性中的数据。然而，第一种方法需要额外的数据库读取，并会导致更复杂的代码来处理并发冲突。另一种方法是将由模型绑定器创建的实体附加到 EF 上下文并将其标记为已修改（不要用此代码更新你的项目，这里只是演示了一个可选的方法）。
+推荐的 HttpPost edit 代码可确保只有变了的列得到更新，并保留不想包含在模型绑定的属性中的数据。然而，读取优先方法需要额外的数据库读取，并会导致更复杂的代码来处理并发冲突。另一种方法是将由模型绑定器创建的实体附加到 EF 上下文并将其标记为已修改（不要用此代码更新你的项目，这里只是演示了一个可选的方法）。
 
 [!code-csharp[Main](intro/samples/cu/Controllers/StudentsController.cs?name=snippet_CreateAndAttach)]
 ```c#
@@ -554,23 +554,31 @@ In a desktop application, state changes are typically set automatically. You rea
 在桌面应用程序中，状态改变通常是自动设置的。读取一个实体并改变其中的一些属性值，会导致该实体的状态自动更改为 `Modified`。那么当你调用  `SaveChanges` 方法时， Entity Framework 会生成一个 UPDATE 的 SQL 语句，只更新你改变了的实际属性。
 
 In a web app, the `DbContext` that initially reads an entity and displays its data to be edited is disposed after a page is rendered. When the HttpPost `Edit` action method is called,  a new web request is made and you have a new instance of the `DbContext`. If you re-read the entity in that new context, you simulate desktop processing.  
-在 web 应用程序中， `DbContext` 最初
+在 web 应用程序中， 最初读取一个实体并显示其要编辑的数据的 `DbContext` 在页面被渲染之后释放。当调用 HttpPost 方式的 `Edit` 操作方法时，将发出一个新的 web 请求并得到一个新的 `DbContext` 实例。如果在一个新的上下文中重新读取了实体，则可以模拟桌面应用程序的处理。
 
-But if you don't want to do the extra read operation, you have to use the entity object created by the model binder.  The simplest way to do this is to set the entity state to Modified as is done in the alternative HttpPost Edit code shown earlier. Then when you call `SaveChanges`, the Entity Framework updates all columns of the database row, because the context has no way to know which properties you changed.
+But if you don't want to do the extra read operation, you have to use the entity object created by the model binder.  The simplest way to do this is to set the entity state to Modified as is done in the alternative HttpPost Edit code shown earlier. Then when you call `SaveChanges`, the Entity Framework updates all columns of the database row, because the context has no way to know which properties you changed.  
+但如果你不想做额外的读取操作，就必须使用由模型绑定器创建的实体对象。最简单在方法是将实体状态修改为前面所示的替代的 HttpPost Edit 代码。当调用  `SaveChanges` 方法时，Entity Framework 将更新数据库行中的所有列，因为上下文没有办法知道你修改了哪些属性。
 
-If you want to avoid the read-first approach, but you also want the SQL UPDATE statement to update only the fields that the user actually changed, the code is more complex. You have to save the original values in some way (such as by using hidden fields) so that they are available when the HttpPost `Edit` method is called. Then you can create a Student entity using the original values, call the `Attach` method with that original version of the entity, update the entity's values to the new values, and then call `SaveChanges`.
+If you want to avoid the read-first approach, but you also want the SQL UPDATE statement to update only the fields that the user actually changed, the code is more complex. You have to save the original values in some way (such as by using hidden fields) so that they are available when the HttpPost `Edit` method is called. Then you can create a Student entity using the original values, call the `Attach` method with that original version of the entity, update the entity's values to the new values, and then call `SaveChanges`.  
+如果想避免读取优先方法，同时又希望 SQL UPDATE 语句只更新用户实际更改的字段，代码会更复杂。你必须以某种方式(例如使用隐藏字段)保存原始值，以便在调用 
+HttpPost `Edit` 方法时他们是可用的。你可以使用原始值创建一个 Student 实体，调用该实体原始版本的 `Attach` 方法，将实体的值更新为新的值，然后调用  `SaveChanges` 方法。  
 
-### Test the Edit page
+### Test the Edit page  
+测试 Edit 页
 
-Run the application and select the **Students** tab, then click an **Edit** hyperlink.
+Run the application and select the **Students** tab, then click an **Edit** hyperlink.  
+运行这个应用程序并且选择 **Students** 标签，然后单击 **Edit** 超链接。
 
 ![Students edit page](crud/_static/student-edit.png)
 
-Change some of the data and click **Save**. The **Index** page opens and you see the changed data.
+Change some of the data and click **Save**. The **Index** page opens and you see the changed data.  
+修改一些数据并单击  **Save**。在打开的 **Index** 页面查看修改后的数据。
 
-## Update the Delete page
+## Update the Delete page  
+更新删除页面
 
-In *StudentController.cs*, the template code for the HttpGet `Delete` method uses the `SingleOrDefaultAsync` method to retrieve the selected Student entity, as you saw in the Details and Edit methods. However, to implement a custom error message when the call to `SaveChanges` fails, you'll add some functionality to this method and its corresponding view.
+In *StudentController.cs*, the template code for the HttpGet `Delete` method uses the `SingleOrDefaultAsync` method to retrieve the selected Student entity, as you saw in the Details and Edit methods. However, to implement a custom error message when the call to `SaveChanges` fails, you'll add some functionality to this method and its corresponding view.  
+在 *StudentController.cs* 文件中，
 
 As you saw for update and create operations, delete operations require two action methods. The method that is called in response to a GET request displays a view that gives the user a chance to approve or cancel the delete operation. If the user approves it, a POST request is created. When that happens, the HttpPost `Delete` method is called and then that method actually performs the delete operation.
 
