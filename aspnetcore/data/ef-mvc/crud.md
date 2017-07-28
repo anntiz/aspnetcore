@@ -582,11 +582,43 @@ In *StudentController.cs*, the template code for the HttpGet `Delete` method use
 As you saw for update and create operations, delete operations require two action methods. The method that is called in response to a GET request displays a view that gives the user a chance to approve or cancel the delete operation. If the user approves it, a POST request is created. When that happens, the HttpPost `Delete` method is called and then that method actually performs the delete operation.  
 跟你在 update 和 create 操作中看到的一样， delete 操作也需要两个操作方法。 响应 GET 请求时调用的方法显示一个视图，让用户选择批准或是取消 delete 操作。如果用户批准删除则创建一个 POST 请求。这个时候， HttpPost `Delete` 方法将被调用并执行真正的删除操作。
 
-You'll add a try-catch block to the HttpPost `Delete` method to handle any errors that might occur when the database is updated. If an error occurs, the HttpPost Delete method calls the HttpGet Delete method, passing it a parameter that indicates that an error has occurred. The HttpGet Delete method then redisplays the confirmation page along with the error message, giving the user an opportunity to cancel or try again.
+You'll add a try-catch block to the HttpPost `Delete` method to handle any errors that might occur when the database is updated. If an error occurs, the HttpPost Delete method calls the HttpGet Delete method, passing it a parameter that indicates that an error has occurred. The HttpGet Delete method then redisplays the confirmation page along with the error message, giving the user an opportunity to cancel or try again.  
+在 HttpPost `Delete` 方法中添加一个 try-catch 语句块处理在数据库更新时可能发生的任何错误。如果错误出再，HttpPost Delete 方法调用 HttpGet Delete 方法，同时传递一个指示错误发生的参数。HttpGet Delete 方法重新显示确认删除的页面以及相应的错误信息，让用户一个取消或再次尝试(删除)的机会。
 
-Replace the HttpGet `Delete` action method with the following code, which manages error reporting.
+Replace the HttpGet `Delete` action method with the following code, which manages error reporting.  
+替换 HttpGet `Delete` 操作方法为以下代码，该代码用于管理错误报告。
 
 [!code-csharp[Main](intro/samples/cu/Controllers/StudentsController.cs?name=snippet_DeleteGet&highlight=1,9,16-21)]
+
+```c#
+        // GET: Students/Delete/5
+#region snippet_DeleteGet
+        public async Task<IActionResult> Delete(int? id, bool? saveChangesError = false)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var student = await _context.Students
+                .AsNoTracking()
+                .SingleOrDefaultAsync(m => m.ID == id);
+            if (student == null)
+            {
+                return NotFound();
+            }
+
+            if (saveChangesError.GetValueOrDefault())
+            {
+                ViewData["ErrorMessage"] =
+                    "Delete failed. Try again, and if the problem persists " +
+                    "see your system administrator.";
+            }
+
+            return View(student);
+        }
+#endregion
+```
 
 This code accepts an optional parameter that indicates whether the method was called after a failure to save changes. This parameter is false when the HttpGet `Delete` method is called without a previous failure. When it is called by the HttpPost `Delete` method in response to a database update error, the parameter is true and an error message is passed to the view.
 
