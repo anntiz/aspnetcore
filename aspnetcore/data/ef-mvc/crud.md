@@ -1,5 +1,5 @@
 # Create, Read, Update, and Delete - EF Core with ASP.NET Core MVC tutorial (2 of 10)  
-增、查、改、删 -- ASP.NET Core MVC 使用 EF Core 教程(2 of 10) 
+增、查、改、删 -- EF Core 与 ASP.NET Core MVC 教程(2 of 10) 
 
 By [Tom Dykstra](https://github.com/tdykstra) and [Rick Anderson](https://twitter.com/RickAndMSFT)
 
