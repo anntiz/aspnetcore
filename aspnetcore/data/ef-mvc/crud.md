@@ -689,14 +689,18 @@ If improving performance in a high-volume application is a priority, you could a
 #endregion
 ```
 
-If the entity has related data that should also be deleted, make sure that cascade delete is configured in the database. With this approach to entity deletion, EF might not realize there are related entities to be deleted.
+If the entity has related data that should also be deleted, make sure that cascade delete is configured in the database. With this approach to entity deletion, EF might not realize there are related entities to be deleted.  
+如果该实体有相关的数据也要一起删除，请确保在数据库中配置了级联删除。通过这种方法删除实体时，EF可能不会意识到相关实体已经被删除掉了。
 
-### Update the Delete view
+### Update the Delete view  更新 Delete 视图
 
-In *Views/Student/Delete.cshtml*, add an error message between the h2 heading and the h3 heading, as shown in the following example:
+In *Views/Student/Delete.cshtml*, add an error message between the h2 heading and the h3 heading, as shown in the following example:  
+在 *Views/Student/Delete.cshtml* 文件中，添加一个错误信息到 h2 和 h3 标题之间，如以下例子所示：
 
-[!code-html[](intro/samples/cu/Views/Students/Delete.cshtml?range=7-9&highlight=2)]
+[!code-html[delete](intro/samples/cu/Views/Students/Delete.cshtml?range=7-9&highlight=2)]  
+```c#
 
+```
 Run the page by selecting the **Students** tab and clicking a **Delete** hyperlink:
 
 ![Delete confirmation page](crud/_static/student-delete.png)
