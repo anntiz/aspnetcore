@@ -733,9 +733,11 @@ By default the Entity Framework implicitly implements transactions. In scenarios
 
 ## No-tracking queries  无跟踪查询
 
-When a database context retrieves table rows and creates entity objects that represent them, by default it keeps track of whether the entities in memory are in sync with what's in the database. The data in memory acts as a cache and is used when you update an entity. This caching is often unnecessary in a web application because context instances are typically short-lived (a new one is created and disposed for each request) and the context that reads an entity is typically disposed before that entity is used again.
+When a database context retrieves table rows and creates entity objects that represent them, by default it keeps track of whether the entities in memory are in sync with what's in the database. The data in memory acts as a cache and is used when you update an entity. This caching is often unnecessary in a web application because context instances are typically short-lived (a new one is created and disposed for each request) and the context that reads an entity is typically disposed before that entity is used again.  
+当数据库上下文检索表行并创建表示它们的实体对象时，默认情况下会跟踪内存中的实体是否与数据库中的内容同步。内存中的数据充当缓存并在更新实体时使用。在 web 应用程序中这种缓存通常是不必要的，因为上下文通常是短暂的(为每一个请求创建并释放一个新的实例)，而读取实体的上下文通常在再次使用该实体前被释放。
 
-You can disable tracking of entity objects in memory by calling the `AsNoTracking` method. Typical scenarios in which you might want to do that include the following:
+You can disable tracking of entity objects in memory by calling the `AsNoTracking` method. Typical scenarios in which you might want to do that include the following:  
+你可以通常调用 `AsNoTracking` 方法来禁用对内存中实体对象的跟踪。你可能希望这样做的典型场景包括：
 
 * During the context lifetime you don't need to update any entities, and you don't need EF to [automatically load navigation properties with  entities retrieved by separate queries](read-related-data.md). Frequently these conditions are met in a controller's HttpGet action methods.
 
