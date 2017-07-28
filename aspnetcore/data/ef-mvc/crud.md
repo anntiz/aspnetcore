@@ -698,18 +698,29 @@ In *Views/Student/Delete.cshtml*, add an error message between the h2 heading an
 在 *Views/Student/Delete.cshtml* 文件中，添加一个错误信息到 h2 和 h3 标题之间，如以下例子所示：
 
 [!code-html[delete](intro/samples/cu/Views/Students/Delete.cshtml?range=7-9&highlight=2)]  
-```c#
+```xml
+@model ContosoUniversity.Models.Student
 
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h2>Delete</h2>
+<p class="text-danger">@ViewData["ErrorMessage"]</p>
+<h3>Are you sure you want to delete this?</h3>
 ```
-Run the page by selecting the **Students** tab and clicking a **Delete** hyperlink:
+Run the page by selecting the **Students** tab and clicking a **Delete** hyperlink:  
+通过选择 **Students** 标签并单击 **Delete** 超链接运行该网页：
 
 ![Delete confirmation page](crud/_static/student-delete.png)
 
-Click **Delete**. The Index page is displayed without the deleted student. (You'll see an example of the error handling code in action in the concurrency tutorial.)
+Click **Delete**. The Index page is displayed without the deleted student. (You'll see an example of the error handling code in action in the concurrency tutorial.)  
+单击 **Delete**， Index 页面显示没有被删除的学生。(在并发教程中, 您将看到操作中的错误处理代码的示例.)
 
-## Closing database connections
+## Closing database connections  关闭数据库连接  
 
-To free up the resources that a database connection holds, the context instance must be disposed as soon as possible when you are done with it. The ASP.NET Core built-in [dependency injection](../../fundamentals/dependency-injection.md) takes care of that task for you.
+To free up the resources that a database connection holds, the context instance must be disposed as soon as possible when you are done with it. The ASP.NET Core built-in [dependency injection](../../fundamentals/dependency-injection.md) takes care of that task for you.  
+
 
 In *Startup.cs* you call the [AddDbContext extension method](https://github.com/aspnet/EntityFramework/blob/03bcb5122e3f577a84498545fcf130ba79a3d987/src/Microsoft.EntityFrameworkCore/EntityFrameworkServiceCollectionExtensions.cs) to provision the `DbContext` class in the ASP.NET DI container. That method sets the service lifetime to `Scoped` by default. `Scoped` means the context object lifetime coincides with the web request life time, and the `Dispose` method will be called automatically at the end of the web request.
 
