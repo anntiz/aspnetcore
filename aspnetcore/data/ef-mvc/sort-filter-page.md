@@ -62,8 +62,13 @@ The two `ViewData` elements (NameSortParm and DateSortParm) are used by the view
 视图使用两个 `ViewData` 元素(NameSortParm 和 DateSortParm) 来配置列标题超链接以及相应的查询字符串值。
 
 [!code-csharp[Main](intro/samples/cu/Controllers/StudentsController.cs?name=snippet_SortOnly&highlight=3-4)]
+```c#
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
+```
 
-These are ternary statements. The first one specifies that if the `sortOrder` parameter is null or empty, NameSortParm should be set to "name_desc"; otherwise, it should be set to an empty string. These two statements enable the view to set the column heading hyperlinks as follows:
+These are ternary statements. The first one specifies that if the `sortOrder` parameter is null or empty, NameSortParm should be set to "name_desc"; otherwise, it should be set to an empty string. These two statements enable the view to set the column heading hyperlinks as follows:  
+这些都是三元语句。第一个参数指定如果 `sortOrder` 参数为 null 或 empty，NameSortParm 应被设为 "name_desc"；否则，应将其设为空值。这两个语句允许视图设置列标题超链接如下：
 
 |  Current sort order  | Last Name Hyperlink | Date Hyperlink |
 |:--------------------:|:-------------------:|:--------------:|
@@ -72,7 +77,8 @@ These are ternary statements. The first one specifies that if the `sortOrder` pa
 | Date ascending       | ascending           | descending     |
 | Date descending      | ascending           | ascending      |
 
-The method uses LINQ to Entities to specify the column to sort by. The code creates an `IQueryable` variable before the switch statement, modifies it in the switch statement, and calls the `ToListAsync` method after the `switch` statement. When you create and modify `IQueryable` variables, no query is sent to the database. The query is not executed until you convert the `IQueryable` object into a collection by calling a method such as `ToListAsync`. Therefore, this code results in a single query that is not executed until the `return View` statement.
+The method uses LINQ to Entities to specify the column to sort by. The code creates an `IQueryable` variable before the switch statement, modifies it in the switch statement, and calls the `ToListAsync` method after the `switch` statement. When you create and modify `IQueryable` variables, no query is sent to the database. The query is not executed until you convert the `IQueryable` object into a collection by calling a method such as `ToListAsync`. Therefore, this code results in a single query that is not executed until the `return View` statement.  
+
 
 This code could get verbose with a large number of columns. [The last tutorial in this series](advanced.md#dynamic-linq) shows how to write code that lets you pass the name of the `OrderBy` column in a string variable.
 
