@@ -729,9 +729,9 @@ In *Startup.cs* you call the [AddDbContext extension method](https://github.com/
 ## Handling Transactions  事务处理
 
 By default the Entity Framework implicitly implements transactions. In scenarios where you make changes to multiple rows or tables and then call `SaveChanges`, the Entity Framework automatically makes sure that either all of your changes succeed or they all fail. If some changes are done first and then an error happens, those changes are automatically rolled back. For scenarios where you need more control -- for example, if you want to include operations done outside of Entity Framework in a transaction -- see [Transactions](https://docs.microsoft.com/ef/core/saving/transactions).  
-默认情况下 Entity Framework 隐式实现事务。
+默认情况下 Entity Framework 隐式实现事务。在对多个行或表进行修改然后调用 `SaveChanges` 的情况下，Entity Framework 自动确保所有的更改全部成功或全部失败。如果首先完成一些更改然后发生了错误，那么这些更改将自动回滚。对于需要更多控制的场景 -- 例如，如果要在事务中包含Entity Framework外部执行的操作 -- 请浏览 [Transactions](https://docs.microsoft.com/ef/core/saving/transactions)。
 
-## No-tracking queries
+## No-tracking queries  无跟踪查询
 
 When a database context retrieves table rows and creates entity objects that represent them, by default it keeps track of whether the entities in memory are in sync with what's in the database. The data in memory acts as a cache and is used when you update an entity. This caching is often unnecessary in a web application because context instances are typically short-lived (a new one is created and disposed for each request) and the context that reads an entity is typically disposed before that entity is used again.
 
