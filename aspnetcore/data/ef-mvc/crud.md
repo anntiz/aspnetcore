@@ -743,15 +743,19 @@ You can disable tracking of entity objects in memory by calling the `AsNoTrackin
 在上下文的生命周期内你不需要更新任何实体，并且你不需要 EF  [automatically load navigation properties with  entities retrieved by separate queries（使用单独查询检索的实体自动加载导航属性）](read-related-data.md)。这些条件通常在控制器的 HttpGet 操作方法中得到满足。
 
 * You are running a query that retrieves a large volume of data, and only a small portion of the returned data will be updated. It may be more efficient to turn off tracking for the large query, and run a query later for the few entities that need to be updated.  
+正在运行一个检索大量数据的查询，只有一小部分返回的数据将被更新。关闭大型查询的跟踪可能会更有效，稍后对需要更新的少数实体运行查询。
 
-* You want to attach an entity in order to update it, but earlier you retrieved the same entity for a different purpose. Because the entity is already being tracked by the database context, you can't attach the entity that you want to change. One way to handle this situation is to call `AsNoTracking` on the earlier query.
+* You want to attach an entity in order to update it, but earlier you retrieved the same entity for a different purpose. Because the entity is already being tracked by the database context, you can't attach the entity that you want to change. One way to handle this situation is to call `AsNoTracking` on the earlier query.  
+想要附加一个实体来更新它，但是之前您为了不同的目的检索了同一个实体。因为实体已被数据库上下文跟踪，所以您不能附加要更改的实体。处理这种情况的一种方法是在前面的查询中调用 "AsNoTracking"。
 
-For more information, see [Tracking vs. No-Tracking](https://docs.microsoft.com/ef/core/querying/tracking).
+For more information, see [Tracking vs. No-Tracking](https://docs.microsoft.com/ef/core/querying/tracking).  
+有关更多的信息，请浏览 [Tracking vs. No-Tracking](https://docs.microsoft.com/ef/core/querying/tracking)。
 
-## Summary
+## Summary  小结
 
-You now have a complete set of pages that perform simple CRUD operations for Student entities. In the next tutorial you'll expand the functionality of the **Index** page by adding sorting, filtering, and paging.
+You now have a complete set of pages that perform simple CRUD operations for Student entities. In the next tutorial you'll expand the functionality of the **Index** page by adding sorting, filtering, and paging.  
+你现在有了一组完整的页面可以为 Student 实体执行简单的 CRUD 操作。在下一个教程中，你将通过添加 排序、过滤和分布来扩展 **Index** 页面的功能。
 
 >[!div class="step-by-step"]
-[Previous](intro.md)
-[Next](sort-filter-page.md)  
+[前一页](intro.md)
+[后一页](sort-filter-page.md)  
