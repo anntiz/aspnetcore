@@ -620,9 +620,10 @@ Replace the HttpGet `Delete` action method with the following code, which manage
 #endregion
 ```
 
-This code accepts an optional parameter that indicates whether the method was called after a failure to save changes. This parameter is false when the HttpGet `Delete` method is called without a previous failure. When it is called by the HttpPost `Delete` method in response to a database update error, the parameter is true and an error message is passed to the view.
+This code accepts an optional parameter that indicates whether the method was called after a failure to save changes. This parameter is false when the HttpGet `Delete` method is called without a previous failure. When it is called by the HttpPost `Delete` method in response to a database update error, the parameter is true and an error message is passed to the view.  
+此代码接受一个可选的参数，该参数指示方法在保存更改失败后被调用。当 HttpGet `Delete` 方法在没有之前的失败被调用时该参数的值为 false。 当 HttpPost `Delete` 方法在响应一个数据库更新错误被调用时，该参数的值是 true 并同时传递一个错误信息到相应的视图。
 
-### The read-first approach to HttpPost Delete
+### The read-first approach to HttpPost Delete  HttpPost Delete 的 read-first 方法
 
 Replace the HttpPost `Delete` action method (named `DeleteConfirmed`) with the following code, which performs the actual delete operation and catches any database update errors.
 
