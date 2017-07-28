@@ -574,13 +574,13 @@ Run the application and select the **Students** tab, then click an **Edit** hype
 Change some of the data and click **Save**. The **Index** page opens and you see the changed data.  
 修改一些数据并单击  **Save**。在打开的 **Index** 页面查看修改后的数据。
 
-## Update the Delete page  
-更新删除页面
+## Update the Delete page  更新 Delete 页面  
 
 In *StudentController.cs*, the template code for the HttpGet `Delete` method uses the `SingleOrDefaultAsync` method to retrieve the selected Student entity, as you saw in the Details and Edit methods. However, to implement a custom error message when the call to `SaveChanges` fails, you'll add some functionality to this method and its corresponding view.  
-在 *StudentController.cs* 文件中，
+在 *StudentController.cs* 文件中，HttpGet `Delete` 方法的模板代码使用 `SingleOrDefaultAsync` 方法检索选中的 Student 实体，就象是在 Details 和 Edit 方法中看到的那样。但是，当调用 `SaveChanges` 失败要实现一个自定义的错误信息时，你需要在该方法及其相应视图中添加一些功能。
 
-As you saw for update and create operations, delete operations require two action methods. The method that is called in response to a GET request displays a view that gives the user a chance to approve or cancel the delete operation. If the user approves it, a POST request is created. When that happens, the HttpPost `Delete` method is called and then that method actually performs the delete operation.
+As you saw for update and create operations, delete operations require two action methods. The method that is called in response to a GET request displays a view that gives the user a chance to approve or cancel the delete operation. If the user approves it, a POST request is created. When that happens, the HttpPost `Delete` method is called and then that method actually performs the delete operation.  
+跟你在 update 和 create 操作中看到的一样， delete 操作也需要两个操作方法。 响应 GET 请求时调用的方法显示一个视图，让用户选择批准或是取消 delete 操作。如果用户批准删除则创建一个 POST 请求。这个时候， HttpPost `Delete` 方法将被调用并执行真正的删除操作。
 
 You'll add a try-catch block to the HttpPost `Delete` method to handle any errors that might occur when the database is updated. If an error occurs, the HttpPost Delete method calls the HttpGet Delete method, passing it a parameter that indicates that an error has occurred. The HttpGet Delete method then redisplays the confirmation page along with the error message, giving the user an opportunity to cancel or try again.
 
