@@ -20,15 +20,46 @@ To add sorting to the Student Index page, you'll change the `Index` method of th
 
 ### Add sorting Functionality to the Index method  --> 添加排序功能到 Index 方法 
 
-In *StudentsController.cs*, replace the `Index` method with the following code:
+In *StudentsController.cs*, replace the `Index` method with the following code:  
+在 *StudentsController.cs* 文件中，使用以下代码替换 `Index` 方法:
 
-[!code-csharp[Main](intro/samples/cu/Controllers/StudentsController.cs?name=snippet_SortOnly)]
+[!code-csharp[Main](intro/samples/cu/Controllers/StudentsController.cs?name=snippet_SortOnly)]  
+```c#
+#region snippet_SortOnly
+        public async Task<IActionResult> Index(string sortOrder)
+        {
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
+            var students = from s in _context.Students
+                           select s;
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    students = students.OrderByDescending(s => s.LastName);
+                    break;
+                case "Date":
+                    students = students.OrderBy(s => s.EnrollmentDate);
+                    break;
+                case "date_desc":
+                    students = students.OrderByDescending(s => s.EnrollmentDate);
+                    break;
+                default:
+                    students = students.OrderBy(s => s.LastName);
+                    break;
+            }
+            return View(await students.AsNoTracking().ToListAsync());
+        }
+#endregion
+```
 
-This code receives a `sortOrder` parameter from the query string in the URL. The query string value is provided by ASP.NET Core MVC as a parameter to the action method. The parameter will be a string that's either "Name" or "Date", optionally followed by an underscore and the string "desc" to specify descending order. The default sort order is ascending.
+This code receives a `sortOrder` parameter from the query string in the URL. The query string value is provided by ASP.NET Core MVC as a parameter to the action method. The parameter will be a string that's either "Name" or "Date", optionally followed by an underscore and the string "desc" to specify descending order. The default sort order is ascending.  
+该代码从 URL 中的查询字符串中接收一个 `sortOrder` 参数。查询字符串的值由 ASP.NET Core MVC 作为 action 方法的一个参数提供。该参数将是 "Name" 或 "Date" 的字符串，还可以在后面加上下划线和字符串 "desc" 来指定为降序排序。默认的排序顺序是升序。
 
-The first time the Index page is requested, there's no query string. The students are displayed in ascending order by last name, which is the default as established by the fall-through case in the `switch` statement. When the user clicks a column heading hyperlink, the appropriate `sortOrder` value is provided in the query string.
+The first time the Index page is requested, there's no query string. The students are displayed in ascending order by last name, which is the default as established by the fall-through case in the `switch` statement. When the user clicks a column heading hyperlink, the appropriate `sortOrder` value is provided in the query string.  
+Index 页第一次被请求时,并没有查询字符串。students 按照 last name 升序排序显示。 这是 `switch` 语句中落空的 case 所确定的默认值。当用户单击列标题超链接时，在查询字符串中会提供相应的 `sortOrder` 值。
 
-The two `ViewData` elements (NameSortParm and DateSortParm) are used by the view to configure the column heading hyperlinks with the appropriate query string values.
+The two `ViewData` elements (NameSortParm and DateSortParm) are used by the view to configure the column heading hyperlinks with the appropriate query string values.  
+视图使用两个 `ViewData` 元素(NameSortParm 和 DateSortParm) 来配置列标题超链接以及相应的查询字符串值。
 
 [!code-csharp[Main](intro/samples/cu/Controllers/StudentsController.cs?name=snippet_SortOnly&highlight=3-4)]
 
