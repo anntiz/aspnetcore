@@ -1,5 +1,5 @@
 # Create, Read, Update, and Delete - EF Core with ASP.NET Core MVC tutorial (2 of 10)  
-增、查、改、删 -- ASP.NET Core MVC 使用 EF Core 教程
+增、查、改、删 -- ASP.NET Core MVC 使用 EF Core 教程(2 of 10) 
 
 By [Tom Dykstra](https://github.com/tdykstra) and [Rick Anderson](https://twitter.com/RickAndMSFT)
 
@@ -625,17 +625,69 @@ This code accepts an optional parameter that indicates whether the method was ca
 
 ### The read-first approach to HttpPost Delete  HttpPost Delete 的 read-first 方法
 
-Replace the HttpPost `Delete` action method (named `DeleteConfirmed`) with the following code, which performs the actual delete operation and catches any database update errors.
+Replace the HttpPost `Delete` action method (named `DeleteConfirmed`) with the following code, which performs the actual delete operation and catches any database update errors.  
+替换  HttpPost `Delete`(名字为 `DeleteConfirmed` )操作方法为以下代码，该代码执行实际的删除操作并捕获任何数据库更新错误。
 
-[!code-csharp[Main](intro/samples/cu/Controllers/StudentsController.cs?name=snippet_DeleteWithReadFirst&highlight=6,8-11,13-14,18-23)]
+[!code-csharp[Main](intro/samples/cu/Controllers/StudentsController.cs?name=snippet_DeleteWithReadFirst&highlight=6,8-11,13-14,18-23)]  
+```c#
+#region snippet_DeleteWithReadFirst
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var student = await _context.Students
+                .AsNoTracking()
+                .SingleOrDefaultAsync(m => m.ID == id);
+            if (student == null)
+            {
+                return RedirectToAction("Index");
+            }
 
-This code retrieves the selected entity, then calls the `Remove` method to set the entity's status to `Deleted`. When `SaveChanges` is called, a SQL DELETE command is generated.
+            try
+            {
+                _context.Students.Remove(student);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index");
+            }
+            catch (DbUpdateException /* ex */)
+            {
+                //Log the error (uncomment ex variable name and write a log.)
+                return RedirectToAction("Delete", new { id = id, saveChangesError = true });
+            }
+        }
+#endregion
+```
 
-### The create-and-attach approach to HttpPost Delete
+This code retrieves the selected entity, then calls the `Remove` method to set the entity's status to `Deleted`. When `SaveChanges` is called, a SQL DELETE command is generated.  
+该代码检索选中的实体，然后调用 `Remove` 方法将实体状态设为 `Deleted`。当调用 `SaveChanges` 时则生成一个 SQL DELETE 命令(在数据库中进行删除操作。)。
 
-If improving performance in a high-volume application is a priority, you could avoid an unnecessary SQL query by instantiating a Student entity using only the primary key value and then setting the entity state to `Deleted`. That's all that the Entity Framework needs in order to delete the entity. (Don't put this code in your project; it's here just to illustrate an alternative.)
+### The create-and-attach approach to HttpPost Delete   HttpPost Delete 的 create-and-attach 方法
 
-[!code-csharp[Main](intro/samples/cu/Controllers/StudentsController.cs?name=snippet_DeleteWithoutReadFirst&highlight=7-8)]
+If improving performance in a high-volume application is a priority, you could avoid an unnecessary SQL query by instantiating a Student entity using only the primary key value and then setting the entity state to `Deleted`. That's all that the Entity Framework needs in order to delete the entity. (Don't put this code in your project; it's here just to illustrate an alternative.)  
+如果在一个高容量的应用程序中提升性能是优先考虑的事情，则可以通过仅使用主键来实例化 Student 实体，然后将实体的状态设为 `Deleted` 来避免不必要的 SQL 查询。这就是 Entity Framework 为了删除实体而需要的全部。（不要将此代码放入你的项目中；这里仅仅是为了说明有这一种替代方案）
+
+[!code-csharp[Main](intro/samples/cu/Controllers/StudentsController.cs?name=snippet_DeleteWithoutReadFirst&highlight=7-8)]  
+```c#
+#region snippet_DeleteWithoutReadFirst
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            try
+            {
+                Student studentToDelete = new Student() { ID = id };
+                _context.Entry(studentToDelete).State = EntityState.Deleted;
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index");
+            }
+            catch (DbUpdateException /* ex */)
+            {
+                //Log the error (uncomment ex variable name and write a log.)
+                return RedirectToAction("Delete", new { id = id, saveChangesError = true });
+            }
+        }
+#endregion
+```
 
 If the entity has related data that should also be deleted, make sure that cascade delete is configured in the database. With this approach to entity deletion, EF might not realize there are related entities to be deleted.
 
