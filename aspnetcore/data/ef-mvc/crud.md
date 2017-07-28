@@ -739,9 +739,10 @@ When a database context retrieves table rows and creates entity objects that rep
 You can disable tracking of entity objects in memory by calling the `AsNoTracking` method. Typical scenarios in which you might want to do that include the following:  
 你可以通常调用 `AsNoTracking` 方法来禁用对内存中实体对象的跟踪。你可能希望这样做的典型场景包括：
 
-* During the context lifetime you don't need to update any entities, and you don't need EF to [automatically load navigation properties with  entities retrieved by separate queries](read-related-data.md). Frequently these conditions are met in a controller's HttpGet action methods.
+* During the context lifetime you don't need to update any entities, and you don't need EF to [automatically load navigation properties with  entities retrieved by separate queries](read-related-data.md). Frequently these conditions are met in a controller's HttpGet action methods.  
+在上下文的生命周期内你不需要更新任何实体，并且你不需要 EF  [automatically load navigation properties with  entities retrieved by separate queries（使用单独查询检索的实体自动加载导航属性）](read-related-data.md)。这些条件通常在控制器的 HttpGet 操作方法中得到满足。
 
-* You are running a query that retrieves a large volume of data, and only a small portion of the returned data will be updated. It may be more efficient to turn off tracking for the large query, and run a query later for the few entities that need to be updated.
+* You are running a query that retrieves a large volume of data, and only a small portion of the returned data will be updated. It may be more efficient to turn off tracking for the large query, and run a query later for the few entities that need to be updated.  
 
 * You want to attach an entity in order to update it, but earlier you retrieved the same entity for a different purpose. Because the entity is already being tracked by the database context, you can't attach the entity that you want to change. One way to handle this situation is to call `AsNoTracking` on the earlier query.
 
