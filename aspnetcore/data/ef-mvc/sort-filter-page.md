@@ -1,25 +1,12 @@
----
-title: ASP.NET Core MVC with EF Core - Sort, Filter, Paging - 3 of 10
-author: tdykstra
-author: tdykstra
-description: In this tutorial you'll add sorting, filtering, and paging functionality to page using ASP.NET Core and Entity Framework Core.
-keywords: ASP.NET Core, Entity Framework Core, sort, filter, paging, grouping
-ms.author: tdykstra
-ms.date: 03/15/2017
-ms.topic: get-started-article
-ms.assetid: e6c1ff3c-5673-43bf-9c2d-077f6ada1f29
-ms.technology: aspnet
-ms.prod: asp.net-core
-uid: data/ef-mvc/sort-filter-page
----
-
-# Sorting, filtering, paging, and grouping - EF Core with ASP.NET Core MVC tutorial (3 of 10)
+# Sorting, filtering, paging, and grouping - EF Core with ASP.NET Core MVC tutorial (3 of 10) -->排序、过滤、分页和分组 -- EF Core 和 ASP.NET Core MVC 教程 (3 of 10)
 
 By [Tom Dykstra](https://github.com/tdykstra) and [Rick Anderson](https://twitter.com/RickAndMSFT)
 
-The Contoso University sample web application demonstrates how to create ASP.NET Core 1.1 MVC web applications using Entity Framework Core 1.11 and Visual Studio 2017. For information about the tutorial series, see [the first tutorial in the series](intro.md).
+The Contoso University sample web application demonstrates how to create ASP.NET Core 1.1 MVC web applications using Entity Framework Core 1.11 and Visual Studio 2017. For information about the tutorial series, see [the first tutorial in the series](intro.md).  
+Contoso University 简单 web 应用程序演示了如何使用 Entity Framework Core 1.11 和 Visual Studio 2017 创建 ASP.NET Core 1.1 MVC web 应用程序。该教程的更多信息，请浏览[the first tutorial in the series](intro.md)
 
-In the previous tutorial, you implemented a set of web pages for basic CRUD operations for Student entities. In this tutorial you'll add sorting, filtering, and paging functionality to the Students Index page. You'll also create a page that does simple grouping.
+In the previous tutorial, you implemented a set of web pages for basic CRUD operations for Student entities. In this tutorial you'll add sorting, filtering, and paging functionality to the Students Index page. You'll also create a page that does simple grouping.  
+在前一个教程，你为 Student 实体完成了一组用于基本 CRUD 操作的的网页。在本教程中，你将给 Students控制器的 Index 页面添加排序、过滤、和分页功能。还将创建一个完成简单分组的页面。
 
 The following illustration shows what the page will look like when you're done. The column headings are links that the user can click to sort by that column. Clicking a column heading repeatedly toggles between ascending and descending sort order.
 
