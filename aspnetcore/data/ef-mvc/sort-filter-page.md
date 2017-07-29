@@ -78,7 +78,7 @@ These are ternary statements. The first one specifies that if the `sortOrder` pa
 | Date descending      | ascending           | ascending      |
 
 The method uses LINQ to Entities to specify the column to sort by. The code creates an `IQueryable` variable before the switch statement, modifies it in the switch statement, and calls the `ToListAsync` method after the `switch` statement. When you create and modify `IQueryable` variables, no query is sent to the database. The query is not executed until you convert the `IQueryable` object into a collection by calling a method such as `ToListAsync`. Therefore, this code results in a single query that is not executed until the `return View` statement.  
-
+该方法使用 LINQ to Entities 来指定要排序的列。代码在 `switch` 语句之前创建一个 `IQueryable` 变量，在 switch 语句中进行修改，并在 `switch` 语句之后调用 `ToListAsync` 方法。当你创建和修改 `IQueryable` 变量时，不会向数据库发送任何查询。直到通过调用诸如 `ToListAsync` 这样的方法将 `IQueryable` 对象转换为集合后，才会执行查询。因此，这些代码将生成一个查询，直到 `return View` 语句才执行。
 
 This code could get verbose with a large number of columns. [The last tutorial in this series](advanced.md#dynamic-linq) shows how to write code that lets you pass the name of the `OrderBy` column in a string variable.
 
