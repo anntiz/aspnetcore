@@ -86,9 +86,10 @@ This code could get verbose with a large number of columns. [The last tutorial i
 ### Add column heading hyperlinks to the Student Index view  --> 添加列标题超链接到 Student Index 视图  
 
 
-Replace the code in *Views/Students/Index.cshtml*, with the following code to add column heading hyperlinks. The changed lines are highlighted.
+Replace the code in *Views/Students/Index.cshtml*, with the following code to add column heading hyperlinks. The changed lines are highlighted.  
+在 *Views/Students/Index.cshtml* 中替换代码，使用以下的代码来添加列标题超链接。更改的行为突出显示。
 
-[!code-html[](intro/samples/cu/Views/Students/Index2.cshtml?highlight=16,22)]
+[!code-html[Index2](intro/samples/cu/Views/Students/Index2.cshtml?highlight=16,22)]
 
 This code uses the information in `ViewData` properties to set up hyperlinks with the appropriate query string values.
 
