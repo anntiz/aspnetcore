@@ -148,9 +148,10 @@ Run the page and click the **Last Name** and **Enrollment Date** column headings
 
 ![Students index page in name order](sort-filter-page/_static/name-order.png)
 
-## Add a Search Box to the Students Index page
+## Add a Search Box to the Students Index page  -->  添加搜索框到 Students Index 页
 
-To add filtering to the Students Index page, you'll add a text box and a submit button to the view and make corresponding changes in the `Index` method. The text box will let you enter a string to search for in the first name and last name fields.
+To add filtering to the Students Index page, you'll add a text box and a submit button to the view and make corresponding changes in the `Index` method. The text box will let you enter a string to search for in the first name and last name fields.  
+
 
 ### Add filtering functionality to the Index method
 
