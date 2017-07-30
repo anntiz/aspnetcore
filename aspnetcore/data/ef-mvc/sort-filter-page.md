@@ -89,11 +89,62 @@ This code could get verbose with a large number of columns. [The last tutorial i
 Replace the code in *Views/Students/Index.cshtml*, with the following code to add column heading hyperlinks. The changed lines are highlighted.  
 在 *Views/Students/Index.cshtml* 中替换代码，使用以下的代码来添加列标题超链接。更改的行为突出显示。
 
-[!code-html[Index2](intro/samples/cu/Views/Students/Index2.cshtml?highlight=16,22)]
+[!code-html[Index2](intro/samples/cu/Views/Students/Index2.cshtml?highlight=16,22)]  
+```xml
+@model IEnumerable<ContosoUniversity.Models.Student>
 
-This code uses the information in `ViewData` properties to set up hyperlinks with the appropriate query string values.
+@{
+    ViewData["Title"] = "Index";
+}
 
-Run the page and click the **Last Name** and **Enrollment Date** column headings to verify that sorting works.
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]">@Html.DisplayNameFor(model => model.LastName)</a>
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstMidName)
+                </th>
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["DateSortParm"]">@Html.DisplayNameFor(model => model.EnrollmentDate)</a>
+                </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstMidName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EnrollmentDate)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+```
+
+This code uses the information in `ViewData` properties to set up hyperlinks with the appropriate query string values.  
+这些代码使用 `ViewData` 属性中的信息来设置具有适当查询字符串值的超链接。
+
+Run the page and click the **Last Name** and **Enrollment Date** column headings to verify that sorting works.  
+运行页面并单击 **Last Name** 和 **Enrollment Date** 列标题验证排序是否有效。
 
 ![Students index page in name order](sort-filter-page/_static/name-order.png)
 
