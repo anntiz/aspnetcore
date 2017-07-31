@@ -309,10 +309,10 @@ The `ValidateAntiForgeryToken` attribute helps prevent cross-site request forger
 
 <a id="overpost"></a>
 ### Security note about overposting  
-关于 overposting(过多发布) 的安全说明
+关于 overposting(过度提交) 的安全说明
 
 The `Bind` attribute that the scaffolded code includes on the `Create` method is one way to protect against overposting in create scenarios. For example, suppose the Student entity includes a `Secret` property that you don't want this web page to set.  
- 基架代码包含在 `Create` 方法中的 `Bind` 特性是在创建方案中防止过多发布的一种方法。例如，假设 Student 实体中包含一个你不希望在这个网页中设置的 `Secret` 属性。
+ 基架代码包含在 `Create` 方法中的 `Bind` 特性是在创建方案中防止过度提交的一种方法。例如，假设 Student 实体中包含一个你不希望在这个网页中设置的 `Secret` 属性。
 
 ```csharp
 public class Student
@@ -334,10 +334,10 @@ The value "OverPost" would then be successfully added to the `Secret` property o
 然后，值 "OverPost" 将被成功地添加到插入行的 `Secret`属性中，尽管你从未打算在网页中设置该属性。
 
 You can prevent overposting in edit scenarios by reading the entity from the database first and then calling `TryUpdateModel`, passing in an explicit allowed properties list. That is the method used in these tutorials.  
-你可以先从数据库中读取实体，然后再调用  `TryUpdateModel` 来阻止编辑场景中的 overposting (过多发布)。传入一个显示允许（白名单）的属性列表。这是在本教程中使用的方法。
+你可以先从数据库中读取实体，然后再调用  `TryUpdateModel` 来阻止编辑场景中的 overposting (过度提交)。传入一个显示允许（白名单）的属性列表。这是在本教程中使用的方法。
 
 An alternative way to prevent overposting that is preferred by many developers is to use view models rather than entity classes with model binding. Include only the properties you want to update in the view model. Once the MVC model binder has finished, copy the view model properties to the entity instance, optionally using a tool such as AutoMapper. Use `_context.Entry` on the entity instance to set its state to `Unchanged`, and then set `Property("PropertyName").IsModified` to true on each entity property that is included in the view model. This method works in both edit and create scenarios.  
-防止 overposting (过多发布)的另一种办法是使用视图模型而不是具有模型绑定的实体类。仅包含在视图模型中需要更新的属性。 MVC 模型绑定器完成后，将视图模型属性复制到实体实例中，可以使用诸如 AutoMapper 之类的工具。在实体实例上使用 `_context.Entry`，将其状态设置为 `Unchanged`，然后在视图模型中包含的每个实体属性上设置 `Property("PropertyName").IsModified` 设置为 true。这个方法适用于编辑和创建场景。
+防止 overposting (过度提交)的另一种办法是使用视图模型而不是具有模型绑定的实体类。仅包含在视图模型中需要更新的属性。 MVC 模型绑定器完成后，将视图模型属性复制到实体实例中，可以使用诸如 AutoMapper 之类的工具。在实体实例上使用 `_context.Entry`，将其状态设置为 `Unchanged`，然后在视图模型中包含的每个实体属性上设置 `Property("PropertyName").IsModified` 设置为 true。这个方法适用于编辑和创建场景。
 
 ### Test the Create page  
 测试 Create 页
@@ -439,13 +439,13 @@ Replace the HttpPost Edit action method with the following code.
 ```
 
 These changes implement a security best practice to prevent overposting. The scaffolder generated a `Bind` attribute and added the entity created by the model binder to the entity set with a `Modified` flag. That code is not recommended for many scenarios because the `Bind` attribute clears out any pre-existing data in fields not listed in the `Include` parameter.  
-这些更改实现国安全最佳做法以防止过多发布。基架生成了一个 `Bind` 特性并添加模型绑定器创建的实体到 `Modified` 标志的实体集中。在很多情况下都不推荐使用这些代码，因为 `Bind` 特性清除了 `Include` 参数中未列出来的字段中的任何预先存在的代码。
+这些更改实现国安全最佳做法以防止过度提交。基架生成了一个 `Bind` 特性并添加模型绑定器创建的实体到 `Modified` 标志的实体集中。在很多情况下都不推荐使用这些代码，因为 `Bind` 特性清除了 `Include` 参数中未列出来的字段中的任何预先存在的代码。
 
 The new code reads the existing entity and calls `TryUpdateModel` to update fields in the retrieved entity [based on user input in the posted form data](xref:mvc/models/model-binding#how-model-binding-works). The Entity Framework's automatic change tracking sets the `Modified` flag on the fields that are changed by form input. When the `SaveChanges` method is called, the Entity Framework creates SQL statements to update the database row. Concurrency conflicts are ignored, and only the table columns that were updated by the user are updated in the database. (A later tutorial shows how to handle concurrency conflicts.)  
 新代码读取现在实体并调用 `TryUpdateModel` 去更新检索实体 [based on user input in the posted form data](xref:mvc/models/model-binding#how-model-binding-works)中的字段。 Entity Framework的自动更改跟踪在通过表单输入更改的字段上设置 `Modified` 标志。当 `SaveChanges` 方法被调用，Entity Framework 会创建 SQL 语句去更新数据库中的行。忽略并发冲突，并且在数据库中只更新由用户更新的表列(后面的教程将演示如何处理并发冲突)。
 
 As a best practice to prevent overposting, the fields that you want to be updateable by the **Edit** page are whitelisted in the `TryUpdateModel` parameters. (The empty string preceding the list of fields in the parameter list is for a prefix to use with the form fields names.) Currently there are no extra fields that you're protecting, but listing the fields that you want the model binder to bind ensures that if you add fields to the data model in the future, they're automatically protected until you explicitly add them here.  
-作为防止 overposting(过多发布) 的最佳做法， 你可以通过在 **Edit** 页面把要更新的字段加入到 `TryUpdateModel` 参数的白名单(参数列表中的字段列表之前的空字符串是用于表单字段名称的前缀)。当前没有要保护的额外字段，但是列出你希望模型绑定器绑定的字段以确保如果你在将来为数据模型添加字段时，它们会被自动保护直到你在这里显式添加它们为止。
+作为防止 overposting(过度提交) 的最佳做法， 你可以通过在 **Edit** 页面把要更新的字段加入到 `TryUpdateModel` 参数的白名单(参数列表中的字段列表之前的空字符串是用于表单字段名称的前缀)。当前没有要保护的额外字段，但是列出你希望模型绑定器绑定的字段以确保如果你在将来为数据模型添加字段时，它们会被自动保护直到你在这里显式添加它们为止。
 
 As a result of these changes, the method signature of the HttpPost `Edit` method is the same as the HttpGet `Edit` method; therefore you've renamed the method `EditPost`.  
 作为这些更改的结果，HttpPost 方式的 `Edit` 方法的方法签名与 HttpGet 方式的 `Edit` 方法相同；所以你已经重命名了  `EditPost` 方法。
