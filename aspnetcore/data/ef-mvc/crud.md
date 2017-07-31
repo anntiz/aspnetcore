@@ -33,7 +33,7 @@ The scaffolded code for the Students Index page left out the `Enrollments` prope
 由基架为 Students Index  页生成的代码遗漏了 `Enrollments` 属性，因为这个属性保存的内容是一个集合。在  **Details**  页，你将在 HTML 表格中显示这个集合中的内容。
 
 In *Controllers/StudentsController.cs*, the action method for the Details view uses the `SingleOrDefaultAsync` method to retrieve a single `Student` entity. Add code that calls `Include`. `ThenInclude`,  and `AsNoTracking` methods, as shown in the following highlighted code.  
-在 *Controllers/StudentsController.cs* 中，Details 视图的操作方法使用 `SingleOrDefaultAsync` 方法去检索单个 `Student` 实体。添加调用`Include` 代码。`ThenInclude`,  和 `AsNoTracking` 方法，如以下显示的代码所示。
+在 *Controllers/StudentsController.cs* 中，Details 视图的 Action 方法使用 `SingleOrDefaultAsync` 方法去检索单个 `Student` 实体。添加调用`Include` 代码。`ThenInclude`,  和 `AsNoTracking` 方法，如以下显示的代码所示。
 
 [!code-csharp[Main(StudentsController完整代码)](intro/samples/cu/Controllers/StudentsController.cs?name=snippet_Details&highlight=8-12)]
 ```c#
@@ -88,7 +88,7 @@ The key value that is passed to the `Details` method comes from *route data*. Ro
 ```
 
 In the following URL, the default route maps Instructor as the controller, Index as the action, and 1 as the id; these are route data values.  
-在下面的 URL，默认路由将 Instructor 映射为控制器，Index 映射为一个操作方法，1 映射为id（的值）；这些就是路由数据值。
+在下面的 URL，默认路由将 Instructor 映射为控制器，Index 映射为一个 Action 方法，1 映射为id（的值）；这些就是路由数据值。
 
 ```
 http://localhost:1230/Instructor/Index/1?courseID=2021
@@ -295,7 +295,7 @@ In *StudentsController.cs*, modify the HttpPost `Create` method by adding a try-
 ```
 
 This code adds the Student entity created by the ASP.NET MVC model binder to the Students entity set and then saves the changes to the database. (Model binder refers to the ASP.NET MVC functionality that makes it easier for you to work with data submitted by a form; a model binder converts posted form values to CLR types and passes them to the action method in parameters. In this case, the model binder instantiates a Student entity for you using property values from the Form collection.)  
-这段代码将由 ASP.NET MVC 模型绑定器创建的 Student 实体添加到 Students 实体集，然后将更改可在到数据库中。(模型绑定器引用 ASP.NET MVC 功能，可以更轻松处理从表单提交的数据；模型绑定器将发布的表单值转换为CLR类型，并将它们传递给参数中的操作方法。在这种情况下，模型绑定器使用 Form 集合中的属性值实例化一个 Student 实体。)
+这段代码将由 ASP.NET MVC 模型绑定器创建的 Student 实体添加到 Students 实体集，然后将更改可在到数据库中。(模型绑定器引用 ASP.NET MVC 功能，可以更轻松处理从表单提交的数据；模型绑定器将发布的表单值转换为CLR类型，并将它们传递给参数中的 Action 方法。在这种情况下，模型绑定器使用 Form 集合中的属性值实例化一个 Student 实体。)
 
 You removed `ID` from the `Bind` attribute because ID is the primary key value which SQL Server will set automatically when the row is inserted. Input from the user does not set the ID value.  
 从 `Bind` 特性中删除 `ID` 是因为  `ID` 是 任何一个 SQL Server 插入行时都会自动添加的主键值。而来看成用户的输入并没有提供 ID 值。
@@ -399,7 +399,7 @@ In *StudentController.cs*, the HttpGet `Edit` method (the one without the `HttpP
 推荐 HttpPost Edit 代码：读取和更新
 
 Replace the HttpPost Edit action method with the following code.  
-使用以下的代码替换 HttpPost Edit 操作方法的内容。
+使用以下的代码替换 HttpPost Edit Action 方法的内容。
 
 [!code-csharp[Main](intro/samples/cu/Controllers/StudentsController.cs?name=snippet_ReadFirst)]
 ```c#
@@ -554,7 +554,7 @@ In a desktop application, state changes are typically set automatically. You rea
 在桌面应用程序中，状态改变通常是自动设置的。读取一个实体并改变其中的一些属性值，会导致该实体的状态自动更改为 `Modified`。那么当你调用  `SaveChanges` 方法时， Entity Framework 会生成一个 UPDATE 的 SQL 语句，只更新你改变了的实际属性。
 
 In a web app, the `DbContext` that initially reads an entity and displays its data to be edited is disposed after a page is rendered. When the HttpPost `Edit` action method is called,  a new web request is made and you have a new instance of the `DbContext`. If you re-read the entity in that new context, you simulate desktop processing.  
-在 web 应用程序中， 最初读取一个实体并显示其要编辑的数据的 `DbContext` 在页面被渲染之后释放。当调用 HttpPost 方式的 `Edit` 操作方法时，将发出一个新的 web 请求并得到一个新的 `DbContext` 实例。如果在一个新的上下文中重新读取了实体，则可以模拟桌面应用程序的处理。
+在 web 应用程序中， 最初读取一个实体并显示其要编辑的数据的 `DbContext` 在页面被渲染之后释放。当调用 HttpPost 方式的 `Edit` Action 方法时，将发出一个新的 web 请求并得到一个新的 `DbContext` 实例。如果在一个新的上下文中重新读取了实体，则可以模拟桌面应用程序的处理。
 
 But if you don't want to do the extra read operation, you have to use the entity object created by the model binder.  The simplest way to do this is to set the entity state to Modified as is done in the alternative HttpPost Edit code shown earlier. Then when you call `SaveChanges`, the Entity Framework updates all columns of the database row, because the context has no way to know which properties you changed.  
 但如果你不想做额外的读取操作，就必须使用由模型绑定器创建的实体对象。最简单在方法是将实体状态修改为前面所示的替代的 HttpPost Edit 代码。当调用  `SaveChanges` 方法时，Entity Framework 将更新数据库行中的所有列，因为上下文没有办法知道你修改了哪些属性。
@@ -580,13 +580,13 @@ In *StudentController.cs*, the template code for the HttpGet `Delete` method use
 在 *StudentController.cs* 文件中，HttpGet `Delete` 方法的模板代码使用 `SingleOrDefaultAsync` 方法检索选中的 Student 实体，就象是在 Details 和 Edit 方法中看到的那样。但是，当调用 `SaveChanges` 失败要实现一个自定义的错误信息时，你需要在该方法及其相应视图中添加一些功能。
 
 As you saw for update and create operations, delete operations require two action methods. The method that is called in response to a GET request displays a view that gives the user a chance to approve or cancel the delete operation. If the user approves it, a POST request is created. When that happens, the HttpPost `Delete` method is called and then that method actually performs the delete operation.  
-跟你在 update 和 create 操作中看到的一样， delete 操作也需要两个操作方法。 响应 GET 请求时调用的方法显示一个视图，让用户选择批准或是取消 delete 操作。如果用户批准删除则创建一个 POST 请求。这个时候， HttpPost `Delete` 方法将被调用并执行真正的删除操作。
+跟你在 update 和 create 操作中看到的一样， delete 操作也需要两个 Action 方法。 响应 GET 请求时调用的方法显示一个视图，让用户选择批准或是取消 delete 操作。如果用户批准删除则创建一个 POST 请求。这个时候， HttpPost `Delete` 方法将被调用并执行真正的删除操作。
 
 You'll add a try-catch block to the HttpPost `Delete` method to handle any errors that might occur when the database is updated. If an error occurs, the HttpPost Delete method calls the HttpGet Delete method, passing it a parameter that indicates that an error has occurred. The HttpGet Delete method then redisplays the confirmation page along with the error message, giving the user an opportunity to cancel or try again.  
 在 HttpPost `Delete` 方法中添加一个 try-catch 语句块处理在数据库更新时可能发生的任何错误。如果错误出再，HttpPost Delete 方法调用 HttpGet Delete 方法，同时传递一个指示错误发生的参数。HttpGet Delete 方法重新显示确认删除的页面以及相应的错误信息，让用户一个取消或再次尝试(删除)的机会。
 
 Replace the HttpGet `Delete` action method with the following code, which manages error reporting.  
-替换 HttpGet `Delete` 操作方法为以下代码，该代码用于管理错误报告。
+替换 HttpGet `Delete`  Action 方法为以下代码，该代码用于管理错误报告。
 
 [!code-csharp[Main](intro/samples/cu/Controllers/StudentsController.cs?name=snippet_DeleteGet&highlight=1,9,16-21)]
 
@@ -626,7 +626,7 @@ This code accepts an optional parameter that indicates whether the method was ca
 ### The read-first approach to HttpPost Delete  HttpPost Delete 的 read-first 方法
 
 Replace the HttpPost `Delete` action method (named `DeleteConfirmed`) with the following code, which performs the actual delete operation and catches any database update errors.  
-替换  HttpPost `Delete`(名字为 `DeleteConfirmed` )操作方法为以下代码，该代码执行实际的删除操作并捕获任何数据库更新错误。
+替换  HttpPost `Delete`(名字为 `DeleteConfirmed` ) Action 方法为以下代码，该代码执行实际的删除操作并捕获任何数据库更新错误。
 
 [!code-csharp[Main](intro/samples/cu/Controllers/StudentsController.cs?name=snippet_DeleteWithReadFirst&highlight=6,8-11,13-14,18-23)]  
 ```c#
@@ -740,7 +740,7 @@ You can disable tracking of entity objects in memory by calling the `AsNoTrackin
 你可以通常调用 `AsNoTracking` 方法来禁用对内存中实体对象的跟踪。你可能希望这样做的典型场景包括：
 
 * During the context lifetime you don't need to update any entities, and you don't need EF to [automatically load navigation properties with  entities retrieved by separate queries](read-related-data.md). Frequently these conditions are met in a controller's HttpGet action methods.  
-在上下文的生命周期内你不需要更新任何实体，并且你不需要 EF  [automatically load navigation properties with  entities retrieved by separate queries（使用单独查询检索的实体自动加载导航属性）](read-related-data.md)。这些条件通常在控制器的 HttpGet 操作方法中得到满足。
+在上下文的生命周期内你不需要更新任何实体，并且你不需要 EF  [automatically load navigation properties with  entities retrieved by separate queries（使用单独查询检索的实体自动加载导航属性）](read-related-data.md)。这些条件通常在控制器的 HttpGet Action 方法中得到满足。
 
 * You are running a query that retrieves a large volume of data, and only a small portion of the returned data will be updated. It may be more efficient to turn off tracking for the large query, and run a query later for the few entities that need to be updated.  
 正在运行一个检索大量数据的查询，只有一小部分返回的数据将被更新。关闭大型查询的跟踪可能会更有效，稍后对需要更新的少数实体运行查询。
